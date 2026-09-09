@@ -3,31 +3,45 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>4sgarov — Portfolio</title>
-<meta name="description" content="Rauf Əsgərov — Full Stack Developer portfolio saytı">
+<title>Rauf Əsgərov — Tattoo Artist</title>
+<meta name="description" content="Rauf Əsgərov — Bakıda çalışan tatu artisti. Fərdi dizayn, fine line, blackwork, geometrik və dotwork tatu sənəti.">
 <link rel="icon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Permanent+Marker&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<div class="cursor-glow" id="cursorGlow"></div>
+<div class="grain"></div>
+
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"><span id="cursorLabel"></span></div>
+
+<div class="preloader" id="preloader">
+  <span class="preloader-word">ƏSGƏROV&nbsp;TATTOO</span>
+</div>
 
 <div class="progress-bar" id="progressBar"></div>
 
+<div class="marquee marquee-top">
+  <div class="marquee-track">
+    <span>FƏRDİ DİZAYN &nbsp;✦&nbsp; FINE LINE &nbsp;✦&nbsp; BLACKWORK &nbsp;✦&nbsp; GEOMETRİK &nbsp;✦&nbsp; DOTWORK &nbsp;✦&nbsp; RANDEVU İLƏ &nbsp;✦&nbsp; </span>
+    <span aria-hidden="true">FƏRDİ DİZAYN &nbsp;✦&nbsp; FINE LINE &nbsp;✦&nbsp; BLACKWORK &nbsp;✦&nbsp; GEOMETRİK &nbsp;✦&nbsp; DOTWORK &nbsp;✦&nbsp; RANDEVU İLƏ &nbsp;✦&nbsp; </span>
+  </div>
+</div>
+
 <header class="navbar" id="navbar">
   <div class="nav-inner">
-    <a href="#home" class="logo">4sgarov<span class="dot">.</span></a>
+    <a href="#home" class="logo">ƏSGƏROV<span class="logo-sub">TATTOO</span></a>
     <nav class="nav-links" id="navLinks">
-      <a href="#home" class="nav-link active">Ana səhifə</a>
-      <a href="#about" class="nav-link">Haqqımda</a>
-      <a href="#skills" class="nav-link">Bacarıqlar</a>
-      <a href="#projects" class="nav-link">Layihələr</a>
-      <a href="#contact" class="nav-link">Əlaqə</a>
+      <a href="#home" class="nav-link active"><span>01</span>Ana səhifə</a>
+      <a href="#studio" class="nav-link"><span>02</span>Haqqımda</a>
+      <a href="#gallery" class="nav-link"><span>03</span>Qalereya</a>
+      <a href="#reviews" class="nav-link"><span>04</span>Rəylər</a>
+      <a href="#contact" class="nav-link"><span>05</span>Əlaqə</a>
     </nav>
-    <a href="#contact" class="btn btn-small nav-cta">Əlaqə saxla</a>
+    <a href="#contact" class="btn btn-small btn-magnetic nav-cta">Randevu al</a>
     <button class="menu-toggle" id="menuToggle" aria-label="Menyu">
       <span></span><span></span><span></span>
     </button>
@@ -37,81 +51,74 @@
 <main>
 
   <section class="hero" id="home">
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
-    <div class="grid-overlay"></div>
+    <div class="hero-scatter" id="heroScatter"></div>
+
+    <svg class="badge-svg" viewBox="0 0 220 220" aria-hidden="true">
+      <path id="badgeCircle" d="M110,110 m-88,0 a88,88 0 1,1 176,0 a88,88 0 1,1 -176,0" fill="none"/>
+      <text font-size="12.5" letter-spacing="3.5" fill="currentColor">
+        <textPath href="#badgeCircle" startOffset="0%">RAUF ƏSGƏROV • TATTOO ARTIST • BAKI • CUSTOM INK • RAUF ƏSGƏROV • TATTOO ARTIST • BAKI • CUSTOM INK •</textPath>
+      </text>
+    </svg>
 
     <div class="hero-content">
-      <p class="hero-greeting reveal">Salam, mən</p>
-      <h1 class="hero-name reveal" style="--d:0.1s">Rauf Əsgərov</h1>
-      <h2 class="hero-role reveal" style="--d:0.2s">
-        <span id="typewriter"></span><span class="cursor-blink">|</span>
-      </h2>
-      <p class="hero-desc reveal" style="--d:0.3s">
-        İstifadəçi təcrübəsinə önəm verən, təmiz və performanslı veb tətbiqlər
-        qurmağı sevən developer. Fikirləri koda çevirirəm.
+      <p class="hero-kicker reveal">Bakı — Tatu artisti</p>
+      <h1 class="hero-title">
+        <span class="line reveal" style="--d:0.05s">SƏNƏT</span>
+        <span class="line accent reveal" style="--d:0.15s">DƏRİDƏ</span>
+        <span class="line reveal" style="--d:0.25s">YAŞAYIR</span>
+      </h1>
+      <p class="hero-desc reveal" style="--d:0.35s">
+        Fərdi eskiz, təmiz xətlər, ömürlük iz. Hər tatu bir hekayədir —
+        onu birlikdə dəridə həkk edək.
       </p>
-      <div class="hero-actions reveal" style="--d:0.4s">
-        <a href="#projects" class="btn btn-primary">Layihələrə bax</a>
-        <a href="#contact" class="btn btn-outline">Əlaqə saxla</a>
-      </div>
-      <div class="hero-socials reveal" style="--d:0.5s">
-        <a href="https://github.com/4sgarov" target="_blank" rel="noopener" aria-label="GitHub">
-          <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.52-1.34-1.28-1.7-1.28-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.56-.29-5.26-1.28-5.26-5.7 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.8 0c2.2-1.49 3.18-1.18 3.18-1.18.63 1.59.23 2.77.11 3.06.74.8 1.19 1.83 1.19 3.09 0 4.43-2.71 5.4-5.29 5.69.41.36.78 1.08.78 2.17 0 1.57-.01 2.83-.01 3.22 0 .3.2.66.79.55A10.52 10.52 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5Z"/></svg>
-        </a>
-        <a href="https://www.linkedin.com/" target="_blank" rel="noopener" aria-label="LinkedIn">
-          <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.03-1.84-3.03-1.85 0-2.14 1.44-2.14 2.93v5.67H9.37V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.8 0 0 .78 0 1.75v20.5C0 23.22.8 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.75V1.75C24 .78 23.2 0 22.22 0Z"/></svg>
-        </a>
-        <a href="mailto:rauf.4sgarov@gmail.com" aria-label="Email">
-          <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M2 4h20a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Zm19 3.24-8.56 6.2a1 1 0 0 1-1.18 0L3 7.24V19h18V7.24ZM3.4 5l8.6 6.22L20.6 5H3.4Z"/></svg>
-        </a>
+      <div class="hero-actions reveal" style="--d:0.45s">
+        <a href="#gallery" class="btn btn-primary btn-magnetic">Qalereyaya bax</a>
+        <a href="#contact" class="btn btn-outline btn-magnetic">Randevu al</a>
       </div>
     </div>
 
-    <a href="#about" class="scroll-indicator" aria-label="Aşağı sürüşdür">
-      <span></span>
+    <a href="#studio" class="scroll-indicator" aria-label="Aşağı sürüşdür">
+      <span>SÜRÜŞDÜR</span>
+      <i></i>
     </a>
   </section>
 
-  <section class="about" id="about">
+  <section class="studio" id="studio">
     <div class="section-inner">
-      <p class="eyebrow reveal">Haqqımda</p>
-      <h2 class="section-title reveal">Kim olduğumu tanıyın</h2>
-
-      <div class="about-grid">
-        <div class="about-visual reveal">
-          <div class="avatar-frame">
-            <div class="avatar-ring"></div>
-            <div class="avatar-initials">RƏ</div>
+      <div class="studio-grid">
+        <div class="studio-visual reveal">
+          <div class="portrait-frame">
+            <div class="portrait-initials">RƏ</div>
           </div>
+          <p class="portrait-caption">Rauf Əsgərov <span>— Tatu ustası</span></p>
         </div>
 
-        <div class="about-text reveal" style="--d:0.1s">
-          <p>
-            Salam! Mən Rauf, veb inkişaf sahəsində çalışan bir developerəm.
-            İstifadəçi dostu interfeyslər və etibarlı backend sistemləri
-            qurmağa fokuslanıram. Yeni texnologiyalar öyrənməyi və real
-            problemləri kodla həll etməyi sevirəm.
+        <div class="studio-text">
+          <p class="eyebrow reveal">Haqqımda</p>
+          <h2 class="section-title reveal">İynə deyil,<br>fırça hesab edirəm.</h2>
+          <p class="reveal" style="--d:0.1s">
+            5 ildən artıqdır dəri üzərində işləyirəm. Hər müştəri ilə əvvəlcə
+            oturub hekayəni dinləyirəm, sonra onu xəttə çevirirəm. Steril
+            şərait, tək istifadəlik ləvazimat və səbirli proses — mənim üçün
+            standartdır, güzəşt deyil.
           </p>
-          <p>
-            Hər layihədə diqqət, performans və detallara önəm verirəm —
-            məqsədim sadəcə işləyən deyil, yaxşı hiss etdirən məhsullar
-            yaratmaqdır.
+          <p class="reveal" style="--d:0.15s">
+            Fine line-dan blackwork-ə, geometrikdən dotwork-ə qədər — üslubu
+            siz seçin, texnikanı mən həll edirəm.
           </p>
 
           <div class="stats">
-            <div class="stat">
-              <span class="stat-num" data-count="20">0</span><span class="stat-plus">+</span>
-              <span class="stat-label">Layihə</span>
+            <div class="stat reveal" style="--d:0.2s">
+              <span class="stat-num" data-count="400">0</span><span class="stat-plus">+</span>
+              <span class="stat-label">Tamamlanmış tatu</span>
             </div>
-            <div class="stat">
-              <span class="stat-num" data-count="3">0</span><span class="stat-plus">+</span>
+            <div class="stat reveal" style="--d:0.25s">
+              <span class="stat-num" data-count="5">0</span><span class="stat-plus">+</span>
               <span class="stat-label">İl təcrübə</span>
             </div>
-            <div class="stat">
-              <span class="stat-num" data-count="10">0</span><span class="stat-plus">+</span>
-              <span class="stat-label">Texnologiya</span>
+            <div class="stat reveal" style="--d:0.3s">
+              <span class="stat-num" data-count="6">0</span>
+              <span class="stat-label">Əsas üslub</span>
             </div>
           </div>
         </div>
@@ -119,80 +126,156 @@
     </div>
   </section>
 
-  <section class="skills" id="skills">
+  <section class="gallery" id="gallery">
     <div class="section-inner">
-      <p class="eyebrow reveal">Bacarıqlar</p>
-      <h2 class="section-title reveal">İşlədiyim texnologiyalar</h2>
+      <p class="eyebrow reveal">Qalereya</p>
+      <h2 class="section-title reveal">Seçilmiş işlər</h2>
 
-      <div class="skills-grid">
-        <div class="skill-card reveal"><span>JavaScript</span></div>
-        <div class="skill-card reveal" style="--d:0.05s"><span>TypeScript</span></div>
-        <div class="skill-card reveal" style="--d:0.1s"><span>React</span></div>
-        <div class="skill-card reveal" style="--d:0.15s"><span>Node.js</span></div>
-        <div class="skill-card reveal" style="--d:0.2s"><span>Python</span></div>
-        <div class="skill-card reveal" style="--d:0.25s"><span>HTML5</span></div>
-        <div class="skill-card reveal" style="--d:0.3s"><span>CSS3</span></div>
-        <div class="skill-card reveal" style="--d:0.35s"><span>Git &amp; GitHub</span></div>
-        <div class="skill-card reveal" style="--d:0.4s"><span>MongoDB</span></div>
-        <div class="skill-card reveal" style="--d:0.45s"><span>PostgreSQL</span></div>
-        <div class="skill-card reveal" style="--d:0.5s"><span>Docker</span></div>
-        <div class="skill-card reveal" style="--d:0.55s"><span>Figma</span></div>
+      <div class="filters reveal">
+        <button class="filter-btn active" data-filter="all">Hamısı</button>
+        <button class="filter-btn" data-filter="fineline">Fine Line</button>
+        <button class="filter-btn" data-filter="blackwork">Blackwork</button>
+        <button class="filter-btn" data-filter="geometric">Geometrik</button>
+        <button class="filter-btn" data-filter="traditional">Ənənəvi</button>
+        <button class="filter-btn" data-filter="dotwork">Dotwork</button>
+      </div>
+
+      <div class="gallery-grid" id="galleryGrid">
+
+        <article class="tile reveal" data-category="fineline" data-title="Bahar Gülü" data-desc="Nazik, tək xətli gül dizaynı — bilək və ya qabırğa üçün ideal.">
+          <span class="tile-tag">Fine Line</span>
+          <svg viewBox="0 0 240 240" class="tile-svg">
+            <g stroke="currentColor" fill="none" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+              <path transform="rotate(0 120 130)"   d="M120,130 C104,108 104,78 120,56 C136,78 136,108 120,130 Z"/>
+              <path transform="rotate(60 120 130)"  d="M120,130 C104,108 104,78 120,56 C136,78 136,108 120,130 Z"/>
+              <path transform="rotate(120 120 130)" d="M120,130 C104,108 104,78 120,56 C136,78 136,108 120,130 Z"/>
+              <path transform="rotate(180 120 130)" d="M120,130 C104,108 104,78 120,56 C136,78 136,108 120,130 Z"/>
+              <path transform="rotate(240 120 130)" d="M120,130 C104,108 104,78 120,56 C136,78 136,108 120,130 Z"/>
+              <path transform="rotate(300 120 130)" d="M120,130 C104,108 104,78 120,56 C136,78 136,108 120,130 Z"/>
+              <circle cx="120" cy="130" r="7"/>
+              <path d="M120,137 C118,165 122,175 116,196"/>
+              <path d="M105,165 C95,163 88,170 84,180 C96,180 102,174 105,165 Z"/>
+              <path d="M128,182 C138,182 144,190 146,200 C134,199 128,192 128,182 Z"/>
+            </g>
+          </svg>
+        </article>
+
+        <article class="tile reveal" data-category="blackwork" data-title="Kölgə İlan" data-desc="Qalın, cəsarətli xətlərlə blackwork ilan motivi — qol üçün.">
+          <span class="tile-tag">Blackwork</span>
+          <svg viewBox="0 0 240 240" class="tile-svg">
+            <g stroke="currentColor" fill="none" stroke-width="13" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M96,200 C50,178 52,138 96,124 C140,110 142,72 100,52"/>
+            </g>
+            <g stroke="currentColor" fill="currentColor">
+              <polygon points="100,52 118,40 122,62"/>
+            </g>
+            <g stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round">
+              <path d="M122,44 L134,36 M122,50 L136,48"/>
+            </g>
+            <circle cx="108" cy="48" r="2.4" fill="var(--bg)"/>
+          </svg>
+        </article>
+
+        <article class="tile reveal" data-category="geometric" data-title="Səma Xəritəsi" data-desc="Həndəsi xətlər və nöqtələrlə naviqasiya ulduzu — kürək üçün.">
+          <span class="tile-tag">Geometrik</span>
+          <svg viewBox="0 0 240 240" class="tile-svg">
+            <g stroke="currentColor" fill="none" stroke-width="1.6" stroke-linejoin="round">
+              <polygon points="120,50 185,175 55,175"/>
+              <polygon points="120,190 55,65 185,65"/>
+              <circle cx="120" cy="120" r="62"/>
+              <circle cx="120" cy="120" r="3.5" fill="currentColor" stroke="none"/>
+            </g>
+            <g fill="currentColor" stroke="none">
+              <circle cx="120" cy="50" r="2.6"/>
+              <circle cx="185" cy="175" r="2.6"/>
+              <circle cx="55" cy="175" r="2.6"/>
+              <circle cx="120" cy="190" r="2.6"/>
+              <circle cx="55" cy="65" r="2.6"/>
+              <circle cx="185" cy="65" r="2.6"/>
+            </g>
+          </svg>
+        </article>
+
+        <article class="tile reveal" data-category="traditional" data-title="Qədim Xəncər" data-desc="Klassik amerikan üslubunda lentli xəncər — old school flash.">
+          <span class="tile-tag">Ənənəvi</span>
+          <svg viewBox="0 0 240 240" class="tile-svg">
+            <g stroke="currentColor" fill="none" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
+              <polygon points="120,38 132,110 108,110"/>
+              <rect x="96" y="110" width="48" height="12" rx="2"/>
+              <rect x="112" y="122" width="16" height="46" rx="3"/>
+              <circle cx="120" cy="178" r="10"/>
+              <path d="M70,140 C90,132 96,148 120,142 C144,148 150,132 170,140 C160,154 150,150 140,158 C130,150 128,160 120,158 C112,160 110,150 100,158 C90,150 80,154 70,140 Z"/>
+            </g>
+          </svg>
+        </article>
+
+        <article class="tile reveal" data-category="fineline" data-title="Ay Fazaları" data-desc="Minimal ay dövrü xətti — çiyin xətti boyunca beş faza.">
+          <span class="tile-tag">Minimal</span>
+          <svg viewBox="0 0 240 240" class="tile-svg">
+            <g stroke="currentColor" fill="none" stroke-width="2">
+              <circle cx="40" cy="120" r="20"/>
+              <circle cx="90" cy="120" r="20" fill="currentColor"/>
+              <path d="M90,100 a20,20 0 0,0 0,40 a14,20 0 0,1 0,-40 Z" fill="var(--bg)" stroke="none"/>
+              <circle cx="140" cy="120" r="20" fill="currentColor"/>
+              <path d="M140,100 a20,20 0 0,1 0,40 a20,20 0 0,1 0,-40 Z" fill="var(--bg)" stroke="currentColor" stroke-width="2"/>
+              <circle cx="190" cy="120" r="20" fill="currentColor"/>
+              <path d="M190,100 a20,20 0 0,0 0,40 a6,20 0 0,1 0,-40 Z" fill="var(--bg)" stroke="none"/>
+              <circle cx="150" cy="120" r="0" opacity="0"/>
+            </g>
+            <circle cx="215" cy="120" r="20" stroke="currentColor" stroke-width="2" fill="currentColor"/>
+          </svg>
+        </article>
+
+        <article class="tile reveal" data-category="dotwork" data-title="Mandala Nöqtə" data-desc="Yüzlərlə nöqtədən toxunan dairəvi mandala — dotwork texnikası.">
+          <span class="tile-tag">Dotwork</span>
+          <svg viewBox="0 0 240 240" class="tile-svg">
+            <g id="dotMandala" fill="currentColor" stroke="none"></g>
+            <circle cx="120" cy="120" r="3" fill="currentColor"/>
+          </svg>
+        </article>
+
       </div>
     </div>
   </section>
 
-  <section class="projects" id="projects">
+  <section class="reviews" id="reviews">
     <div class="section-inner">
-      <p class="eyebrow reveal">Layihələr</p>
-      <h2 class="section-title reveal">Seçilmiş işlərim</h2>
+      <p class="eyebrow reveal">Rəylər</p>
+      <h2 class="section-title reveal">Müştərilər nə deyir</h2>
+    </div>
 
-      <div class="projects-grid">
-
-        <article class="project-card reveal">
-          <div class="project-cover cover-1"></div>
-          <div class="project-body">
-            <h3>Layihə adı 1</h3>
-            <p>Layihənin qısa təsviri buraya yazılacaq — nə etdiyi, hansı problemi həll etdiyi.</p>
-            <div class="tags">
-              <span>React</span><span>Node.js</span><span>MongoDB</span>
-            </div>
-            <div class="project-links">
-              <a href="https://github.com/4sgarov" target="_blank" rel="noopener">Kod</a>
-              <a href="#" target="_blank" rel="noopener">Demo</a>
-            </div>
-          </div>
-        </article>
-
-        <article class="project-card reveal" style="--d:0.1s">
-          <div class="project-cover cover-2"></div>
-          <div class="project-body">
-            <h3>Layihə adı 2</h3>
-            <p>Layihənin qısa təsviri buraya yazılacaq — nə etdiyi, hansı problemi həll etdiyi.</p>
-            <div class="tags">
-              <span>TypeScript</span><span>Next.js</span><span>PostgreSQL</span>
-            </div>
-            <div class="project-links">
-              <a href="https://github.com/4sgarov" target="_blank" rel="noopener">Kod</a>
-              <a href="#" target="_blank" rel="noopener">Demo</a>
-            </div>
-          </div>
-        </article>
-
-        <article class="project-card reveal" style="--d:0.2s">
-          <div class="project-cover cover-3"></div>
-          <div class="project-body">
-            <h3>Layihə adı 3</h3>
-            <p>Layihənin qısa təsviri buraya yazılacaq — nə etdiyi, hansı problemi həll etdiyi.</p>
-            <div class="tags">
-              <span>Python</span><span>FastAPI</span><span>Docker</span>
-            </div>
-            <div class="project-links">
-              <a href="https://github.com/4sgarov" target="_blank" rel="noopener">Kod</a>
-              <a href="#" target="_blank" rel="noopener">Demo</a>
-            </div>
-          </div>
-        </article>
-
+    <div class="reviews-track-wrap reveal">
+      <div class="reviews-track">
+        <div class="review-card" style="--r:-2deg">
+          <p class="stars">★★★★★</p>
+          <p>"İlk tatumu burda çəkdirdim, çox rahat idi. Xətlər inanılmaz təmizdir."</p>
+          <span class="review-name">— Nərmin Q.</span>
+        </div>
+        <div class="review-card" style="--r:1.5deg">
+          <p class="stars">★★★★★</p>
+          <p>"Steril şərait, peşəkar yanaşma. Dizaynı bir yerdə hazırladıq."</p>
+          <span class="review-name">— Elvin M.</span>
+        </div>
+        <div class="review-card" style="--r:-1deg">
+          <p class="stars">★★★★★</p>
+          <p>"Geometrik tatum tam istədiyim kimi alındı. Kömür kimi qara xətlər."</p>
+          <span class="review-name">— Aysel T.</span>
+        </div>
+        <div class="review-card" style="--r:2deg">
+          <p class="stars">★★★★★</p>
+          <p>"Dotwork mandala üçün ən yaxşı ünvan. Səbirlə izah etdi hər addımı."</p>
+          <span class="review-name">— Toğrul S.</span>
+        </div>
+        <div class="review-card" style="--r:-2deg" aria-hidden="true">
+          <p class="stars">★★★★★</p>
+          <p>"İlk tatumu burda çəkdirdim, çox rahat idi. Xətlər inanılmaz təmizdir."</p>
+          <span class="review-name">— Nərmin Q.</span>
+        </div>
+        <div class="review-card" style="--r:1.5deg" aria-hidden="true">
+          <p class="stars">★★★★★</p>
+          <p>"Steril şərait, peşəkar yanaşma. Dizaynı bir yerdə hazırladıq."</p>
+          <span class="review-name">— Elvin M.</span>
+        </div>
       </div>
     </div>
   </section>
@@ -200,18 +283,29 @@
   <section class="contact" id="contact">
     <div class="section-inner contact-inner">
       <p class="eyebrow reveal">Əlaqə</p>
-      <h2 class="section-title reveal">Birlikdə nəsə quraq</h2>
+      <h2 class="section-title reveal">Hekayəni birlikdə<br>dəridə yazaq</h2>
       <p class="contact-desc reveal">
-        Yeni layihə, əməkdaşlıq və ya sadəcə salamlaşmaq üçün mənə yazın —
-        həmişə maraqlı fikirlərə açığam.
+        Fikrini yaz, eskiz göndər, ya da sadəcə salam de — randevu üçün
+        aşağıdakı kanallardan biri ilə əlaqə saxla.
       </p>
-      <a href="mailto:rauf.4sgarov@gmail.com" class="btn btn-primary btn-large reveal">
+
+      <a href="mailto:rauf.4sgarov@gmail.com" class="btn btn-primary btn-large btn-magnetic reveal">
         rauf.4sgarov@gmail.com
       </a>
 
-      <div class="contact-socials reveal">
-        <a href="https://github.com/4sgarov" target="_blank" rel="noopener">GitHub</a>
-        <a href="https://www.linkedin.com/" target="_blank" rel="noopener">LinkedIn</a>
+      <div class="contact-grid reveal">
+        <div>
+          <span class="contact-label">Instagram</span>
+          <a href="https://instagram.com/" target="_blank" rel="noopener">@esgarov.tattoo</a>
+        </div>
+        <div>
+          <span class="contact-label">Ünvan</span>
+          <a href="#">Bakı, Azərbaycan</a>
+        </div>
+        <div>
+          <span class="contact-label">İş saatları</span>
+          <span>Hər gün · 11:00–20:00</span>
+        </div>
       </div>
     </div>
   </section>
@@ -219,11 +313,33 @@
 </main>
 
 <footer class="footer">
+  <div class="marquee marquee-bottom">
+    <div class="marquee-track">
+      <span>ƏSGƏROV TATTOO &nbsp;✦&nbsp; BAKI &nbsp;✦&nbsp; RANDEVU AL &nbsp;✦&nbsp; ƏSGƏROV TATTOO &nbsp;✦&nbsp; BAKI &nbsp;✦&nbsp; RANDEVU AL &nbsp;✦&nbsp; </span>
+      <span aria-hidden="true">ƏSGƏROV TATTOO &nbsp;✦&nbsp; BAKI &nbsp;✦&nbsp; RANDEVU AL &nbsp;✦&nbsp; ƏSGƏROV TATTOO &nbsp;✦&nbsp; BAKI &nbsp;✦&nbsp; RANDEVU AL &nbsp;✦&nbsp; </span>
+    </div>
+  </div>
   <div class="section-inner footer-inner">
-    <p>© <span id="year"></span> Rauf Əsgərov. Bütün hüquqlar qorunur.</p>
+    <p>© <span id="year"></span> Əsgərov Tattoo. Bütün hüquqlar qorunur.</p>
+    <div class="footer-socials">
+      <a href="https://instagram.com/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://github.com/4sgarov" target="_blank" rel="noopener">GitHub</a>
+    </div>
     <button class="to-top" id="toTop" aria-label="Yuxarı qalx">↑</button>
   </div>
 </footer>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose" aria-label="Bağla">✕</button>
+  <div class="lightbox-panel">
+    <div class="lightbox-svg" id="lightboxSvg"></div>
+    <div class="lightbox-info">
+      <span class="tile-tag" id="lightboxCategory"></span>
+      <h3 id="lightboxTitle"></h3>
+      <p id="lightboxDesc"></p>
+    </div>
+  </div>
+</div>
 
 <script src="js/script.js"></script>
 </body>
