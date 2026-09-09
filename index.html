@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4sgarov — Portfolio</title>
+<meta name="description" content="Rauf Əsgərov — Full Stack Developer portfolio saytı">
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<header class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="#home" class="logo">4sgarov<span class="dot">.</span></a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#home" class="nav-link active">Ana səhifə</a>
+      <a href="#about" class="nav-link">Haqqımda</a>
+      <a href="#skills" class="nav-link">Bacarıqlar</a>
+      <a href="#projects" class="nav-link">Layihələr</a>
+      <a href="#contact" class="nav-link">Əlaqə</a>
+    </nav>
+    <a href="#contact" class="btn btn-small nav-cta">Əlaqə saxla</a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Menyu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero" id="home">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="grid-overlay"></div>
+
+    <div class="hero-content">
+      <p class="hero-greeting reveal">Salam, mən</p>
+      <h1 class="hero-name reveal" style="--d:0.1s">Rauf Əsgərov</h1>
+      <h2 class="hero-role reveal" style="--d:0.2s">
+        <span id="typewriter"></span><span class="cursor-blink">|</span>
+      </h2>
+      <p class="hero-desc reveal" style="--d:0.3s">
+        İstifadəçi təcrübəsinə önəm verən, təmiz və performanslı veb tətbiqlər
+        qurmağı sevən developer. Fikirləri koda çevirirəm.
+      </p>
+      <div class="hero-actions reveal" style="--d:0.4s">
+        <a href="#projects" class="btn btn-primary">Layihələrə bax</a>
+        <a href="#contact" class="btn btn-outline">Əlaqə saxla</a>
+      </div>
+      <div class="hero-socials reveal" style="--d:0.5s">
+        <a href="https://github.com/4sgarov" target="_blank" rel="noopener" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.52-1.34-1.28-1.7-1.28-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.56-.29-5.26-1.28-5.26-5.7 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.8 0c2.2-1.49 3.18-1.18 3.18-1.18.63 1.59.23 2.77.11 3.06.74.8 1.19 1.83 1.19 3.09 0 4.43-2.71 5.4-5.29 5.69.41.36.78 1.08.78 2.17 0 1.57-.01 2.83-.01 3.22 0 .3.2.66.79.55A10.52 10.52 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5Z"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.03-1.84-3.03-1.85 0-2.14 1.44-2.14 2.93v5.67H9.37V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.8 0 0 .78 0 1.75v20.5C0 23.22.8 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.75V1.75C24 .78 23.2 0 22.22 0Z"/></svg>
+        </a>
+        <a href="mailto:rauf.4sgarov@gmail.com" aria-label="Email">
+          <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M2 4h20a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Zm19 3.24-8.56 6.2a1 1 0 0 1-1.18 0L3 7.24V19h18V7.24ZM3.4 5l8.6 6.22L20.6 5H3.4Z"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <a href="#about" class="scroll-indicator" aria-label="Aşağı sürüşdür">
+      <span></span>
+    </a>
+  </section>
+
+  <section class="about" id="about">
+    <div class="section-inner">
+      <p class="eyebrow reveal">Haqqımda</p>
+      <h2 class="section-title reveal">Kim olduğumu tanıyın</h2>
+
+      <div class="about-grid">
+        <div class="about-visual reveal">
+          <div class="avatar-frame">
+            <div class="avatar-ring"></div>
+            <div class="avatar-initials">RƏ</div>
+          </div>
+        </div>
+
+        <div class="about-text reveal" style="--d:0.1s">
+          <p>
+            Salam! Mən Rauf, veb inkişaf sahəsində çalışan bir developerəm.
+            İstifadəçi dostu interfeyslər və etibarlı backend sistemləri
+            qurmağa fokuslanıram. Yeni texnologiyalar öyrənməyi və real
+            problemləri kodla həll etməyi sevirəm.
+          </p>
+          <p>
+            Hər layihədə diqqət, performans və detallara önəm verirəm —
+            məqsədim sadəcə işləyən deyil, yaxşı hiss etdirən məhsullar
+            yaratmaqdır.
+          </p>
+
+          <div class="stats">
+            <div class="stat">
+              <span class="stat-num" data-count="20">0</span><span class="stat-plus">+</span>
+              <span class="stat-label">Layihə</span>
+            </div>
+            <div class="stat">
+              <span class="stat-num" data-count="3">0</span><span class="stat-plus">+</span>
+              <span class="stat-label">İl təcrübə</span>
+            </div>
+            <div class="stat">
+              <span class="stat-num" data-count="10">0</span><span class="stat-plus">+</span>
+              <span class="stat-label">Texnologiya</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="skills" id="skills">
+    <div class="section-inner">
+      <p class="eyebrow reveal">Bacarıqlar</p>
+      <h2 class="section-title reveal">İşlədiyim texnologiyalar</h2>
+
+      <div class="skills-grid">
+        <div class="skill-card reveal"><span>JavaScript</span></div>
+        <div class="skill-card reveal" style="--d:0.05s"><span>TypeScript</span></div>
+        <div class="skill-card reveal" style="--d:0.1s"><span>React</span></div>
+        <div class="skill-card reveal" style="--d:0.15s"><span>Node.js</span></div>
+        <div class="skill-card reveal" style="--d:0.2s"><span>Python</span></div>
+        <div class="skill-card reveal" style="--d:0.25s"><span>HTML5</span></div>
+        <div class="skill-card reveal" style="--d:0.3s"><span>CSS3</span></div>
+        <div class="skill-card reveal" style="--d:0.35s"><span>Git &amp; GitHub</span></div>
+        <div class="skill-card reveal" style="--d:0.4s"><span>MongoDB</span></div>
+        <div class="skill-card reveal" style="--d:0.45s"><span>PostgreSQL</span></div>
+        <div class="skill-card reveal" style="--d:0.5s"><span>Docker</span></div>
+        <div class="skill-card reveal" style="--d:0.55s"><span>Figma</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="projects" id="projects">
+    <div class="section-inner">
+      <p class="eyebrow reveal">Layihələr</p>
+      <h2 class="section-title reveal">Seçilmiş işlərim</h2>
+
+      <div class="projects-grid">
+
+        <article class="project-card reveal">
+          <div class="project-cover cover-1"></div>
+          <div class="project-body">
+            <h3>Layihə adı 1</h3>
+            <p>Layihənin qısa təsviri buraya yazılacaq — nə etdiyi, hansı problemi həll etdiyi.</p>
+            <div class="tags">
+              <span>React</span><span>Node.js</span><span>MongoDB</span>
+            </div>
+            <div class="project-links">
+              <a href="https://github.com/4sgarov" target="_blank" rel="noopener">Kod</a>
+              <a href="#" target="_blank" rel="noopener">Demo</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card reveal" style="--d:0.1s">
+          <div class="project-cover cover-2"></div>
+          <div class="project-body">
+            <h3>Layihə adı 2</h3>
+            <p>Layihənin qısa təsviri buraya yazılacaq — nə etdiyi, hansı problemi həll etdiyi.</p>
+            <div class="tags">
+              <span>TypeScript</span><span>Next.js</span><span>PostgreSQL</span>
+            </div>
+            <div class="project-links">
+              <a href="https://github.com/4sgarov" target="_blank" rel="noopener">Kod</a>
+              <a href="#" target="_blank" rel="noopener">Demo</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card reveal" style="--d:0.2s">
+          <div class="project-cover cover-3"></div>
+          <div class="project-body">
+            <h3>Layihə adı 3</h3>
+            <p>Layihənin qısa təsviri buraya yazılacaq — nə etdiyi, hansı problemi həll etdiyi.</p>
+            <div class="tags">
+              <span>Python</span><span>FastAPI</span><span>Docker</span>
+            </div>
+            <div class="project-links">
+              <a href="https://github.com/4sgarov" target="_blank" rel="noopener">Kod</a>
+              <a href="#" target="_blank" rel="noopener">Demo</a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="section-inner contact-inner">
+      <p class="eyebrow reveal">Əlaqə</p>
+      <h2 class="section-title reveal">Birlikdə nəsə quraq</h2>
+      <p class="contact-desc reveal">
+        Yeni layihə, əməkdaşlıq və ya sadəcə salamlaşmaq üçün mənə yazın —
+        həmişə maraqlı fikirlərə açığam.
+      </p>
+      <a href="mailto:rauf.4sgarov@gmail.com" class="btn btn-primary btn-large reveal">
+        rauf.4sgarov@gmail.com
+      </a>
+
+      <div class="contact-socials reveal">
+        <a href="https://github.com/4sgarov" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="section-inner footer-inner">
+    <p>© <span id="year"></span> Rauf Əsgərov. Bütün hüquqlar qorunur.</p>
+    <button class="to-top" id="toTop" aria-label="Yuxarı qalx">↑</button>
+  </div>
+</footer>
+
+<script src="js/script.js"></script>
+</body>
+</html>
