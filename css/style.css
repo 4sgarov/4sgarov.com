@@ -1,6 +1,14 @@
 /* ---------- Reset & base ---------- */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+@font-face {
+  font-family: 'Oughter';
+  src: url('../assets/fonts/Oughter.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --bg: #ffffff;
   --surface-2: #f0f0f0;
@@ -9,7 +17,7 @@
   --muted: #888888;
   --red: #c8262f;
   --font-display: 'Anton', 'Inter', sans-serif;
-  --font-body: 'Inter', sans-serif;
+  --font-body: 'Oughter', 'Inter', sans-serif;
   --sidebar-w: 280px;
 }
 
