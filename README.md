@@ -1,32 +1,30 @@
 # 4sgarov.com — Portfolio
 
-Animasiyalı, dark-mode şəxsi portfolio saytı. Xalis HTML, CSS və JavaScript
-ilə yazılıb — heç bir build addımı tələb olunmur.
+Minimal single-screen personal site. Plain HTML and CSS — no build step, no
+JavaScript.
 
-## Struktur
+## Structure
 
 ```
-index.html      Səhifənin əsas strukturu
-css/style.css   Dizayn və animasiyalar
-js/script.js    Scroll reveal, typewriter, counter, navbar davranışı
+index.html      Page markup: left sidebar nav + blank content area
+css/style.css   Layout and colors
 ```
 
-## Lokal işlətmək
+## Run locally
 
-`index.html` faylını brauzerdə açmaq kifayətdir, və ya:
+Just open `index.html` in a browser, or:
 
 ```bash
 python3 -m http.server 8000
 ```
 
-sonra `http://localhost:8000` ünvanına daxil olun.
+then visit `http://localhost:8000`.
 
-## Məzmunu redaktə etmək
+## Editing content
 
-- Ad, haqqında mətni, bacarıqlar və layihələr — `index.html`
-- Email və sosial linklər — `index.html` içində `mailto:` və `github.com/...` linkləri
-- Rənglər — `css/style.css` faylının başındakı `:root` dəyişənləri
+- Name and menu items — `index.html`
+- Colors and spacing — the `:root` variables at the top of `css/style.css`
 
-## GitHub Pages ilə yayımlamaq
+## Publish with GitHub Pages
 
 Repo → **Settings → Pages** → Source: `Deploy from a branch` → Branch: `main` / `root`.
