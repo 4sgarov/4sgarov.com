@@ -18,7 +18,7 @@
   --red: #c8262f;
   --font-display: 'Anton', 'Inter', sans-serif;
   --font-body: 'Bingo', 'Inter', sans-serif;
-  --sidebar-w: 280px;
+  --sidebar-w: 400px;
 }
 
 html, body {
@@ -50,7 +50,7 @@ a { color: inherit; text-decoration: none; }
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 56px 40px 56px 72px;
+  padding: 56px 40px 56px 120px;
 }
 
 .sidebar-nav {
@@ -59,7 +59,7 @@ a { color: inherit; text-decoration: none; }
   gap: 0;
 }
 .nav-link {
-  font-size: 2.3rem;
+  font-size: 2.7rem;
   font-weight: 900;
   -webkit-text-stroke: 0.6px currentColor;
   color: var(--muted);
