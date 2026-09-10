@@ -2,11 +2,11 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  --bg: #110f0d;
-  --surface-2: #262019;
-  --border: #34291f;
-  --text: #efe6d6;
-  --muted: #a89a86;
+  --bg: #ffffff;
+  --surface-2: #f0f0f0;
+  --border: #e2e2e2;
+  --text: #111111;
+  --muted: #888888;
   --red: #c8262f;
   --font-display: 'Anton', 'Inter', sans-serif;
   --font-body: 'Inter', sans-serif;
@@ -39,6 +39,7 @@ a { color: inherit; text-decoration: none; }
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   padding: 56px 40px;
   border-right: 1px solid var(--border);
 }
