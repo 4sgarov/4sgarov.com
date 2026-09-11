@@ -8,6 +8,8 @@ define('SITE_FILE', DATA_DIR . '/site.json');
 define('SITE_DEFAULT', DATA_DIR . '/site.default.json');
 define('AUTH_FILE', DATA_DIR . '/auth.json');
 define('TMP_DIR', DATA_DIR . '/tmp');
+define('BOOKINGS_FILE', DATA_DIR . '/bookings.json');
+define('BOOKINGS_DIR', DATA_DIR . '/bookings');
 define('UPLOAD_DIR', ROOT . '/assets/uploads');
 define('UPLOAD_URL', 'assets/uploads');
 define('SESSION_DAYS', 30);
@@ -40,7 +42,8 @@ function write_json(string $file, $data): void {
 }
 
 function ensure_dirs(): void {
-  foreach ([DATA_DIR, TMP_DIR, UPLOAD_DIR] as $d) if (!is_dir($d)) @mkdir($d, 0755, true);
+  foreach ([DATA_DIR, TMP_DIR, UPLOAD_DIR, BOOKINGS_DIR] as $d) if (!is_dir($d)) @mkdir($d, 0755, true);
+  if (!is_file(BOOKINGS_DIR . '/.htaccess')) @file_put_contents(BOOKINGS_DIR . '/.htaccess', "Require all denied\n");
   if (!is_file(SITE_FILE) && is_file(SITE_DEFAULT)) copy(SITE_DEFAULT, SITE_FILE);
 }
 

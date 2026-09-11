@@ -159,6 +159,11 @@
     while (s.about.columns.length < 2) s.about.columns.push({ heading: '', text: '' });
     s.portfolio = s.portfolio || {}; s.portfolio.categories = s.portfolio.categories || []; s.portfolio.works = s.portfolio.works || [];
     s.portfolio.works.forEach(function (w) { if (!w.id) w.id = uid(); });
+    s.booking = s.booking || {};
+    s.booking.intro = s.booking.intro || '';
+    s.booking.services = s.booking.services || [];
+    s.booking.locations = s.booking.locations || [];
+    s.booking.notifyEmail = s.booking.notifyEmail || '';
   }
   function publish() {
     if (!state.dirty || state.busy) return;
@@ -292,8 +297,154 @@
       list.appendChild(row);
     });
   }
+  /* Countries: ISO codes → names via the browser, flag via regional indicators */
+  var ISO = ('AF AL DZ AD AO AR AM AU AT AZ BH BD BY BE BZ BJ BT BO BA BW BR BN BG BF BI KH CM CA CV CF TD CL CN CO KM CG CD CR CI HR CU CY CZ DK DJ DO EC EG SV GQ ER EE ET FJ FI FR GA GM GE DE GH GR GT GN GW GY HT HN HK HU IS IN ID IR IQ IE IL IT JM JP JO KZ KE KW KG LA LV LB LS LR LY LI LT LU MO MK MG MW MY MV ML MT MR MU MX MD MC MN ME MA MZ MM NA NP NL NZ NI NE NG NO OM PK PA PG PY PE PH PL PT PR QA RO RU RW SA SN RS SC SL SG SK SI SO ZA KR ES LK SD SR SE CH SY TW TJ TZ TH TG TN TR TM UG UA AE GB US UY UZ VE VN YE ZM ZW').split(' ');
+  var countryName = (function () {
+    try { var dn = new Intl.DisplayNames(['en'], { type: 'region' }); return function (c) { return dn.of(c) || c; }; }
+    catch (e) { return function (c) { return c; }; }
+  })();
+  function flag(code) {
+    return String.fromCodePoint.apply(null, code.toUpperCase().split('').map(function (c) { return 0x1F1E6 + c.charCodeAt(0) - 65; }));
+  }
+  function fillCountries() {
+    var sel = $('#loc-country');
+    ISO.map(function (c) { return { c: c, n: countryName(c) }; })
+      .sort(function (a, b) { return a.n.localeCompare(b.n); })
+      .forEach(function (x) { var o = document.createElement('option'); o.value = x.c; o.textContent = flag(x.c) + ' ' + x.n; sel.appendChild(o); });
+  }
+
+  function renderServices() {
+    var list = $('#svc-list'); list.innerHTML = '';
+    var items = state.site.booking.services;
+    if (!items.length) list.innerHTML = '<div class="empty">No styles yet</div>';
+    items.forEach(function (s, i) {
+      var row = document.createElement('div');
+      row.className = 'list-row';
+      row.innerHTML =
+        '<span class="handle">' + (i + 1) + '</span>' +
+        '<input type="text">' +
+        '<select><option value="tattoo">Tattoo</option><option value="coverup">Cover up</option><option value="seminar">Seminar</option></select>' +
+        '<button class="btn btn-small btn-icon" data-act="up" title="Move up">↑</button>' +
+        '<button class="btn btn-small btn-icon" data-act="down" title="Move down">↓</button>' +
+        '<button class="btn btn-small btn-icon btn-danger" data-act="del" title="Delete">✕</button>';
+      var input = $('input', row), sel = $('select', row);
+      input.value = s.name; sel.value = s.kind || 'tattoo';
+      input.addEventListener('input', function () { s.name = input.value; setDirty(true); });
+      sel.addEventListener('change', function () { s.kind = sel.value; setDirty(true); });
+      $('[data-act=up]', row).disabled = i === 0;
+      $('[data-act=down]', row).disabled = i === items.length - 1;
+      row.addEventListener('click', function (e) {
+        var act = e.target.dataset && e.target.dataset.act;
+        if (!act) return;
+        if (act === 'up') items.splice(i - 1, 0, items.splice(i, 1)[0]);
+        if (act === 'down') items.splice(i + 1, 0, items.splice(i, 1)[0]);
+        if (act === 'del') { if (!confirm('Delete "' + s.name + '"?')) return; items.splice(i, 1); }
+        setDirty(true); renderServices();
+      });
+      list.appendChild(row);
+    });
+  }
+  function renderLocations() {
+    var list = $('#loc-list'); list.innerHTML = '';
+    var items = state.site.booking.locations;
+    if (!items.length) list.innerHTML = '<div class="empty">No cities yet — add where you\'ll be working</div>';
+    items.forEach(function (l, i) {
+      var row = document.createElement('div');
+      row.className = 'list-row';
+      row.innerHTML =
+        '<span class="flag"></span>' +
+        '<div class="loc-fields">' +
+          '<div><span class="loc-country"></span><input type="text" data-k="city" placeholder="City"></div>' +
+          '<input type="date" data-k="from" title="From">' +
+          '<input type="date" data-k="to" title="To">' +
+        '</div>' +
+        '<button class="btn btn-small btn-icon" data-act="up" title="Move up">↑</button>' +
+        '<button class="btn btn-small btn-icon" data-act="down" title="Move down">↓</button>' +
+        '<button class="btn btn-small btn-icon btn-danger" data-act="del" title="Delete">✕</button>';
+      $('.flag', row).textContent = flag(l.code);
+      $('.loc-country', row).textContent = l.country;
+      $$('[data-k]', row).forEach(function (inp) {
+        inp.value = l[inp.dataset.k] || '';
+        inp.addEventListener('input', function () { l[inp.dataset.k] = inp.value; setDirty(true); });
+      });
+      $('[data-act=up]', row).disabled = i === 0;
+      $('[data-act=down]', row).disabled = i === items.length - 1;
+      row.addEventListener('click', function (e) {
+        var act = e.target.dataset && e.target.dataset.act;
+        if (!act) return;
+        if (act === 'up') items.splice(i - 1, 0, items.splice(i, 1)[0]);
+        if (act === 'down') items.splice(i + 1, 0, items.splice(i, 1)[0]);
+        if (act === 'del') { if (!confirm('Delete ' + l.city + '?')) return; items.splice(i, 1); }
+        setDirty(true); renderLocations();
+      });
+      list.appendChild(row);
+    });
+  }
+
+  var requests = [];
+  function fmtDate(d) {
+    if (!d) return '';
+    var p = d.split('-');
+    return new Date(+p[0], p[1] - 1, +p[2]).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+  function loadRequests() {
+    return api('bookings.php').then(function (r) { requests = r; renderRequests(); }).catch(function (e) { toast(e.message, true); });
+  }
+  function renderRequests() {
+    var list = $('#req-list'); list.innerHTML = '';
+    var fresh = requests.filter(function (r) { return r.status !== 'done'; }).length;
+    var badge = $('#req-badge'); badge.textContent = fresh; badge.hidden = !fresh;
+    if (!requests.length) { list.innerHTML = '<div class="empty">No requests yet</div>'; return; }
+    requests.forEach(function (r) {
+      var el = document.createElement('div');
+      el.className = 'req' + (r.status === 'done' ? ' is-done' : '');
+      el.innerHTML =
+        '<div>' +
+          '<div class="req-title"><span class="name"></span><span class="tag ' + (r.status === 'done' ? '' : 'new') + '">' + (r.status === 'done' ? 'done' : 'new') + '</span></div>' +
+          '<div class="req-meta"></div>' +
+          '<div class="req-idea"></div>' +
+          '<div class="req-imgs"></div>' +
+        '</div>' +
+        '<div class="req-actions">' +
+          '<button class="btn btn-small" data-act="toggle">' + (r.status === 'done' ? 'Mark new' : 'Mark done') + '</button>' +
+          '<button class="btn btn-small btn-danger" data-act="del">Delete</button>' +
+        '</div>';
+      $('.name', el).textContent = r.firstName + ' ' + r.lastName;
+      var meta = $('.req-meta', el);
+      meta.innerHTML = '<b></b> · <span class="c"></span><br><span class="l"></span> · <span class="d"></span> · <span class="s"></span><br><span class="t"></span>';
+      $('b', meta).textContent = r.contact;
+      $('.c', meta).textContent = 'received ' + new Date(r.created).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+      $('.l', meta).textContent = flag(r.location.code) + ' ' + r.location.city + ', ' + r.location.country;
+      $('.d', meta).textContent = fmtDate(r.date);
+      $('.s', meta).textContent = r.service.name;
+      $('.t', meta).remove();
+      $('.req-idea', el).textContent = r.idea;
+      var imgs = $('.req-imgs', el);
+      (r.images || []).forEach(function (f) {
+        var a = document.createElement('a'); a.href = CFG.api + 'booking-file.php?id=' + r.id + '&file=' + f; a.target = '_blank';
+        var im = document.createElement('img'); im.src = a.href; im.alt = f; a.appendChild(im); imgs.appendChild(a);
+      });
+      if (!(r.images || []).length) imgs.remove();
+      $('.req-actions', el).addEventListener('click', function (e) {
+        var act = e.target.dataset && e.target.dataset.act;
+        if (act === 'toggle') {
+          var st = r.status === 'done' ? 'new' : 'done';
+          api('bookings.php', { action: 'status', id: r.id, status: st }).then(function () { r.status = st; renderRequests(); }).catch(function (err) { toast(err.message, true); });
+        }
+        if (act === 'del') {
+          if (!confirm('Delete this request permanently?')) return;
+          api('bookings.php', { action: 'delete', id: r.id }).then(function () {
+            requests = requests.filter(function (x) { return x.id !== r.id; }); renderRequests();
+          }).catch(function (err) { toast(err.message, true); });
+        }
+      });
+      list.appendChild(el);
+    });
+  }
+
   function renderAll() {
-    renderMediaSlots(); renderText(); renderCategories(); renderWorks();
+    renderMediaSlots(); renderText(); renderCategories(); renderWorks(); renderServices(); renderLocations();
+    loadRequests();
   }
 
   /* ---------- actions ---------- */
@@ -433,6 +584,28 @@
     if (this.files.length) addWorks(Array.prototype.slice.call(this.files));
     this.value = '';
   });
+  $('#svc-add').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var inp = $('input', this); var name = inp.value.trim(); if (!name) return;
+    var items = state.site.booking.services;
+    var id = slug(name), base = id, n = 2;
+    while (items.some(function (s) { return s.id === id; })) id = base + '-' + n++;
+    items.push({ id: id, name: name, kind: $('#svc-kind').value });
+    inp.value = '';
+    setDirty(true); renderServices();
+  });
+  $('#loc-add').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var code = $('#loc-country').value, city = $('#loc-city').value.trim();
+    if (!code || !city) return;
+    var from = $('#loc-from').value, to = $('#loc-to').value;
+    if (from && to && to < from) { toast('"To" date is before "From"', true); return; }
+    state.site.booking.locations.push({ id: uid(), code: code, country: countryName(code), city: city, from: from, to: to });
+    this.reset();
+    setDirty(true); renderLocations();
+  });
+  $('#req-refresh').addEventListener('click', loadRequests);
+  fillCountries();
   bindMediaSlots();
   window.addEventListener('beforeunload', function (e) {
     if (state.dirty) { e.preventDefault(); e.returnValue = ''; }

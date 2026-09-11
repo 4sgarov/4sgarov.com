@@ -1,5 +1,5 @@
-# Only site.json is public; everything else in data/ is private.
-<FilesMatch "^(auth\.json|.*\.tmp)$">
+# Only site.json / site.default.json are public; everything else in data/ is private.
+<FilesMatch "^(auth\.json|bookings\.json|.*\.tmp)$">
   Require all denied
 </FilesMatch>
 <IfModule mod_autoindex.c>

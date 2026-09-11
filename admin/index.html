@@ -48,6 +48,8 @@
     <button class="tab is-active" data-tab="home">Home</button>
     <button class="tab" data-tab="about">About me</button>
     <button class="tab" data-tab="portfolio">Portfolio</button>
+    <button class="tab" data-tab="book">Book now</button>
+    <button class="tab" data-tab="requests">Requests <span class="badge" id="req-badge" hidden></span></button>
     <button class="tab" data-tab="settings">Settings</button>
   </nav>
 
@@ -136,8 +138,48 @@
       <div class="works" id="work-list"></div>
     </section>
 
+    <!-- Book now -->
+    <section class="panel" data-panel="book">
+      <h2 class="panel-title">Intro text</h2>
+      <p class="hint">Shown under the BOOK NOW title.</p>
+      <label class="field form-narrow"><textarea rows="3" data-bind="booking.intro"></textarea></label>
+
+      <h2 class="panel-title">Styles</h2>
+      <p class="hint">What the client can choose. <b>Tattoo</b> asks for a reference image (+ optional second). <b>Cover up</b> also requires a photo of the old tattoo. <b>Seminar</b> asks for no images.</p>
+      <div class="list" id="svc-list"></div>
+      <form class="add-row" id="svc-add">
+        <input type="text" placeholder="New style name" required>
+        <select id="svc-kind"><option value="tattoo">Tattoo</option><option value="coverup">Cover up</option><option value="seminar">Seminar</option></select>
+        <button type="submit" class="btn btn-small">Add</button>
+      </form>
+
+      <h2 class="panel-title">Cities &amp; dates</h2>
+      <p class="hint">Where you'll be working. The client picks a city, then a date inside that trip. Leave dates empty to allow any date.</p>
+      <div class="list" id="loc-list"></div>
+      <form class="loc-add" id="loc-add">
+        <select id="loc-country" required><option value="">Country</option></select>
+        <input type="text" id="loc-city" placeholder="City" required>
+        <input type="date" id="loc-from" title="From">
+        <input type="date" id="loc-to" title="To">
+        <button type="submit" class="btn btn-small">Add</button>
+      </form>
+    </section>
+
+    <!-- Requests -->
+    <section class="panel" data-panel="requests">
+      <div class="req-head">
+        <h2 class="panel-title">Booking requests</h2>
+        <button class="btn btn-small" id="req-refresh">Refresh</button>
+      </div>
+      <div class="requests" id="req-list"></div>
+    </section>
+
     <!-- Settings -->
     <section class="panel" data-panel="settings">
+      <h2 class="panel-title">Notifications</h2>
+      <p class="hint">Get an email whenever a booking request arrives. Press Publish after changing.</p>
+      <label class="field form-narrow"><span>Email</span><input type="email" data-bind="booking.notifyEmail" placeholder="you@example.com"></label>
+
       <h2 class="panel-title">Backup</h2>
       <p class="hint">Downloads a zip with all content and uploaded media. Keep a copy now and then.</p>
       <a class="btn" href="../api/backup.php" download>Download backup</a>

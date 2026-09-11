@@ -12,6 +12,7 @@ require_auth();
 
 $site = body_json();
 if (!isset($site['home'], $site['about'], $site['portfolio'])) fail('Invalid content');
+$site['booking'] = $site['booking'] ?? [];
 
 /* Keep only known keys / shapes so the file can't be polluted. */
 $str = fn($v) => is_string($v) ? trim($v) : '';
@@ -25,6 +26,12 @@ $clean = [
     'columns' => [],
   ],
   'portfolio' => ['categories' => [], 'works' => []],
+  'booking' => [
+    'intro' => $str($site['booking']['intro'] ?? ''),
+    'services' => [],
+    'locations' => [],
+    'notifyEmail' => filter_var($str($site['booking']['notifyEmail'] ?? ''), FILTER_VALIDATE_EMAIL) ?: '',
+  ],
 ];
 foreach (array_slice((array)($site['about']['columns'] ?? []), 0, 2) as $c) {
   $clean['about']['columns'][] = ['heading' => $str($c['heading'] ?? ''), 'text' => $str($c['text'] ?? '')];
@@ -43,6 +50,24 @@ foreach ((array)($site['portfolio']['works'] ?? []) as $w) {
     'title' => $str($w['title'] ?? ''),
     'category' => preg_replace('/[^a-z0-9-]/', '', strtolower($str($w['category'] ?? ''))),
     'link' => $link,
+  ];
+}
+
+foreach ((array)($site['booking']['services'] ?? []) as $s) {
+  $id = preg_replace('/[^a-z0-9-]/', '', strtolower($str($s['id'] ?? '')));
+  if ($id === '') continue;
+  $kind = in_array($s['kind'] ?? '', ['tattoo', 'coverup', 'seminar'], true) ? $s['kind'] : 'tattoo';
+  $clean['booking']['services'][] = ['id' => $id, 'name' => $str($s['name'] ?? ''), 'kind' => $kind];
+}
+$date = fn($v) => preg_match('/^\d{4}-\d{2}-\d{2}$/', $str($v)) ? $str($v) : '';
+foreach ((array)($site['booking']['locations'] ?? []) as $l) {
+  $id = preg_replace('/[^a-z0-9]/', '', strtolower($str($l['id'] ?? ''))) ?: bin2hex(random_bytes(4));
+  $code = strtoupper(preg_replace('/[^A-Za-z]/', '', $str($l['code'] ?? '')));
+  if (strlen($code) !== 2) continue;
+  $clean['booking']['locations'][] = [
+    'id' => $id, 'code' => $code,
+    'country' => $str($l['country'] ?? ''), 'city' => $str($l['city'] ?? ''),
+    'from' => $date($l['from'] ?? ''), 'to' => $date($l['to'] ?? ''),
   ];
 }
 

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book now — Rauf Asgarov</title>
+<meta name="description" content="Book a tattoo session or seminar with Rauf Asgarov.">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="book-page">
+
+<button class="menu-btn" aria-label="Open menu" aria-expanded="false">
+  <span></span><span></span><span></span>
+</button>
+
+<nav class="drawer">
+  <a href="about.html" class="nav-link">About me</a>
+  <a href="portfolio.html" class="nav-link">Portfolio</a>
+  <a href="book.html" class="nav-link">Book now</a>
+  <a href="#" class="nav-link">Academy</a>
+  <a href="#" class="nav-link">News</a>
+  <a href="#" class="nav-link">Contact</a>
+</nav>
+
+<section class="portfolio-hero">
+  <h1 class="portfolio-title">
+    <span>BOOK</span>
+    <span>NOW</span>
+  </h1>
+  <p class="book-intro"></p>
+</section>
+
+<section class="book">
+  <form class="book-form" id="book-form" novalidate>
+    <div class="row-2">
+      <label class="bf-field"><span>First name</span><input type="text" name="firstName" required autocomplete="given-name"></label>
+      <label class="bf-field"><span>Last name</span><input type="text" name="lastName" required autocomplete="family-name"></label>
+    </div>
+
+    <label class="bf-field"><span>Email, phone or Instagram</span><input type="text" name="contact" required autocomplete="email" placeholder="How can I reach you?"></label>
+
+    <div class="row-2">
+      <label class="bf-field"><span>City</span>
+        <select name="location" required><option value="">Choose a city</option></select>
+      </label>
+      <label class="bf-field"><span>Date</span><input type="date" name="date" required disabled></label>
+    </div>
+    <p class="bf-note" id="loc-note"></p>
+
+    <label class="bf-field"><span>Style</span>
+      <select name="service" required><option value="">Choose a style</option></select>
+    </label>
+
+    <div class="bf-images" id="images" hidden>
+      <div class="bf-upload" id="upload1">
+        <span class="bf-upload-label">Reference design <em>required</em></span>
+        <label class="bf-drop">
+          <input type="file" name="image1" accept="image/*" hidden>
+          <span class="bf-drop-text">Tap to add an image</span>
+          <img alt="" hidden>
+        </label>
+      </div>
+      <div class="bf-upload" id="upload2">
+        <span class="bf-upload-label">Second image <em>optional</em></span>
+        <label class="bf-drop">
+          <input type="file" name="image2" accept="image/*" hidden>
+          <span class="bf-drop-text">Tap to add an image</span>
+          <img alt="" hidden>
+        </label>
+      </div>
+    </div>
+
+    <label class="bf-field"><span>Describe your idea</span><textarea name="idea" rows="5" required placeholder="Size, placement, meaning, references…"></textarea></label>
+
+    <label class="bf-check">
+      <input type="checkbox" name="adult" required>
+      <span>I confirm that I am 18 years or older</span>
+    </label>
+
+    <input type="text" name="website" class="bf-hp" tabindex="-1" autocomplete="off">
+
+    <p class="bf-error" id="book-error" hidden></p>
+    <button type="submit" class="bf-submit">Book now</button>
+  </form>
+
+  <div class="book-done" id="book-done" hidden>
+    <h2>Request sent</h2>
+    <p>Thank you — I'll get back to you soon.</p>
+  </div>
+</section>
+
+<script src="js/menu.js"></script>
+<script src="js/site.js"></script>
+<script src="js/book.js"></script>
+</body>
+</html>

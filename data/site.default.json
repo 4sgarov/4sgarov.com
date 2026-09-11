@@ -55,5 +55,52 @@
       }
     ],
     "works": []
+  },
+  "booking": {
+    "intro": "Tell me about your idea, pick a city and a date — I'll get back to you within 48 hours to confirm.",
+    "services": [
+      {
+        "id": "fine-line",
+        "name": "Fine Line",
+        "kind": "tattoo"
+      },
+      {
+        "id": "cover-up",
+        "name": "Cover Up",
+        "kind": "coverup"
+      },
+      {
+        "id": "realism",
+        "name": "Realism",
+        "kind": "tattoo"
+      },
+      {
+        "id": "blackwork",
+        "name": "Blackwork",
+        "kind": "tattoo"
+      },
+      {
+        "id": "lettering",
+        "name": "Lettering",
+        "kind": "tattoo"
+      },
+      {
+        "id": "poprealism",
+        "name": "Poprealism",
+        "kind": "tattoo"
+      },
+      {
+        "id": "b-g-realism",
+        "name": "B&G Realism",
+        "kind": "tattoo"
+      },
+      {
+        "id": "seminar",
+        "name": "Seminar",
+        "kind": "seminar"
+      }
+    ],
+    "locations": [],
+    "notifyEmail": ""
   }
 }

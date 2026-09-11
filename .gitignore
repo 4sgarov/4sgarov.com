@@ -10,3 +10,5 @@ data/tmp/*
 !data/tmp/.htaccess
 assets/uploads/*
 !assets/uploads/.htaccess
+data/bookings.json
+data/bookings/

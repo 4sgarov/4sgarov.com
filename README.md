@@ -9,15 +9,21 @@ small PHP admin API — runs on any PHP hosting (built for Hostinger).
 index.html            Home: left nav + optional full-screen cover
 about.html            About: full-screen hero, name, two text columns
 portfolio.html        Portfolio: title, category filters, works grid (slideshow on phones)
+book.html             Book now: request form (city + date, style, images, idea)
 admin/                Admin panel (password login, works on phone + desktop)
 api/                  PHP endpoints used by the admin
   auth.php            setup / login / logout / change password
   site.php            read / save content
   upload.php          chunked media upload (no hosting size limit)
   media.php           delete media
+  book.php            public: receive a booking request (+ email notify)
+  bookings.php        list / mark / delete requests
+  booking-file.php    serve a request's images to the admin
+  backup.php          zip of content + uploads
 data/site.default.json  Starting content (copied to data/site.json on first run)
 data/site.json        Live content — created on the server, not in git
 data/auth.json        Password hash — created on the server, not in git
+data/bookings.json    Booking requests + data/bookings/<id>/ images — server only
 assets/uploads/       Media uploaded from the admin — not in git
 assets/fonts/         Author (variable) — self-hosted
 css/style.css         Site styles          admin/admin.css   Admin styles
@@ -43,7 +49,10 @@ The server creates `data/site.json`, `data/auth.json` and writes uploads to
 - **About me** — desktop + mobile hero, name, role, two text columns
 - **Portfolio** — categories (add / rename / reorder / delete) and works
   (multi-upload, name, category, link, reorder, replace image, delete)
-- **Settings** — change password
+- **Book now** — intro text, styles (tattoo / cover up / seminar decide which
+  images the form asks for), cities with flag + optional trip dates
+- **Requests** — booking requests with images; mark done / delete
+- **Settings** — notification email, backup download, change password
 
 Uploads go in 4 MB chunks, so PHP `upload_max_filesize` limits don't apply;
 large images are downscaled in the browser before upload. Five wrong

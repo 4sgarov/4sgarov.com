@@ -332,3 +332,101 @@ a.card:hover { transform: translateY(-4px); }
     scroll-snap-align: center;
   }
 }
+
+/* ---------- Book now ---------- */
+.portfolio-hero { flex-direction: column; gap: 28px; padding: 0 28px; }
+.book-intro {
+  max-width: 520px;
+  font-size: 1.1rem;
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.book-intro:empty { display: none; }
+
+.book {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px 40px 120px;
+}
+.book-form { display: flex; flex-direction: column; gap: 22px; }
+.row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+.bf-field { display: flex; flex-direction: column; gap: 8px; }
+.bf-field > span { font-size: 0.9rem; color: var(--muted); }
+.bf-field input, .bf-field select, .bf-field textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  font: inherit;
+  font-size: 1rem;
+  color: var(--text);
+  transition: border-color 0.2s ease;
+}
+.bf-field input:focus, .bf-field select:focus, .bf-field textarea:focus { outline: none; border-color: var(--text); }
+.bf-field input:disabled { opacity: 0.45; }
+.bf-field select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23111' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 40px;
+}
+.bf-field textarea { resize: vertical; line-height: 1.55; min-height: 130px; }
+.bf-note { margin-top: -12px; font-size: 0.9rem; color: var(--muted); }
+.bf-note:empty { display: none; }
+
+.bf-images { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.bf-upload { display: flex; flex-direction: column; gap: 8px; }
+.bf-upload-label { font-size: 0.9rem; color: var(--muted); }
+.bf-upload-label em { font-style: normal; color: var(--red); }
+.bf-drop {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border: 1px dashed #c8c8c8;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease;
+}
+.bf-drop:hover { border-color: var(--text); }
+.bf-drop img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.has-file .bf-drop { border-style: solid; }
+
+.bf-check { display: flex; align-items: center; gap: 12px; font-size: 0.95rem; cursor: pointer; }
+.bf-check input { width: 18px; height: 18px; accent-color: #111; flex-shrink: 0; }
+.bf-hp { position: absolute; left: -9999px; }
+.bf-error { color: var(--red); font-size: 0.95rem; }
+
+.bf-submit {
+  align-self: flex-start;
+  padding: 16px 44px;
+  background: #111;
+  color: #fff;
+  border: 0;
+  border-radius: 10px;
+  font: inherit;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+.bf-submit:hover { opacity: 0.85; }
+.bf-submit:disabled { opacity: 0.5; cursor: default; }
+
+.book-done { text-align: center; padding: 40px 0; }
+.book-done h2 { font-size: 2rem; font-weight: 400; margin-bottom: 10px; }
+.book-done p { color: var(--muted); }
+
+@media (max-width: 640px) {
+  .book { padding: 16px 28px 80px; }
+  .row-2, .bf-images { grid-template-columns: 1fr; }
+  .bf-submit { align-self: stretch; }
+}

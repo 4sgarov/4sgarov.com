@@ -1,0 +1,109 @@
+/* Book Now form: builds selects from site.json and submits to api/book.php */
+(function () {
+  var form = document.getElementById('book-form');
+  if (!form) return;
+
+  var services = {}, locations = {};
+  var locSel = form.elements.location, dateInp = form.elements.date, svcSel = form.elements.service;
+  var images = document.getElementById('images');
+  var up1 = document.getElementById('upload1'), up2 = document.getElementById('upload2');
+
+  function flag(code) {
+    return String.fromCodePoint.apply(null, code.toUpperCase().split('').map(function (c) { return 0x1F1E6 + c.charCodeAt(0) - 65; }));
+  }
+  function fmt(d) {
+    if (!d) return '';
+    var p = d.split('-');
+    return new Date(+p[0], p[1] - 1, +p[2]).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+  }
+  function today() { return new Date().toISOString().slice(0, 10); }
+
+  document.addEventListener('site:loaded', function (e) {
+    var b = (e.detail && e.detail.booking) || {};
+    document.querySelector('.book-intro').textContent = b.intro || '';
+
+    (b.locations || []).forEach(function (l) {
+      locations[l.id] = l;
+      var o = document.createElement('option');
+      o.value = l.id;
+      o.textContent = flag(l.code) + ' ' + l.country + ' — ' + l.city + (l.from ? ' (' + fmt(l.from) + (l.to ? ' – ' + fmt(l.to) : '') + ')' : '');
+      locSel.appendChild(o);
+    });
+    (b.services || []).forEach(function (s) {
+      services[s.id] = s;
+      var o = document.createElement('option');
+      o.value = s.id; o.textContent = s.name;
+      svcSel.appendChild(o);
+    });
+  });
+
+  locSel.addEventListener('change', function () {
+    var l = locations[locSel.value];
+    dateInp.value = '';
+    dateInp.disabled = !l;
+    var min = today();
+    if (l && l.from && l.from > min) min = l.from;
+    dateInp.min = min;
+    dateInp.max = (l && l.to) || '';
+    document.getElementById('loc-note').textContent = l && l.from
+      ? 'Available in ' + l.city + ': ' + fmt(l.from) + (l.to ? ' – ' + fmt(l.to) : '') : '';
+  });
+
+  svcSel.addEventListener('change', function () {
+    var s = services[svcSel.value];
+    var kind = s ? s.kind : '';
+    images.hidden = !s || kind === 'seminar';
+    up2.querySelector('.bf-upload-label').innerHTML = kind === 'coverup'
+      ? 'Photo of the tattoo to cover <em>required</em>'
+      : 'Second image <em>optional</em>';
+    form.elements.image2.required = kind === 'coverup';
+    form.elements.image1.required = !!s && kind !== 'seminar';
+  });
+
+  // previews
+  [up1, up2].forEach(function (box) {
+    var inp = box.querySelector('input'), img = box.querySelector('img'), txt = box.querySelector('.bf-drop-text');
+    inp.addEventListener('change', function () {
+      var f = inp.files[0];
+      if (!f) { img.hidden = true; txt.hidden = false; return; }
+      img.src = URL.createObjectURL(f); img.hidden = false; txt.hidden = true;
+      box.classList.add('has-file');
+    });
+  });
+
+  function showError(msg) {
+    var e = document.getElementById('book-error');
+    e.textContent = msg; e.hidden = !msg;
+    if (msg) e.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  }
+
+  form.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    showError('');
+    var f = form.elements;
+    if (!f.firstName.value.trim() || !f.lastName.value.trim()) return showError('Please enter your first and last name.');
+    if (!f.contact.value.trim()) return showError('Please enter your email, phone or Instagram.');
+    if (!f.location.value) return showError('Please choose a city.');
+    if (!f.date.value) return showError('Please pick a date.');
+    if (!f.service.value) return showError('Please choose a style.');
+    var kind = services[f.service.value].kind;
+    if (kind !== 'seminar' && !f.image1.files.length) return showError('Please add a reference image.');
+    if (kind === 'coverup' && !f.image2.files.length) return showError('Please add a photo of the tattoo you want to cover.');
+    if (!f.idea.value.trim()) return showError('Please describe your idea.');
+    if (!f.adult.checked) return showError('You must confirm you are 18 or older.');
+
+    var fd = new FormData(form);
+    if (kind === 'seminar') { fd.delete('image1'); fd.delete('image2'); }
+    var btn = form.querySelector('.bf-submit');
+    btn.disabled = true; btn.textContent = 'Sending…';
+    fetch('api/book.php', { method: 'POST', body: fd, headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+      .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j.error || 'Something went wrong'); }); })
+      .then(function () {
+        form.hidden = true;
+        document.getElementById('book-done').hidden = false;
+        window.scrollTo({ top: document.querySelector('.book').offsetTop - 40, behavior: 'smooth' });
+      })
+      .catch(function (err) { showError(err.message); })
+      .then(function () { btn.disabled = false; btn.textContent = 'Book now'; });
+  });
+})();

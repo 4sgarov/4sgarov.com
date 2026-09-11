@@ -113,6 +113,7 @@
         });
       }
       if (S.portfolio) renderPortfolio(S.portfolio);
+      document.dispatchEvent(new CustomEvent('site:loaded', { detail: S }));
     })
     .catch(function (e) { console.error('site.json failed', e); });
 })();
