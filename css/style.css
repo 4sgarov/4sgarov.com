@@ -151,9 +151,14 @@ a { color: inherit; text-decoration: none; }
 }
 
 .about {
+  padding: 80px 40px 112px;
+}
+.about-head {
+  text-align: left;
+}
+.about-body {
   max-width: 720px;
   margin: 0 auto;
-  padding: 80px 40px 112px;
   text-align: center;
 }
 .about-name {
