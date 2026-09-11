@@ -37,11 +37,12 @@ $loc = $locations[$locId];
 if ($loc['from'] && $date < $loc['from']) fail('Date is before the trip starts.');
 if ($loc['to'] && $date > $loc['to']) fail('Date is after the trip ends.');
 if ($date < date('Y-m-d')) fail('Date is in the past.');
-if ($idea === '') fail('Please describe your idea.');
-if (!$adult) fail('You must confirm you are 18 or older.');
-
+$taken = taken_dates();
+if (in_array($date, $taken[$locId] ?? [], true)) fail('That date is already taken — please pick another one.');
 $svc = $services[$svcId];
 $kind = $svc['kind'] ?? 'tattoo';
+if ($idea === '') fail($kind === 'seminar' ? 'Please tell me about the seminar you are interested in.' : 'Please describe your idea.');
+if (!$adult) fail('You must confirm you are 18 or older.');
 
 /* Images: image1 required for tattoo/coverup; image2 required for coverup */
 function take_image(string $field, bool $required): ?array {
@@ -75,7 +76,7 @@ $rec = [
   'id' => $id,
   'created' => date('c'),
   'firstName' => $first, 'lastName' => $last, 'contact' => $contact,
-  'location' => ['code' => $loc['code'], 'country' => $loc['country'], 'city' => $loc['city']],
+  'location' => ['id' => $locId, 'code' => $loc['code'], 'country' => $loc['country'], 'city' => $loc['city']],
   'date' => $date,
   'service' => ['id' => $svcId, 'name' => $svc['name'], 'kind' => $kind],
   'idea' => $idea,
@@ -88,9 +89,10 @@ write_json(BOOKINGS_FILE, $all);
 $hits[] = time(); write_json($rlFile, array_values($hits));
 
 /* Notify */
+$host = preg_replace('/^www\./', '', $_SERVER['HTTP_HOST'] ?? 'site');
 $to = $booking['notifyEmail'] ?? '';
-if ($to && filter_var($to, FILTER_VALIDATE_EMAIL)) {
-  $host = preg_replace('/^www\./', '', $_SERVER['HTTP_HOST'] ?? 'site');
+if (!filter_var($to, FILTER_VALIDATE_EMAIL)) $to = 'info@' . $host;
+if (filter_var($to, FILTER_VALIDATE_EMAIL)) {
   $body = "New booking request\n\n"
     . "Name: $first $last\nContact: $contact\n"
     . "City: {$loc['city']}, {$loc['country']}\nDate: $date\nStyle: {$svc['name']}\n"

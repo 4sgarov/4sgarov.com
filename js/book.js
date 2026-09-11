@@ -3,8 +3,9 @@
   var form = document.getElementById('book-form');
   if (!form) return;
 
-  var services = {}, locations = {};
+  var services = {}, locations = {}, taken = {};
   var locSel = form.elements.location, dateInp = form.elements.date, svcSel = form.elements.service;
+  var cal = document.getElementById('cal');
   var images = document.getElementById('images');
   var up1 = document.getElementById('upload1'), up2 = document.getElementById('upload2');
 
@@ -16,7 +17,49 @@
     var p = d.split('-');
     return new Date(+p[0], p[1] - 1, +p[2]).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
   }
-  function today() { return new Date().toISOString().slice(0, 10); }
+  function iso(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  function today() { return iso(new Date()); }
+
+  /* ---- calendar ---- */
+  var view = null; // first day of the month being shown
+  function renderCal() {
+    var l = locations[locSel.value];
+    if (!l) { cal.innerHTML = '<div class="cal-empty">Choose a city first</div>'; return; }
+    var min = today(); if (l.from && l.from > min) min = l.from;
+    var max = l.to || '';
+    var full = taken[l.id] || [];
+    if (!view) { var p = min.split('-'); view = new Date(+p[0], p[1] - 1, 1); }
+    var y = view.getFullYear(), m = view.getMonth();
+    var first = new Date(y, m, 1), last = new Date(y, m + 1, 0);
+    var startPad = (first.getDay() + 6) % 7; // Monday first
+    var canPrev = iso(new Date(y, m, 0)) >= min.slice(0, 7) + '-01';
+    var canNext = !max || iso(new Date(y, m + 1, 1)) <= max;
+
+    var html = '<div class="cal-head">' +
+      '<button type="button" class="cal-nav" data-nav="-1"' + (canPrev ? '' : ' disabled') + '>‹</button>' +
+      '<span>' + first.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' }) + '</span>' +
+      '<button type="button" class="cal-nav" data-nav="1"' + (canNext ? '' : ' disabled') + '>›</button></div>' +
+      '<div class="cal-grid">';
+    ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'].forEach(function (d) { html += '<span class="cal-wd">' + d + '</span>'; });
+    for (var i = 0; i < startPad; i++) html += '<span></span>';
+    for (var d = 1; d <= last.getDate(); d++) {
+      var ds = iso(new Date(y, m, d));
+      var out = ds < min || (max && ds > max);
+      var isFull = full.indexOf(ds) >= 0;
+      var cls = 'cal-day' + (out ? ' is-out' : '') + (isFull ? ' is-full' : '') + (dateInp.value === ds ? ' is-sel' : '');
+      html += '<button type="button" class="' + cls + '" data-d="' + ds + '"' + ((out || isFull) ? ' disabled' : '') + '>' + d + '</button>';
+    }
+    cal.innerHTML = html + '</div>';
+  }
+  cal.addEventListener('click', function (e) {
+    var nav = e.target.closest('.cal-nav');
+    if (nav) { view = new Date(view.getFullYear(), view.getMonth() + (+nav.dataset.nav), 1); renderCal(); return; }
+    var day = e.target.closest('.cal-day');
+    if (day && !day.disabled) { dateInp.value = day.dataset.d; renderCal(); }
+  });
+
+  fetch('api/availability.php', { cache: 'no-store' }).then(function (r) { return r.json(); })
+    .then(function (t) { taken = t || {}; renderCal(); }).catch(function () {});
 
   document.addEventListener('site:loaded', function (e) {
     var b = (e.detail && e.detail.booking) || {};
@@ -40,13 +83,10 @@
   locSel.addEventListener('change', function () {
     var l = locations[locSel.value];
     dateInp.value = '';
-    dateInp.disabled = !l;
-    var min = today();
-    if (l && l.from && l.from > min) min = l.from;
-    dateInp.min = min;
-    dateInp.max = (l && l.to) || '';
+    view = null;
+    renderCal();
     document.getElementById('loc-note').textContent = l && l.from
-      ? 'Available in ' + l.city + ': ' + fmt(l.from) + (l.to ? ' – ' + fmt(l.to) : '') : '';
+      ? 'In ' + l.city + ': ' + fmt(l.from) + (l.to ? ' – ' + fmt(l.to) : '') : '';
   });
 
   svcSel.addEventListener('change', function () {
@@ -58,6 +98,14 @@
       : 'Second image <em>optional</em>';
     form.elements.image2.required = kind === 'coverup';
     form.elements.image1.required = !!s && kind !== 'seminar';
+    var idea = form.elements.idea;
+    if (kind === 'seminar') {
+      document.getElementById('idea-label').textContent = 'About the seminar';
+      idea.placeholder = 'Which seminar are you interested in? Tell me about your experience and what you want to learn.';
+    } else {
+      document.getElementById('idea-label').textContent = 'Describe your idea';
+      idea.placeholder = 'Size, placement, meaning, references…';
+    }
   });
 
   // previews
@@ -89,7 +137,7 @@
     var kind = services[f.service.value].kind;
     if (kind !== 'seminar' && !f.image1.files.length) return showError('Please add a reference image.');
     if (kind === 'coverup' && !f.image2.files.length) return showError('Please add a photo of the tattoo you want to cover.');
-    if (!f.idea.value.trim()) return showError('Please describe your idea.');
+    if (!f.idea.value.trim()) return showError(kind === 'seminar' ? 'Please tell me about the seminar you are interested in.' : 'Please describe your idea.');
     if (!f.adult.checked) return showError('You must confirm you are 18 or older.');
 
     var fd = new FormData(form);

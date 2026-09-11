@@ -80,3 +80,17 @@ function body_json(): array {
   $j = json_decode($raw ?: '', true);
   return is_array($j) ? $j : [];
 }
+
+/* Map of location id => list of dates that can't be booked. */
+function taken_dates(): array {
+  $out = [];
+  $site = read_json(SITE_FILE, read_json(SITE_DEFAULT, []));
+  foreach ((array)($site['booking']['locations'] ?? []) as $l) {
+    foreach ((array)($l['blocked'] ?? []) as $d) $out[$l['id']][$d] = true;
+  }
+  foreach (read_json(BOOKINGS_FILE, []) as $b) {
+    if (($b['status'] ?? '') === 'confirmed' && !empty($b['location']['id'])) $out[$b['location']['id']][$b['date']] = true;
+  }
+  foreach ($out as $id => $set) { $out[$id] = array_keys($set); sort($out[$id]); }
+  return $out;
+}

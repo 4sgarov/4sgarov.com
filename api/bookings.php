@@ -17,7 +17,16 @@ foreach ($all as $i => $r) if ($r['id'] === $id) { $idx = $i; break; }
 if ($idx === null) fail('Not found', 404);
 
 if ($action === 'status') {
-  $st = in_array($b['status'] ?? '', ['new', 'done'], true) ? $b['status'] : 'new';
+  $st = in_array($b['status'] ?? '', ['new', 'confirmed', 'done'], true) ? $b['status'] : 'new';
+  if ($st === 'confirmed') {
+    $me = $all[$idx];
+    foreach ($all as $o) {
+      if ($o['id'] !== $me['id'] && ($o['status'] ?? '') === 'confirmed'
+          && ($o['location']['id'] ?? '') === ($me['location']['id'] ?? '') && $o['date'] === $me['date']) {
+        fail('That date is already confirmed for ' . $o['firstName'] . ' ' . $o['lastName'] . '.', 409);
+      }
+    }
+  }
   $all[$idx]['status'] = $st;
   write_json(BOOKINGS_FILE, $all);
   json_out(['ok' => true]);

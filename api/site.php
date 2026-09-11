@@ -68,6 +68,7 @@ foreach ((array)($site['booking']['locations'] ?? []) as $l) {
     'id' => $id, 'code' => $code,
     'country' => $str($l['country'] ?? ''), 'city' => $str($l['city'] ?? ''),
     'from' => $date($l['from'] ?? ''), 'to' => $date($l['to'] ?? ''),
+    'blocked' => array_values(array_unique(array_filter(array_map($date, (array)($l['blocked'] ?? []))))),
   ];
 }
 

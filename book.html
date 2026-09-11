@@ -6,7 +6,7 @@
 <title>Book now — Rauf Asgarov</title>
 <meta name="description" content="Book a tattoo session or seminar with Rauf Asgarov.">
 <link rel="icon" href="data:,">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css?v=202609111251">
 </head>
 <body class="book-page">
 
@@ -40,11 +40,15 @@
 
     <label class="bf-field"><span>Email, phone or Instagram</span><input type="text" name="contact" required autocomplete="email" placeholder="How can I reach you?"></label>
 
-    <div class="row-2">
-      <label class="bf-field"><span>City</span>
-        <select name="location" required><option value="">Choose a city</option></select>
-      </label>
-      <label class="bf-field"><span>Date</span><input type="date" name="date" required disabled></label>
+    <label class="bf-field"><span>City</span>
+      <select name="location" required><option value="">Choose a city</option></select>
+    </label>
+
+    <div class="bf-field">
+      <span>Date</span>
+      <input type="hidden" name="date">
+      <div class="cal" id="cal"><div class="cal-empty">Choose a city first</div></div>
+      <div class="cal-legend"><span><i class="lg-free"></i> available</span><span><i class="lg-full"></i> full</span><span><i class="lg-sel"></i> selected</span></div>
     </div>
     <p class="bf-note" id="loc-note"></p>
 
@@ -71,7 +75,7 @@
       </div>
     </div>
 
-    <label class="bf-field"><span>Describe your idea</span><textarea name="idea" rows="5" required placeholder="Size, placement, meaning, references…"></textarea></label>
+    <label class="bf-field"><span id="idea-label">Describe your idea</span><textarea name="idea" rows="5" required placeholder="Size, placement, meaning, references…"></textarea></label>
 
     <label class="bf-check">
       <input type="checkbox" name="adult" required>
@@ -90,8 +94,8 @@
   </div>
 </section>
 
-<script src="js/menu.js"></script>
-<script src="js/site.js"></script>
-<script src="js/book.js"></script>
+<script src="js/menu.js?v=202609111251"></script>
+<script src="js/site.js?v=202609111251"></script>
+<script src="js/book.js?v=202609111251"></script>
 </body>
 </html>

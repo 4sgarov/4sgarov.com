@@ -360,9 +360,21 @@
         '</div>' +
         '<button class="btn btn-small btn-icon" data-act="up" title="Move up">↑</button>' +
         '<button class="btn btn-small btn-icon" data-act="down" title="Move down">↓</button>' +
-        '<button class="btn btn-small btn-icon btn-danger" data-act="del" title="Delete">✕</button>';
+        '<button class="btn btn-small btn-icon btn-danger" data-act="del" title="Delete">✕</button>' +
+        '<div class="loc-blocked"><span class="lb-label">Full dates:</span><span class="lb-chips"></span>' +
+          '<input type="date" class="lb-date"><button type="button" class="btn btn-small" data-act="block">Mark full</button></div>';
       $('.flag', row).textContent = flag(l.code);
       $('.loc-country', row).textContent = l.country;
+      l.blocked = l.blocked || [];
+      var chips = $('.lb-chips', row);
+      l.blocked.slice().sort().forEach(function (d) {
+        var chip = document.createElement('span'); chip.className = 'chip';
+        chip.innerHTML = '<span></span><button type="button" title="Unblock">✕</button>';
+        chip.firstChild.textContent = fmtDate(d);
+        chip.lastChild.addEventListener('click', function () { l.blocked = l.blocked.filter(function (x) { return x !== d; }); setDirty(true); renderLocations(); });
+        chips.appendChild(chip);
+      });
+      if (!l.blocked.length) chips.innerHTML = '<span class="lb-none">none</span>';
       $$('[data-k]', row).forEach(function (inp) {
         inp.value = l[inp.dataset.k] || '';
         inp.addEventListener('input', function () { l[inp.dataset.k] = inp.value; setDirty(true); });
@@ -375,6 +387,11 @@
         if (act === 'up') items.splice(i - 1, 0, items.splice(i, 1)[0]);
         if (act === 'down') items.splice(i + 1, 0, items.splice(i, 1)[0]);
         if (act === 'del') { if (!confirm('Delete ' + l.city + '?')) return; items.splice(i, 1); }
+        if (act === 'block') {
+          var d = $('.lb-date', row).value;
+          if (!d) { toast('Pick a date first', true); return; }
+          if (l.blocked.indexOf(d) < 0) l.blocked.push(d);
+        }
         setDirty(true); renderLocations();
       });
       list.appendChild(row);
@@ -392,21 +409,24 @@
   }
   function renderRequests() {
     var list = $('#req-list'); list.innerHTML = '';
-    var fresh = requests.filter(function (r) { return r.status !== 'done'; }).length;
+    var fresh = requests.filter(function (r) { return (r.status || 'new') === 'new'; }).length;
     var badge = $('#req-badge'); badge.textContent = fresh; badge.hidden = !fresh;
     if (!requests.length) { list.innerHTML = '<div class="empty">No requests yet</div>'; return; }
     requests.forEach(function (r) {
+      var st = r.status || 'new';
       var el = document.createElement('div');
-      el.className = 'req' + (r.status === 'done' ? ' is-done' : '');
+      el.className = 'req is-' + st;
       el.innerHTML =
         '<div>' +
-          '<div class="req-title"><span class="name"></span><span class="tag ' + (r.status === 'done' ? '' : 'new') + '">' + (r.status === 'done' ? 'done' : 'new') + '</span></div>' +
+          '<div class="req-title"><span class="name"></span><span class="tag ' + st + '">' + st + '</span></div>' +
           '<div class="req-meta"></div>' +
           '<div class="req-idea"></div>' +
           '<div class="req-imgs"></div>' +
         '</div>' +
         '<div class="req-actions">' +
-          '<button class="btn btn-small" data-act="toggle">' + (r.status === 'done' ? 'Mark new' : 'Mark done') + '</button>' +
+          (st === 'new' ? '<button class="btn btn-small btn-primary" data-act="confirmed">Confirm</button>' : '') +
+          (st === 'confirmed' ? '<button class="btn btn-small" data-act="done">Mark done</button>' : '') +
+          (st !== 'new' ? '<button class="btn btn-small" data-act="new">Reopen</button>' : '') +
           '<button class="btn btn-small btn-danger" data-act="del">Delete</button>' +
         '</div>';
       $('.name', el).textContent = r.firstName + ' ' + r.lastName;
@@ -427,9 +447,11 @@
       if (!(r.images || []).length) imgs.remove();
       $('.req-actions', el).addEventListener('click', function (e) {
         var act = e.target.dataset && e.target.dataset.act;
-        if (act === 'toggle') {
-          var st = r.status === 'done' ? 'new' : 'done';
-          api('bookings.php', { action: 'status', id: r.id, status: st }).then(function () { r.status = st; renderRequests(); }).catch(function (err) { toast(err.message, true); });
+        if (act === 'confirmed' || act === 'done' || act === 'new') {
+          api('bookings.php', { action: 'status', id: r.id, status: act }).then(function () {
+            r.status = act; renderRequests();
+            if (act === 'confirmed') toast(fmtDate(r.date) + ' in ' + r.location.city + ' is now full');
+          }).catch(function (err) { toast(err.message, true); });
         }
         if (act === 'del') {
           if (!confirm('Delete this request permanently?')) return;
