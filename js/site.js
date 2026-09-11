@@ -123,6 +123,12 @@
         bindMedia(document.querySelector('.academy-hero .hero'), S.academy.hero);
         text('.academy-headline', S.academy.headline);
         text('.academy-text', S.academy.text);
+        var progs = document.querySelectorAll('.program');
+        (S.academy.programs || []).forEach(function (p, i) {
+          if (!progs[i]) return;
+          progs[i].querySelector('.program-title').textContent = p.title || '';
+          progs[i].querySelector('.program-text').textContent = p.text || '';
+        });
       }
       if (S.portfolio) renderPortfolio(S.portfolio);
       document.dispatchEvent(new CustomEvent('site:loaded', { detail: S }));

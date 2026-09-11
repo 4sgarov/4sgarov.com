@@ -33,6 +33,7 @@ $clean = [
     'hero' => $media($site['academy']['hero'] ?? []),
     'headline' => $str($site['academy']['headline'] ?? ''),
     'text' => $str($site['academy']['text'] ?? ''),
+    'programs' => [],
   ],
   'portfolio' => ['categories' => [], 'works' => []],
   'booking' => [
@@ -45,6 +46,9 @@ $clean = [
 ];
 foreach (array_slice((array)($site['about']['columns'] ?? []), 0, 2) as $c) {
   $clean['about']['columns'][] = ['heading' => $str($c['heading'] ?? ''), 'text' => $str($c['text'] ?? '')];
+}
+foreach (array_slice((array)($site['academy']['programs'] ?? []), 0, 3) as $p) {
+  $clean['academy']['programs'][] = ['title' => $str($p['title'] ?? ''), 'text' => $str($p['text'] ?? '')];
 }
 foreach ((array)($site['portfolio']['categories'] ?? []) as $c) {
   $id = preg_replace('/[^a-z0-9-]/', '', strtolower($str($c['id'] ?? '')));

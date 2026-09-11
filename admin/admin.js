@@ -161,6 +161,8 @@
     s.portfolio.works.forEach(function (w) { if (!w.id) w.id = uid(); });
     s.academy = s.academy || {}; s.academy.hero = s.academy.hero || { desktop: '', mobile: '' };
     s.academy.headline = s.academy.headline || ''; s.academy.text = s.academy.text || '';
+    s.academy.programs = s.academy.programs || [];
+    while (s.academy.programs.length < 3) s.academy.programs.push({ title: '', text: '' });
     s.booking = s.booking || {};
     s.booking.intro = s.booking.intro || '';
     s.booking.services = s.booking.services || [];

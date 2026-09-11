@@ -6,8 +6,8 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Admin — Rauf Asgarov</title>
 <link rel="icon" href="data:,">
-<link rel="stylesheet" href="../css/style.css?v=202609111640">
-<link rel="stylesheet" href="admin.css?v=202609111640">
+<link rel="stylesheet" href="../css/style.css?v=202609111646">
+<link rel="stylesheet" href="admin.css?v=202609111646">
 </head>
 <body class="admin">
 
@@ -148,6 +148,23 @@
         <label class="field"><span>Headline (bold) — press Enter for a new line</span><textarea rows="3" data-bind="academy.headline"></textarea></label>
         <label class="field"><span>Text</span><textarea rows="6" data-bind="academy.text"></textarea></label>
       </div>
+
+      <h2 class="panel-title">Programs</h2>
+      <p class="hint">Three columns under the hero (stacked on phones).</p>
+      <div class="form-grid three">
+        <div class="field-group">
+          <label class="field"><span>1 — title</span><input type="text" data-bind="academy.programs.0.title"></label>
+          <label class="field"><span>1 — text</span><textarea rows="6" data-bind="academy.programs.0.text"></textarea></label>
+        </div>
+        <div class="field-group">
+          <label class="field"><span>2 — title</span><input type="text" data-bind="academy.programs.1.title"></label>
+          <label class="field"><span>2 — text</span><textarea rows="6" data-bind="academy.programs.1.text"></textarea></label>
+        </div>
+        <div class="field-group">
+          <label class="field"><span>3 — title</span><input type="text" data-bind="academy.programs.2.title"></label>
+          <label class="field"><span>3 — text</span><textarea rows="6" data-bind="academy.programs.2.text"></textarea></label>
+        </div>
+      </div>
     </section>
 
     <!-- Portfolio -->
@@ -232,6 +249,6 @@
 
 <div class="toast" id="toast" hidden></div>
 
-<script src="admin.js?v=202609111640"></script>
+<script src="admin.js?v=202609111646"></script>
 </body>
 </html>
