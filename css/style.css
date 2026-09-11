@@ -296,9 +296,10 @@ a { color: inherit; text-decoration: none; }
   background: var(--text);
 }
 .program-btn {
-  align-self: flex-start;
+  align-self: stretch;
+  text-align: center;
   margin-top: 32px;
-  padding: 13px 34px;
+  padding: 14px 34px;
   border-radius: 10px;
   background: #111;
   color: #fff;
