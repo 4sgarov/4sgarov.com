@@ -103,9 +103,10 @@ a { color: inherit; text-decoration: none; }
   .page { flex-direction: column; }
   .sidebar {
     width: 100%;
+    flex: 1;
     padding: 36px 28px;
   }
-  .blank-area { flex: 1; }
+  .blank-area { display: none; }
 }
 
 /* ---------- About page ---------- */
