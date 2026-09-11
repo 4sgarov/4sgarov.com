@@ -128,6 +128,7 @@
           if (!progs[i]) return;
           progs[i].querySelector('.program-title').textContent = p.title || '';
           progs[i].querySelector('.program-text').textContent = p.text || '';
+          progs[i].querySelector('.program-btn').href = p.link || 'book.html';
         });
       }
       if (S.portfolio) renderPortfolio(S.portfolio);
