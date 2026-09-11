@@ -6,8 +6,8 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Admin — Rauf Asgarov</title>
 <link rel="icon" href="data:,">
-<link rel="stylesheet" href="../css/style.css?v=202609111658">
-<link rel="stylesheet" href="admin.css?v=202609111658">
+<link rel="stylesheet" href="../css/style.css?v=202609111659">
+<link rel="stylesheet" href="admin.css?v=202609111659">
 </head>
 <body class="admin">
 
@@ -47,9 +47,9 @@
   <nav class="tabs" id="tabs">
     <button class="tab is-active" data-tab="home">Home</button>
     <button class="tab" data-tab="about">About me</button>
-    <button class="tab" data-tab="academy">Academy</button>
     <button class="tab" data-tab="portfolio">Portfolio</button>
     <button class="tab" data-tab="book">Book now</button>
+    <button class="tab" data-tab="academy">Academy</button>
     <button class="tab" data-tab="requests">Requests <span class="badge" id="req-badge" hidden></span></button>
     <button class="tab" data-tab="settings">Settings</button>
   </nav>
@@ -120,6 +120,55 @@
       </div>
     </section>
 
+    <!-- Portfolio -->
+    <section class="panel" data-panel="portfolio">
+      <h2 class="panel-title">Categories</h2>
+      <p class="hint">Shown as filters above the works and under each work. Order here = order on the site.</p>
+      <div class="list" id="cat-list"></div>
+      <form class="add-row" id="cat-add">
+        <input type="text" placeholder="New category name" required>
+        <button type="submit" class="btn btn-small">Add</button>
+      </form>
+
+      <h2 class="panel-title">Works</h2>
+      <p class="hint">Upload a 3:4 image (portrait). Use ↑ ↓ to order — first is shown first. Link is optional; the card opens it when clicked.</p>
+      <div class="works-toolbar">
+        <label class="btn btn-primary">Upload images<input type="file" id="work-add" accept="image/*" multiple hidden></label>
+        <span class="hint" id="work-count"></span>
+      </div>
+      <div class="works" id="work-list"></div>
+    </section>
+
+    <!-- Book now -->
+    <section class="panel" data-panel="book">
+      <h2 class="panel-title">Intro text</h2>
+      <p class="hint">Shown under the BOOK NOW title.</p>
+      <label class="field form-narrow"><textarea rows="3" data-bind="booking.intro"></textarea></label>
+
+      <h2 class="panel-title">Styles</h2>
+      <p class="hint">Styles the client can choose. Every style asks for a reference image. A style whose name contains "cover" (e.g. <b>Cover Up</b>) asks for two: the design and a photo of the old tattoo.</p>
+      <div class="list" id="svc-list"></div>
+      <form class="add-row" id="svc-add">
+        <input type="text" placeholder="New style name" required>
+        <button type="submit" class="btn btn-small">Add</button>
+      </form>
+
+      <h2 class="panel-title">Seminar</h2>
+      <p class="hint">Clients tick "I want to book a seminar" on the form. This text is shown next to the terms checkbox they must accept.</p>
+      <label class="field form-narrow"><textarea rows="2" data-bind="booking.seminarTerms"></textarea></label>
+
+      <h2 class="panel-title">Cities &amp; dates</h2>
+      <p class="hint">Where you'll be working. The client picks a city, then a date inside that trip. Leave dates empty to allow any date.</p>
+      <div class="list" id="loc-list"></div>
+      <form class="loc-add" id="loc-add">
+        <select id="loc-country" required><option value="">Country</option></select>
+        <input type="text" id="loc-city" placeholder="City" required>
+        <input type="date" id="loc-from" title="From">
+        <input type="date" id="loc-to" title="To">
+        <button type="submit" class="btn btn-small">Add</button>
+      </form>
+    </section>
+
     <!-- Academy -->
     <section class="panel" data-panel="academy">
       <h2 class="panel-title">Academy — hero</h2>
@@ -170,55 +219,6 @@
       </div>
     </section>
 
-    <!-- Portfolio -->
-    <section class="panel" data-panel="portfolio">
-      <h2 class="panel-title">Categories</h2>
-      <p class="hint">Shown as filters above the works and under each work. Order here = order on the site.</p>
-      <div class="list" id="cat-list"></div>
-      <form class="add-row" id="cat-add">
-        <input type="text" placeholder="New category name" required>
-        <button type="submit" class="btn btn-small">Add</button>
-      </form>
-
-      <h2 class="panel-title">Works</h2>
-      <p class="hint">Upload a 3:4 image (portrait). Use ↑ ↓ to order — first is shown first. Link is optional; the card opens it when clicked.</p>
-      <div class="works-toolbar">
-        <label class="btn btn-primary">Upload images<input type="file" id="work-add" accept="image/*" multiple hidden></label>
-        <span class="hint" id="work-count"></span>
-      </div>
-      <div class="works" id="work-list"></div>
-    </section>
-
-    <!-- Book now -->
-    <section class="panel" data-panel="book">
-      <h2 class="panel-title">Intro text</h2>
-      <p class="hint">Shown under the BOOK NOW title.</p>
-      <label class="field form-narrow"><textarea rows="3" data-bind="booking.intro"></textarea></label>
-
-      <h2 class="panel-title">Styles</h2>
-      <p class="hint">Styles the client can choose. Every style asks for a reference image. A style whose name contains "cover" (e.g. <b>Cover Up</b>) asks for two: the design and a photo of the old tattoo.</p>
-      <div class="list" id="svc-list"></div>
-      <form class="add-row" id="svc-add">
-        <input type="text" placeholder="New style name" required>
-        <button type="submit" class="btn btn-small">Add</button>
-      </form>
-
-      <h2 class="panel-title">Seminar</h2>
-      <p class="hint">Clients tick "I want to book a seminar" on the form. This text is shown next to the terms checkbox they must accept.</p>
-      <label class="field form-narrow"><textarea rows="2" data-bind="booking.seminarTerms"></textarea></label>
-
-      <h2 class="panel-title">Cities &amp; dates</h2>
-      <p class="hint">Where you'll be working. The client picks a city, then a date inside that trip. Leave dates empty to allow any date.</p>
-      <div class="list" id="loc-list"></div>
-      <form class="loc-add" id="loc-add">
-        <select id="loc-country" required><option value="">Country</option></select>
-        <input type="text" id="loc-city" placeholder="City" required>
-        <input type="date" id="loc-from" title="From">
-        <input type="date" id="loc-to" title="To">
-        <button type="submit" class="btn btn-small">Add</button>
-      </form>
-    </section>
-
     <!-- Requests -->
     <section class="panel" data-panel="requests">
       <div class="req-head">
@@ -252,6 +252,6 @@
 
 <div class="toast" id="toast" hidden></div>
 
-<script src="admin.js?v=202609111658"></script>
+<script src="admin.js?v=202609111659"></script>
 </body>
 </html>
