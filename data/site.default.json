@@ -98,5 +98,13 @@
     "locations": [],
     "notifyEmail": "info@4sgarov.com",
     "seminarTerms": "Seminar price starts from $100 per day. If that works for you, tick to accept the terms."
+  },
+  "academy": {
+    "hero": {
+      "desktop": "",
+      "mobile": ""
+    },
+    "headline": "After training at my academy you won't be just another tattooist — you'll be a professional. A real artist.",
+    "text": "At the academy I'm building a programme for beginners and for those already walking the professional path."
   }
 }

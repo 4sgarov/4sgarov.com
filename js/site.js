@@ -109,7 +109,7 @@
     .then(function (S) {
       bindMedia(document.querySelector('.cover'), S.home && S.home.cover);
       if (S.about) {
-        bindMedia(document.querySelector('.hero'), S.about.hero);
+        bindMedia(document.querySelector('.about-page .hero'), S.about.hero);
         text('.about-name', S.about.name);
         text('.about-role', S.about.role);
         var cols = document.querySelectorAll('.about-col');
@@ -118,6 +118,11 @@
           cols[i].querySelector('.about-heading').textContent = c.heading || '';
           cols[i].querySelector('.about-text').textContent = c.text || '';
         });
+      }
+      if (S.academy) {
+        bindMedia(document.querySelector('.academy-page .hero'), S.academy.hero);
+        text('.academy-headline', S.academy.headline);
+        text('.academy-text', S.academy.text);
       }
       if (S.portfolio) renderPortfolio(S.portfolio);
       document.dispatchEvent(new CustomEvent('site:loaded', { detail: S }));

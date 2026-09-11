@@ -159,6 +159,8 @@
     while (s.about.columns.length < 2) s.about.columns.push({ heading: '', text: '' });
     s.portfolio = s.portfolio || {}; s.portfolio.categories = s.portfolio.categories || []; s.portfolio.works = s.portfolio.works || [];
     s.portfolio.works.forEach(function (w) { if (!w.id) w.id = uid(); });
+    s.academy = s.academy || {}; s.academy.hero = s.academy.hero || { desktop: '', mobile: '' };
+    s.academy.headline = s.academy.headline || ''; s.academy.text = s.academy.text || '';
     s.booking = s.booking || {};
     s.booking.intro = s.booking.intro || '';
     s.booking.services = s.booking.services || [];

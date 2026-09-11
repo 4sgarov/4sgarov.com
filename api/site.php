@@ -16,6 +16,7 @@ require_auth();
 $site = body_json();
 if (!isset($site['home'], $site['about'], $site['portfolio'])) fail('Invalid content');
 $site['booking'] = $site['booking'] ?? [];
+$site['academy'] = $site['academy'] ?? [];
 
 /* Keep only known keys / shapes so the file can't be polluted. */
 $str = fn($v) => is_string($v) ? trim($v) : '';
@@ -27,6 +28,11 @@ $clean = [
     'name' => $str($site['about']['name'] ?? ''),
     'role' => $str($site['about']['role'] ?? ''),
     'columns' => [],
+  ],
+  'academy' => [
+    'hero' => $media($site['academy']['hero'] ?? []),
+    'headline' => $str($site['academy']['headline'] ?? ''),
+    'text' => $str($site['academy']['text'] ?? ''),
   ],
   'portfolio' => ['categories' => [], 'works' => []],
   'booking' => [

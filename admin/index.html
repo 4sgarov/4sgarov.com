@@ -6,8 +6,8 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Admin — Rauf Asgarov</title>
 <link rel="icon" href="data:,">
-<link rel="stylesheet" href="../css/style.css?v=202609111403">
-<link rel="stylesheet" href="admin.css?v=202609111403">
+<link rel="stylesheet" href="../css/style.css?v=202609111633">
+<link rel="stylesheet" href="admin.css?v=202609111633">
 </head>
 <body class="admin">
 
@@ -47,6 +47,7 @@
   <nav class="tabs" id="tabs">
     <button class="tab is-active" data-tab="home">Home</button>
     <button class="tab" data-tab="about">About me</button>
+    <button class="tab" data-tab="academy">Academy</button>
     <button class="tab" data-tab="portfolio">Portfolio</button>
     <button class="tab" data-tab="book">Book now</button>
     <button class="tab" data-tab="requests">Requests <span class="badge" id="req-badge" hidden></span></button>
@@ -116,6 +117,36 @@
           <label class="field"><span>Column 2 — heading</span><input type="text" data-bind="about.columns.1.heading"></label>
           <label class="field"><span>Column 2 — text</span><textarea rows="8" data-bind="about.columns.1.text"></textarea></label>
         </div>
+      </div>
+    </section>
+
+    <!-- Academy -->
+    <section class="panel" data-panel="academy">
+      <h2 class="panel-title">Academy — hero</h2>
+      <p class="hint">Full-screen media at the top of the Academy page. Image, GIF or video.</p>
+      <div class="media-row">
+        <div class="media-slot" data-media="academy.hero.desktop">
+          <div class="media-label">Desktop <small>16:9</small></div>
+          <div class="media-preview"></div>
+          <div class="media-actions">
+            <label class="btn btn-small">Upload<input type="file" accept="image/*,video/mp4,video/webm,.gif" hidden></label>
+            <button class="btn btn-small btn-danger media-remove">Remove</button>
+          </div>
+        </div>
+        <div class="media-slot" data-media="academy.hero.mobile">
+          <div class="media-label">Mobile <small>9:16</small></div>
+          <div class="media-preview"></div>
+          <div class="media-actions">
+            <label class="btn btn-small">Upload<input type="file" accept="image/*,video/mp4,video/webm,.gif" hidden></label>
+            <button class="btn btn-small btn-danger media-remove">Remove</button>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="panel-title">Text</h2>
+      <div class="form-narrow" style="max-width: 720px">
+        <label class="field"><span>Headline (bold)</span><textarea rows="3" data-bind="academy.headline"></textarea></label>
+        <label class="field"><span>Text</span><textarea rows="6" data-bind="academy.text"></textarea></label>
       </div>
     </section>
 
@@ -201,6 +232,6 @@
 
 <div class="toast" id="toast" hidden></div>
 
-<script src="admin.js?v=202609111403"></script>
+<script src="admin.js?v=202609111633"></script>
 </body>
 </html>
