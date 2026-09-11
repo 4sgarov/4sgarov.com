@@ -93,14 +93,10 @@
         "id": "b-g-realism",
         "name": "B&G Realism",
         "kind": "tattoo"
-      },
-      {
-        "id": "seminar",
-        "name": "Seminar",
-        "kind": "seminar"
       }
     ],
     "locations": [],
-    "notifyEmail": "info@4sgarov.com"
+    "notifyEmail": "info@4sgarov.com",
+    "seminarTerms": "Seminar price starts from $100 per day. If that works for you, tick to accept the terms."
   }
 }

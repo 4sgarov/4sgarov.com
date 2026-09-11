@@ -7,6 +7,7 @@
   var locSel = form.elements.location, dateInp = form.elements.date, svcSel = form.elements.service;
   var cal = document.getElementById('cal');
   var images = document.getElementById('images');
+  var semChk = form.elements.seminar;
   var up1 = document.getElementById('upload1'), up2 = document.getElementById('upload2');
 
   function flag(code) {
@@ -74,6 +75,7 @@
   document.addEventListener('site:loaded', function (e) {
     var b = (e.detail && e.detail.booking) || {};
     document.querySelector('.book-intro').textContent = b.intro || '';
+    if (b.seminarTerms) document.getElementById('seminar-terms').textContent = b.seminarTerms;
 
     (b.locations || []).forEach(function (l) {
       locations[l.id] = l;
@@ -83,6 +85,7 @@
       locSel.appendChild(o);
     });
     (b.services || []).forEach(function (s) {
+      if (s.kind === 'seminar') return;
       services[s.id] = s;
       var o = document.createElement('option');
       o.value = s.id; o.textContent = s.name;
@@ -99,23 +102,33 @@
       ? 'In ' + l.city + ': ' + fmt(l.from) + (l.to ? ' – ' + fmt(l.to) : '') : '';
   });
 
-  svcSel.addEventListener('change', function () {
+  function currentKind() {
+    if (semChk.checked) return 'seminar';
     var s = services[svcSel.value];
-    var kind = s ? s.kind : '';
-    images.hidden = !s || kind === 'seminar';
+    return s ? s.kind : '';
+  }
+  function updateMode() {
+    var kind = currentKind();
+    var seminar = kind === 'seminar';
+    form.querySelector('.tattoo-only').hidden = seminar;
+    form.querySelector('.seminar-only').hidden = !seminar;
+    form.elements.terms.required = seminar;
+    images.hidden = seminar || !services[svcSel.value];
     up2.hidden = kind !== 'coverup';
     images.classList.toggle('single', kind !== 'coverup');
     form.elements.image2.required = kind === 'coverup';
-    form.elements.image1.required = !!s && kind !== 'seminar';
-    var idea = form.elements.idea;
-    if (kind === 'seminar') {
-      document.getElementById('idea-label').textContent = 'About the seminar';
-      idea.placeholder = 'Which seminar are you interested in? Tell me about your experience and what you want to learn.';
+    form.elements.image1.required = !seminar && !!services[svcSel.value];
+    var idea = form.elements.idea, label = document.getElementById('idea-label');
+    if (seminar) {
+      label.textContent = 'What would you like to learn?';
+      idea.placeholder = 'Briefly: your experience and what you want to learn in the seminar.';
     } else {
-      document.getElementById('idea-label').textContent = 'Describe your idea';
+      label.textContent = 'Describe your idea';
       idea.placeholder = 'Size, placement, meaning, references…';
     }
-  });
+  }
+  svcSel.addEventListener('change', updateMode);
+  semChk.addEventListener('change', updateMode);
 
   // previews
   [up1, up2].forEach(function (box) {
@@ -142,15 +155,16 @@
     if (!f.contact.value.trim()) return showError('Please enter your email, phone or Instagram.');
     if (!f.location.value) return showError('Please choose a city.');
     if (!f.date.value) return showError('Please pick a date.');
-    if (!f.service.value) return showError('Please choose a style.');
-    var kind = services[f.service.value].kind;
+    var kind = currentKind();
+    if (!kind) return showError('Please choose a style.');
     if (kind !== 'seminar' && !f.image1.files.length) return showError('Please add a reference image.');
     if (kind === 'coverup' && !f.image2.files.length) return showError('Please add a photo of the tattoo you want to cover.');
-    if (!f.idea.value.trim()) return showError(kind === 'seminar' ? 'Please tell me about the seminar you are interested in.' : 'Please describe your idea.');
+    if (!f.idea.value.trim()) return showError(kind === 'seminar' ? 'Please write what you would like to learn.' : 'Please describe your idea.');
+    if (kind === 'seminar' && !f.terms.checked) return showError('Please accept the seminar terms.');
     if (!f.adult.checked) return showError('You must confirm you are 18 or older.');
 
     var fd = new FormData(form);
-    if (kind === 'seminar') { fd.delete('image1'); fd.delete('image2'); }
+    if (kind === 'seminar') { fd.delete('image1'); fd.delete('image2'); fd.delete('service'); }
     var btn = form.querySelector('.bf-submit');
     btn.disabled = true; btn.textContent = 'Sending…';
     fetch('api/book.php', { method: 'POST', body: fd, headers: { 'X-Requested-With': 'XMLHttpRequest' } })

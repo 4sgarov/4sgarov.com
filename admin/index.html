@@ -6,8 +6,8 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Admin — Rauf Asgarov</title>
 <link rel="icon" href="data:,">
-<link rel="stylesheet" href="../css/style.css?v=202609111257">
-<link rel="stylesheet" href="admin.css?v=202609111257">
+<link rel="stylesheet" href="../css/style.css?v=202609111300">
+<link rel="stylesheet" href="admin.css?v=202609111300">
 </head>
 <body class="admin">
 
@@ -145,12 +145,16 @@
       <label class="field form-narrow"><textarea rows="3" data-bind="booking.intro"></textarea></label>
 
       <h2 class="panel-title">Styles</h2>
-      <p class="hint">Styles the client can choose. Every style asks for a reference image; a style with "cover" in its name also asks for a photo of the old tattoo. <b>Seminar</b> is fixed and asks for no images.</p>
+      <p class="hint">Styles the client can choose. Every style asks for a reference image; a style with "cover" in its name also asks for a photo of the old tattoo.</p>
       <div class="list" id="svc-list"></div>
       <form class="add-row" id="svc-add">
         <input type="text" placeholder="New style name" required>
         <button type="submit" class="btn btn-small">Add</button>
       </form>
+
+      <h2 class="panel-title">Seminar</h2>
+      <p class="hint">Clients tick "I want to book a seminar" on the form. This text is shown next to the terms checkbox they must accept.</p>
+      <label class="field form-narrow"><textarea rows="2" data-bind="booking.seminarTerms"></textarea></label>
 
       <h2 class="panel-title">Cities &amp; dates</h2>
       <p class="hint">Where you'll be working. The client picks a city, then a date inside that trip. Leave dates empty to allow any date.</p>
@@ -197,6 +201,6 @@
 
 <div class="toast" id="toast" hidden></div>
 
-<script src="admin.js?v=202609111257"></script>
+<script src="admin.js?v=202609111300"></script>
 </body>
 </html>

@@ -423,7 +423,7 @@ a.card:hover { transform: translateY(-4px); }
 
 .bf-images { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 .bf-images.single { grid-template-columns: 1fr; max-width: 340px; }
-.bf-upload[hidden] { display: none; }
+.book [hidden] { display: none !important; }
 .bf-upload { display: flex; flex-direction: column; gap: 8px; }
 .bf-upload-label { font-size: 0.9rem; color: var(--muted); }
 .bf-upload-label em { font-style: normal; color: var(--red); }
@@ -446,6 +446,9 @@ a.card:hover { transform: translateY(-4px); }
 .has-file .bf-drop { border-style: solid; }
 
 .bf-check { display: flex; align-items: center; gap: 12px; font-size: 0.95rem; cursor: pointer; }
+.bf-check b { font-weight: 500; }
+.bf-seminar { padding: 14px 16px; border: 1px solid var(--border); border-radius: 10px; }
+.bf-seminar:has(input:checked) { border-color: var(--text); }
 .bf-check input { width: 18px; height: 18px; accent-color: #111; flex-shrink: 0; }
 .bf-hp { position: absolute; left: -9999px; }
 .bf-error { color: var(--red); font-size: 0.95rem; }

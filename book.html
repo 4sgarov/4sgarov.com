@@ -6,7 +6,7 @@
 <title>Book now — Rauf Asgarov</title>
 <meta name="description" content="Book a tattoo session or seminar with Rauf Asgarov.">
 <link rel="icon" href="data:,">
-<link rel="stylesheet" href="css/style.css?v=202609111257">
+<link rel="stylesheet" href="css/style.css?v=202609111300">
 </head>
 <body class="book-page">
 
@@ -38,6 +38,11 @@
       <label class="bf-field"><span>Last name</span><input type="text" name="lastName" required autocomplete="family-name"></label>
     </div>
 
+    <label class="bf-check bf-seminar">
+      <input type="checkbox" name="seminar" value="1">
+      <span>I want to book a <b>seminar</b></span>
+    </label>
+
     <label class="bf-field"><span>Email, phone or Instagram</span><input type="text" name="contact" required autocomplete="email" placeholder="How can I reach you?"></label>
 
     <label class="bf-field"><span>City</span>
@@ -52,9 +57,11 @@
     </div>
     <p class="bf-note" id="loc-note"></p>
 
+    <div class="tattoo-only">
     <label class="bf-field"><span>Style</span>
       <select name="service" required><option value="">Choose a style</option></select>
     </label>
+    </div>
 
     <div class="bf-images" id="images" hidden>
       <div class="bf-upload" id="upload1">
@@ -77,6 +84,11 @@
 
     <label class="bf-field"><span id="idea-label">Describe your idea</span><textarea name="idea" rows="5" required placeholder="Size, placement, meaning, references…"></textarea></label>
 
+    <label class="bf-check seminar-only" hidden>
+      <input type="checkbox" name="terms" value="1">
+      <span id="seminar-terms">Seminar price starts from $100 per day. If that works for you, tick to accept the terms.</span>
+    </label>
+
     <label class="bf-check">
       <input type="checkbox" name="adult" required>
       <span>I confirm that I am 18 years or older</span>
@@ -94,8 +106,8 @@
   </div>
 </section>
 
-<script src="js/menu.js?v=202609111257"></script>
-<script src="js/site.js?v=202609111257"></script>
-<script src="js/book.js?v=202609111257"></script>
+<script src="js/menu.js?v=202609111300"></script>
+<script src="js/site.js?v=202609111300"></script>
+<script src="js/book.js?v=202609111300"></script>
 </body>
 </html>

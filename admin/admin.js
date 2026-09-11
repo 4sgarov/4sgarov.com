@@ -162,7 +162,8 @@
     s.booking = s.booking || {};
     s.booking.intro = s.booking.intro || '';
     s.booking.services = s.booking.services || [];
-    if (!s.booking.services.some(function (x) { return /seminar/i.test(x.name); })) s.booking.services.push({ id: 'seminar', name: 'Seminar', kind: 'seminar' });
+    s.booking.services = s.booking.services.filter(function (x) { return x.id !== 'seminar' && x.kind !== 'seminar'; });
+    s.booking.seminarTerms = s.booking.seminarTerms || 'Seminar price starts from $100 per day. If that works for you, tick to accept the terms.';
     s.booking.locations = s.booking.locations || [];
     s.booking.notifyEmail = s.booking.notifyEmail || '';
   }
@@ -314,11 +315,8 @@
       .forEach(function (x) { var o = document.createElement('option'); o.value = x.c; o.textContent = flag(x.c) + ' ' + x.n; sel.appendChild(o); });
   }
 
-  // Kind is derived from the name: "cover" → cover up (asks for the old tattoo photo), "seminar" → no images.
-  function kindOf(name) {
-    var n = String(name).toLowerCase();
-    return /seminar/.test(n) ? 'seminar' : /cover/.test(n) ? 'coverup' : 'tattoo';
-  }
+  // Kind is derived from the name: "cover" → cover up (also asks for the old tattoo photo).
+  function kindOf(name) { return /cover/i.test(String(name)) ? 'coverup' : 'tattoo'; }
   function renderServices() {
     var list = $('#svc-list'); list.innerHTML = '';
     var items = state.site.booking.services;
@@ -335,7 +333,6 @@
       var input = $('input', row);
       s.kind = kindOf(s.name);
       input.value = s.name;
-      if (s.kind === 'seminar') { input.readOnly = true; $('[data-act=del]', row).disabled = true; $('[data-act=del]', row).title = 'Seminar can\'t be deleted'; }
       input.addEventListener('input', function () { s.name = input.value; s.kind = kindOf(s.name); setDirty(true); });
       $('[data-act=up]', row).disabled = i === 0;
       $('[data-act=down]', row).disabled = i === items.length - 1;
@@ -344,7 +341,7 @@
         if (!act) return;
         if (act === 'up') items.splice(i - 1, 0, items.splice(i, 1)[0]);
         if (act === 'down') items.splice(i + 1, 0, items.splice(i, 1)[0]);
-        if (act === 'del') { if (s.kind === 'seminar' || !confirm('Delete "' + s.name + '"?')) return; items.splice(i, 1); }
+        if (act === 'del') { if (!confirm('Delete "' + s.name + '"?')) return; items.splice(i, 1); }
         setDirty(true); renderServices();
       });
       list.appendChild(row);
@@ -618,7 +615,6 @@
     var items = state.site.booking.services;
     var id = slug(name), base = id, n = 2;
     while (items.some(function (s) { return s.id === id; })) id = base + '-' + n++;
-    if (kindOf(name) === 'seminar') { toast('Seminar already exists', true); return; }
     items.push({ id: id, name: name, kind: kindOf(name) });
     inp.value = '';
     setDirty(true); renderServices();

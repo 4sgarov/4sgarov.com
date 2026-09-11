@@ -34,6 +34,7 @@ $clean = [
     'services' => [],
     'locations' => [],
     'notifyEmail' => filter_var($str($site['booking']['notifyEmail'] ?? ''), FILTER_VALIDATE_EMAIL) ?: '',
+    'seminarTerms' => $str($site['booking']['seminarTerms'] ?? ''),
   ],
 ];
 foreach (array_slice((array)($site['about']['columns'] ?? []), 0, 2) as $c) {
@@ -59,7 +60,8 @@ foreach ((array)($site['portfolio']['works'] ?? []) as $w) {
 foreach ((array)($site['booking']['services'] ?? []) as $s) {
   $id = preg_replace('/[^a-z0-9-]/', '', strtolower($str($s['id'] ?? '')));
   if ($id === '') continue;
-  $kind = in_array($s['kind'] ?? '', ['tattoo', 'coverup', 'seminar'], true) ? $s['kind'] : 'tattoo';
+  $kind = ($s['kind'] ?? '') === 'coverup' || preg_match('/cover/i', $str($s['name'] ?? '')) ? 'coverup' : 'tattoo';
+  if ($id === 'seminar') continue;
   $clean['booking']['services'][] = ['id' => $id, 'name' => $str($s['name'] ?? ''), 'kind' => $kind];
 }
 $date = fn($v) => preg_match('/^\d{4}-\d{2}-\d{2}$/', $str($v)) ? $str($v) : '';

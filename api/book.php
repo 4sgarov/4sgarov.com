@@ -27,11 +27,13 @@ $date = $str('date', 10);
 $svcId = $str('service', 40);
 $idea = $str('idea', 3000);
 $adult = !empty($_POST['adult']);
+$isSeminar = !empty($_POST['seminar']);
+$terms = !empty($_POST['terms']);
 
 if ($first === '' || $last === '') fail('Please enter your first and last name.');
 if ($contact === '') fail('Please enter your email, phone or Instagram.');
 if (!isset($locations[$locId])) fail('Please choose a city.');
-if (!isset($services[$svcId])) fail('Please choose a style.');
+if (!$isSeminar && !isset($services[$svcId])) fail('Please choose a style.');
 if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date) || strtotime($date) === false) fail('Please pick a date.');
 $loc = $locations[$locId];
 if ($loc['from'] && $date < $loc['from']) fail('Date is before the trip starts.');
@@ -39,9 +41,11 @@ if ($loc['to'] && $date > $loc['to']) fail('Date is after the trip ends.');
 if ($date < date('Y-m-d')) fail('Date is in the past.');
 $taken = taken_dates();
 if (in_array($date, $taken[$locId] ?? [], true)) fail('That date is already taken — please pick another one.');
-$svc = $services[$svcId];
+if ($isSeminar) { $svcId = 'seminar'; $svc = ['id' => 'seminar', 'name' => 'Seminar', 'kind' => 'seminar']; }
+else $svc = $services[$svcId];
 $kind = $svc['kind'] ?? 'tattoo';
-if ($idea === '') fail($kind === 'seminar' ? 'Please tell me about the seminar you are interested in.' : 'Please describe your idea.');
+if ($idea === '') fail($kind === 'seminar' ? 'Please write what you would like to learn.' : 'Please describe your idea.');
+if ($kind === 'seminar' && !$terms) fail('Please accept the seminar terms.');
 if (!$adult) fail('You must confirm you are 18 or older.');
 
 /* Images: image1 required for tattoo/coverup; image2 required for coverup */
