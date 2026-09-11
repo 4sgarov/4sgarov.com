@@ -226,8 +226,8 @@ a { color: inherit; text-decoration: none; }
 .card {
   border-radius: 10px;
   overflow: hidden;
-  border: 1px solid var(--border);
-  background: var(--bg);
+  background: #1c1c1c;
+  color: #fff;
 }
 .card[hidden] { display: none; }
 .card-img {
@@ -251,7 +251,7 @@ a { color: inherit; text-decoration: none; }
 .card-genre {
   font-size: 0.95rem;
   font-weight: 300;
-  color: var(--muted);
+  color: #aaa;
 }
 
 @media (max-width: 900px) {
