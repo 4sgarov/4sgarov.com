@@ -11,14 +11,18 @@
 </head>
 <body class="admin">
 
-<!-- ===== Login ===== -->
+<!-- ===== Login / first-time setup ===== -->
 <section id="login" class="login" hidden>
   <form class="login-box" id="login-form">
     <h1 class="login-title">Admin</h1>
-    <p class="login-sub">Sign in with your GitHub token to edit the site.</p>
+    <p class="login-sub" id="login-sub">Enter your password to edit the site.</p>
     <label class="field">
-      <span>GitHub token</span>
-      <input type="password" id="token" autocomplete="current-password" placeholder="github_pat_…" required>
+      <span id="pw-label">Password</span>
+      <input type="password" id="password" autocomplete="current-password" required minlength="8">
+    </label>
+    <label class="field" id="pw2-wrap" hidden>
+      <span>Repeat password</span>
+      <input type="password" id="password2" autocomplete="new-password" minlength="8">
     </label>
     <label class="check">
       <input type="checkbox" id="remember" checked>
@@ -26,16 +30,6 @@
     </label>
     <button type="submit" class="btn btn-primary" id="login-btn">Sign in</button>
     <p class="login-error" id="login-error" hidden></p>
-    <details class="help">
-      <summary>How to create a token</summary>
-      <ol>
-        <li>Open <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com/settings/personal-access-tokens/new</a></li>
-        <li>Name: <b>site admin</b>, Expiration: 1 year (or no expiration)</li>
-        <li>Repository access → <b>Only select repositories</b> → <b>4sgarov.com</b></li>
-        <li>Permissions → Repository permissions → <b>Contents: Read and write</b></li>
-        <li>Generate, copy the token and paste it above</li>
-      </ol>
-    </details>
   </form>
 </section>
 
@@ -54,6 +48,7 @@
     <button class="tab is-active" data-tab="home">Home</button>
     <button class="tab" data-tab="about">About me</button>
     <button class="tab" data-tab="portfolio">Portfolio</button>
+    <button class="tab" data-tab="settings">Settings</button>
   </nav>
 
   <main class="content">
@@ -139,6 +134,17 @@
         <span class="hint" id="work-count"></span>
       </div>
       <div class="works" id="work-list"></div>
+    </section>
+
+    <!-- Settings -->
+    <section class="panel" data-panel="settings">
+      <h2 class="panel-title">Change password</h2>
+      <form class="form-narrow" id="pw-form">
+        <label class="field"><span>Current password</span><input type="password" id="pw-current" autocomplete="current-password" required></label>
+        <label class="field"><span>New password</span><input type="password" id="pw-new" autocomplete="new-password" required minlength="8"></label>
+        <label class="field"><span>Repeat new password</span><input type="password" id="pw-new2" autocomplete="new-password" required minlength="8"></label>
+        <button type="submit" class="btn btn-primary">Change password</button>
+      </form>
     </section>
 
   </main>

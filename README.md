@@ -1,45 +1,56 @@
 # 4sgarov.com — Portfolio
 
-Static site for Rauf Asgarov, tattoo artist. Plain HTML/CSS/JS, hosted on
-GitHub Pages — no build step.
+Site for Rauf Asgarov, tattoo artist. Static HTML/CSS/JS front end with a
+small PHP admin API — runs on any PHP hosting (built for Hostinger).
 
 ## Structure
 
 ```
-index.html        Home: left nav + optional full-screen cover
-about.html        About: full-screen hero, name, two text columns
-portfolio.html    Portfolio: title, category filters, works grid (slideshow on phones)
-admin/            Admin panel (edits content via the GitHub API)
-data/site.json    All editable content (covers, about text, categories, works)
-assets/uploads/   Media uploaded from the admin panel
-assets/fonts/     Author (variable) — self-hosted
-css/style.css     Site styles      admin/admin.css   Admin styles
-js/site.js        Renders site.json into the pages
-js/menu.js        Hamburger menu   admin/admin.js    Admin logic
+index.html            Home: left nav + optional full-screen cover
+about.html            About: full-screen hero, name, two text columns
+portfolio.html        Portfolio: title, category filters, works grid (slideshow on phones)
+admin/                Admin panel (password login, works on phone + desktop)
+api/                  PHP endpoints used by the admin
+  auth.php            setup / login / logout / change password
+  site.php            read / save content
+  upload.php          chunked media upload (no hosting size limit)
+  media.php           delete media
+data/site.default.json  Starting content (copied to data/site.json on first run)
+data/site.json        Live content — created on the server, not in git
+data/auth.json        Password hash — created on the server, not in git
+assets/uploads/       Media uploaded from the admin — not in git
+assets/fonts/         Author (variable) — self-hosted
+css/style.css         Site styles          admin/admin.css   Admin styles
+js/site.js            Renders content       admin/admin.js    Admin logic
+js/menu.js            Hamburger menu
 ```
 
-## Run locally
+## Deploy to Hostinger
 
-```bash
-python3 -m http.server 8000
-```
+1. hPanel → Websites → your site → **Files → File Manager** (or FTP) and put
+   everything from this repo into `public_html/` — or use hPanel's
+   **Advanced → Git** to deploy this repository into `public_html`.
+2. Make sure PHP is 8.0+ (hPanel → Advanced → PHP Configuration).
+3. Open `https://4sgarov.com/admin/` — the first visit asks you to create the
+   admin password. That's it.
 
-then visit `http://localhost:8000`. (Pages fetch `data/site.json`, so open
-via a server, not `file://`.)
+The server creates `data/site.json`, `data/auth.json` and writes uploads to
+`assets/uploads/`. Redeploying the code never touches those files.
 
 ## Admin panel
 
-Open `/admin/` on the live site (works on phone and desktop). Sign in with a
-GitHub fine-grained personal access token that has **Contents: Read and
-write** on this repository only. The panel:
+- **Home** — desktop + mobile cover (image / GIF / MP4; video autoplays muted)
+- **About me** — desktop + mobile hero, name, role, two text columns
+- **Portfolio** — categories (add / rename / reorder / delete) and works
+  (multi-upload, name, category, link, reorder, replace image, delete)
+- **Settings** — change password
 
-- uploads media to `assets/uploads/` (large images are downscaled in the
-  browser; videos are uploaded as-is — keep them under ~40 MB),
-- edits `data/site.json`,
-- commits straight to `main`. GitHub Pages redeploys in about a minute.
+Uploads go in 4 MB chunks, so PHP `upload_max_filesize` limits don't apply;
+large images are downscaled in the browser before upload. Five wrong
+passwords lock login for 15 minutes.
 
-Nothing else runs server-side; the token is stored only in the browser.
+## Run locally
 
-## Publish with GitHub Pages
-
-Repo → **Settings → Pages** → Source: `Deploy from a branch` → Branch: `main` / `root`.
+Needs PHP: `php -S localhost:8000` in the repo root, then open
+`http://localhost:8000`. Without PHP the pages still render from
+`data/site.default.json`, but the admin won't work.

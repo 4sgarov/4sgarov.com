@@ -93,6 +93,11 @@
   }
 
   fetch('data/site.json?v=' + Date.now(), { cache: 'no-store' })
+    .then(function (r) {
+      // Before the admin has published anything, fall back to the defaults.
+      if (!r.ok) return fetch('data/site.default.json?v=' + Date.now(), { cache: 'no-store' });
+      return r;
+    })
     .then(function (r) { return r.json(); })
     .then(function (S) {
       bindMedia(document.querySelector('.cover'), S.home && S.home.cover);

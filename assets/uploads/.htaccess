@@ -1,0 +1,8 @@
+# Uploaded media is served as static files only — never executed.
+<FilesMatch "\.(php|phtml|php\d|phar|cgi|pl|py|sh)$">
+  Require all denied
+</FilesMatch>
+Options -Indexes -ExecCGI
+<IfModule mod_php.c>
+  php_flag engine off
+</IfModule>

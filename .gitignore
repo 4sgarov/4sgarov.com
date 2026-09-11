@@ -2,3 +2,11 @@
 *.log
 node_modules/
 .claude/
+
+# Server-side state (lives on the hosting, not in git)
+data/site.json
+data/auth.json
+data/tmp/*
+!data/tmp/.htaccess
+assets/uploads/*
+!assets/uploads/.htaccess

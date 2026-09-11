@@ -1,15 +1,11 @@
-/* Admin panel — edits data/site.json and uploads media straight to GitHub. */
+/* Admin panel — talks to api/*.php on the same host. */
 (function () {
   'use strict';
 
   var CFG = {
-    owner: '4sgarov',
-    repo: '4sgarov.com',
-    branch: 'main',
-    dataPath: 'data/site.json',
+    api: '../api/',
     uploadDir: 'assets/uploads',
-    maxUploadMB: 95,           // GitHub contents API hard limit is 100 MB
-    warnUploadMB: 40,
+    chunkMB: 4,                 // upload in small parts so hosting limits don't apply
     imageMax: { cover: 2560, work: 1600 }
   };
   var VIDEO_EXT = /\.(mp4|webm|mov|m4v)$/i;
@@ -18,9 +14,7 @@
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
 
   var state = {
-    token: null,
     site: null,
-    sha: null,
     dirty: false,
     busy: 0,
     pendingDeletes: []
@@ -63,76 +57,49 @@
   }
   function uid() { return Math.random().toString(36).slice(2, 8) + Date.now().toString(36); }
   function isVideo(src) { return VIDEO_EXT.test(src || ''); }
-  function b64utf8(str) { return btoa(unescape(encodeURIComponent(str))); }
-  function utf8b64(b64) { return decodeURIComponent(escape(atob(b64.replace(/\n/g, '')))); }
-  function fileToBase64(blob) {
-    return new Promise(function (res, rej) {
-      var r = new FileReader();
-      r.onload = function () { res(String(r.result).split(',')[1]); };
-      r.onerror = rej;
-      r.readAsDataURL(blob);
-    });
-  }
 
-  /* ---------- GitHub API ---------- */
-  function gh(path, opts) {
+  /* ---------- API ---------- */
+  function api(endpoint, body, opts) {
     opts = opts || {};
-    return fetch('https://api.github.com' + path, {
-      method: opts.method || 'GET',
-      headers: {
-        'Authorization': 'Bearer ' + state.token,
-        'Accept': 'application/vnd.github+json',
-        'X-GitHub-Api-Version': '2022-11-28',
-        'Content-Type': 'application/json'
-      },
-      body: opts.body ? JSON.stringify(opts.body) : undefined
+    var isForm = body instanceof FormData;
+    return fetch(CFG.api + endpoint, {
+      method: body === undefined ? 'GET' : 'POST',
+      credentials: 'same-origin',
+      headers: isForm ? { 'X-Requested-With': 'XMLHttpRequest' }
+                      : { 'X-Requested-With': 'XMLHttpRequest', 'Content-Type': 'application/json' },
+      body: body === undefined ? undefined : (isForm ? body : JSON.stringify(body))
     }).then(function (r) {
-      if (r.status === 404 && opts.allow404) return null;
-      return r.json().then(function (j) {
-        if (!r.ok) throw new Error((j && j.message) || ('GitHub error ' + r.status));
+      return r.text().then(function (t) {
+        var j = {};
+        try { j = t ? JSON.parse(t) : {}; } catch (e) { throw new Error('Server error (' + r.status + ')'); }
+        if (r.status === 401 && !opts.noAuthRedirect) { showLogin('Session expired — sign in again'); }
+        if (!r.ok) throw new Error(j.error || ('Error ' + r.status));
         return j;
       });
     });
   }
-  function contentsPath(p) {
-    return '/repos/' + CFG.owner + '/' + CFG.repo + '/contents/' + p.split('/').map(encodeURIComponent).join('/');
+  // Chunked upload — sends the blob in CFG.chunkMB parts, sequentially.
+  function uploadBlob(blob, name, onProgress) {
+    var size = CFG.chunkMB * 1024 * 1024;
+    var total = Math.max(1, Math.ceil(blob.size / size));
+    var id = uid();
+    var i = 0;
+    function next() {
+      var fd = new FormData();
+      fd.append('uploadId', id);
+      fd.append('index', String(i));
+      fd.append('total', String(total));
+      fd.append('name', name);
+      fd.append('chunk', blob.slice(i * size, (i + 1) * size), 'chunk');
+      return api('upload.php', fd).then(function (r) {
+        i++;
+        if (onProgress) onProgress(i / total);
+        return i < total ? next() : r.path;
+      });
+    }
+    return next();
   }
-  function getFile(p) {
-    return gh(contentsPath(p) + '?ref=' + CFG.branch, { allow404: true });
-  }
-  function getSha(p) {
-    return getFile(p).then(function (f) { return f ? f.sha : null; });
-  }
-  // PUT with upload progress (XHR) — content is base64.
-  function putFile(p, base64, message, sha, onProgress) {
-    return new Promise(function (res, rej) {
-      var xhr = new XMLHttpRequest();
-      xhr.open('PUT', 'https://api.github.com' + contentsPath(p));
-      xhr.setRequestHeader('Authorization', 'Bearer ' + state.token);
-      xhr.setRequestHeader('Accept', 'application/vnd.github+json');
-      xhr.setRequestHeader('X-GitHub-Api-Version', '2022-11-28');
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      if (onProgress && xhr.upload) {
-        xhr.upload.onprogress = function (e) { if (e.lengthComputable) onProgress(e.loaded / e.total); };
-      }
-      xhr.onload = function () {
-        var j = {};
-        try { j = JSON.parse(xhr.responseText); } catch (e) {}
-        if (xhr.status >= 200 && xhr.status < 300) res(j);
-        else rej(new Error(j.message || ('GitHub error ' + xhr.status)));
-      };
-      xhr.onerror = function () { rej(new Error('Network error')); };
-      var body = { message: message, content: base64, branch: CFG.branch };
-      if (sha) body.sha = sha;
-      xhr.send(JSON.stringify(body));
-    });
-  }
-  function deleteFile(p, message) {
-    return getSha(p).then(function (sha) {
-      if (!sha) return null;
-      return gh(contentsPath(p), { method: 'DELETE', body: { message: message, sha: sha, branch: CFG.branch } });
-    });
-  }
+  function deleteFile(p) { return api('media.php', { path: p }); }
 
   /* ---------- media processing ---------- */
   // Downscale large JPEG/PNG/WebP in the browser; leave GIF and video untouched.
@@ -167,14 +134,8 @@
     var isVid = /^video\//.test(file.type) || isVideo(file.name);
     var prep = isVid ? Promise.resolve({ blob: file, ext: extOf(file.name) }) : processImage(file, maxDim);
     return prep.then(function (r) {
-      var mb = r.blob.size / 1024 / 1024;
-      if (mb > CFG.maxUploadMB) throw new Error('File is ' + mb.toFixed(0) + ' MB — max ' + CFG.maxUploadMB + ' MB. Compress it first.');
-      if (mb > CFG.warnUploadMB) toast('Large file (' + mb.toFixed(0) + ' MB) — upload may take a while.', false, 5000);
-      var name = prefix + '-' + Date.now() + '-' + uid().slice(0, 4) + '.' + r.ext;
-      var path = CFG.uploadDir + '/' + name;
-      return fileToBase64(r.blob).then(function (b64) {
-        return putFile(path, b64, 'Upload ' + name, null, onProgress);
-      }).then(function () { return path; });
+      var name = prefix + '-' + Date.now() + '.' + r.ext;
+      return uploadBlob(r.blob, name, onProgress);
     });
   }
   function queueDelete(path) {
@@ -184,39 +145,12 @@
   }
 
   /* ---------- auth ---------- */
-  function saveToken(token, remember) {
-    try {
-      (remember ? localStorage : sessionStorage).setItem('gh_token', token);
-      (remember ? sessionStorage : localStorage).removeItem('gh_token');
-    } catch (e) {}
-  }
-  function loadToken() {
-    try {
-      var t = localStorage.getItem('gh_token');
-      if (t) return { token: t, remember: true };
-      t = sessionStorage.getItem('gh_token');
-      if (t) return { token: t, remember: false };
-    } catch (e) {}
-    return null;
-  }
-  function clearToken() {
-    try { localStorage.removeItem('gh_token'); sessionStorage.removeItem('gh_token'); } catch (e) {}
-  }
-  function verifyToken() {
-    return gh('/repos/' + CFG.owner + '/' + CFG.repo).then(function (r) {
-      if (!r.permissions || !r.permissions.push) throw new Error('Token has no write access to ' + CFG.owner + '/' + CFG.repo + '. Check Contents: Read and write.');
-      return true;
-    });
-  }
+  var needsSetup = false;
+  function authStatus() { return api('auth.php?action=status', undefined, { noAuthRedirect: true }); }
 
   /* ---------- load / publish ---------- */
   function loadSite() {
-    return getFile(CFG.dataPath).then(function (f) {
-      if (!f) throw new Error(CFG.dataPath + ' not found in repo');
-      state.sha = f.sha;
-      state.site = JSON.parse(utf8b64(f.content));
-      normalize(state.site);
-    });
+    return api('site.php').then(function (s) { state.site = s; normalize(state.site); });
   }
   function normalize(s) {
     s.home = s.home || {}; s.home.cover = s.home.cover || { desktop: '', mobile: '' };
@@ -230,18 +164,14 @@
     if (!state.dirty || state.busy) return;
     busy(1);
     var btn = $('#publish'); btn.textContent = 'Publishing…';
-    var json = JSON.stringify(state.site, null, 2) + '\n';
-    getSha(CFG.dataPath).then(function (sha) {
-      return putFile(CFG.dataPath, b64utf8(json), 'Update site content', sha || state.sha);
-    }).then(function (r) {
-      state.sha = r.content.sha;
+    api('site.php', state.site).then(function () {
       var dels = state.pendingDeletes.slice(); state.pendingDeletes = [];
       return dels.reduce(function (p, path) {
-        return p.then(function () { return deleteFile(path, 'Remove ' + path.split('/').pop()).catch(function () {}); });
+        return p.then(function () { return deleteFile(path).catch(function () {}); });
       }, Promise.resolve());
     }).then(function () {
       setDirty(false);
-      toast('Published. The site updates in about a minute.');
+      toast('Published — the site is updated.');
     }).catch(function (e) {
       toast('Publish failed: ' + e.message, true);
     }).then(function () {
@@ -442,33 +372,41 @@
   function showLogin(err) {
     $('#app').hidden = true;
     $('#login').hidden = false;
+    $('#login-sub').textContent = needsSetup ? 'First time here — create the admin password.' : 'Enter your password to edit the site.';
+    $('#pw-label').textContent = needsSetup ? 'New password (min 8 characters)' : 'Password';
+    $('#pw2-wrap').hidden = !needsSetup;
+    $('#password2').required = needsSetup;
+    $('#password').autocomplete = needsSetup ? 'new-password' : 'current-password';
+    $('#login-btn').textContent = needsSetup ? 'Create password' : 'Sign in';
     var e = $('#login-error');
     e.hidden = !err; e.textContent = err || '';
-    $('#login-btn').disabled = false; $('#login-btn').textContent = 'Sign in';
-  }
-  function signIn(token, remember) {
-    state.token = token;
-    return verifyToken().then(loadSite).then(function () {
-      saveToken(token, remember);
-      showApp();
-    });
+    $('#login-btn').disabled = false;
   }
 
   $('#login-form').addEventListener('submit', function (e) {
     e.preventDefault();
-    var token = $('#token').value.trim();
-    if (!token) return;
-    $('#login-btn').disabled = true; $('#login-btn').textContent = 'Signing in…';
-    signIn(token, $('#remember').checked).catch(function (err) {
-      state.token = null;
-      showLogin(err.message);
-    });
+    var pw = $('#password').value;
+    if (needsSetup && pw !== $('#password2').value) { showLogin('Passwords do not match'); return; }
+    var btn = $('#login-btn'); btn.disabled = true; btn.textContent = needsSetup ? 'Creating…' : 'Signing in…';
+    api('auth.php?action=' + (needsSetup ? 'setup' : 'login'), { password: pw, remember: $('#remember').checked }, { noAuthRedirect: true })
+      .then(function () { needsSetup = false; $('#password').value = ''; $('#password2').value = ''; return loadSite(); })
+      .then(showApp)
+      .catch(function (err) { showLogin(err.message); });
   });
   $('#logout').addEventListener('click', function () {
     if (state.dirty && !confirm('You have unsaved changes. Sign out anyway?')) return;
-    clearToken(); state.token = null; state.site = null; setDirty(false);
-    $('#token').value = '';
-    showLogin();
+    api('auth.php?action=logout', {}).catch(function () {}).then(function () {
+      state.site = null; setDirty(false); showLogin();
+    });
+  });
+  $('#pw-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var cur = $('#pw-current').value, nw = $('#pw-new').value, nw2 = $('#pw-new2').value;
+    if (nw !== nw2) { toast('New passwords do not match', true); return; }
+    api('auth.php?action=change', { current: cur, password: nw }).then(function () {
+      $('#pw-form').reset();
+      toast('Password changed');
+    }).catch(function (err) { toast(err.message, true); });
   });
   $('#publish').addEventListener('click', publish);
   $('#tabs').addEventListener('click', function (e) {
@@ -505,10 +443,9 @@
     if (savedTab) { var tb = $('.tab[data-tab="' + savedTab + '"]'); if (tb) tb.click(); }
   } catch (e) {}
 
-  var saved = loadToken();
-  if (saved) {
-    signIn(saved.token, saved.remember).catch(function (err) { clearToken(); showLogin(err.message); });
-  } else {
+  authStatus().then(function (st) {
+    needsSetup = !!st.setup;
+    if (st.signedIn) return loadSite().then(showApp);
     showLogin();
-  }
+  }).catch(function (err) { showLogin('Cannot reach the server: ' + err.message); });
 })();
