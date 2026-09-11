@@ -313,6 +313,11 @@
       .forEach(function (x) { var o = document.createElement('option'); o.value = x.c; o.textContent = flag(x.c) + ' ' + x.n; sel.appendChild(o); });
   }
 
+  // Kind is derived from the name: "cover" → cover up (asks for the old tattoo photo), "seminar" → no images.
+  function kindOf(name) {
+    var n = String(name).toLowerCase();
+    return /seminar/.test(n) ? 'seminar' : /cover/.test(n) ? 'coverup' : 'tattoo';
+  }
   function renderServices() {
     var list = $('#svc-list'); list.innerHTML = '';
     var items = state.site.booking.services;
@@ -323,14 +328,14 @@
       row.innerHTML =
         '<span class="handle">' + (i + 1) + '</span>' +
         '<input type="text">' +
-        '<select><option value="tattoo">Tattoo</option><option value="coverup">Cover up</option><option value="seminar">Seminar</option></select>' +
         '<button class="btn btn-small btn-icon" data-act="up" title="Move up">↑</button>' +
         '<button class="btn btn-small btn-icon" data-act="down" title="Move down">↓</button>' +
         '<button class="btn btn-small btn-icon btn-danger" data-act="del" title="Delete">✕</button>';
-      var input = $('input', row), sel = $('select', row);
-      input.value = s.name; sel.value = s.kind || 'tattoo';
-      input.addEventListener('input', function () { s.name = input.value; setDirty(true); });
-      sel.addEventListener('change', function () { s.kind = sel.value; setDirty(true); });
+      var input = $('input', row);
+      s.kind = kindOf(s.name);
+      input.value = s.name;
+      if (s.kind === 'seminar') { input.readOnly = true; $('[data-act=del]', row).disabled = true; $('[data-act=del]', row).title = 'Seminar can\'t be deleted'; }
+      input.addEventListener('input', function () { s.name = input.value; s.kind = kindOf(s.name); setDirty(true); });
       $('[data-act=up]', row).disabled = i === 0;
       $('[data-act=down]', row).disabled = i === items.length - 1;
       row.addEventListener('click', function (e) {
@@ -338,7 +343,7 @@
         if (!act) return;
         if (act === 'up') items.splice(i - 1, 0, items.splice(i, 1)[0]);
         if (act === 'down') items.splice(i + 1, 0, items.splice(i, 1)[0]);
-        if (act === 'del') { if (!confirm('Delete "' + s.name + '"?')) return; items.splice(i, 1); }
+        if (act === 'del') { if (s.kind === 'seminar' || !confirm('Delete "' + s.name + '"?')) return; items.splice(i, 1); }
         setDirty(true); renderServices();
       });
       list.appendChild(row);
@@ -612,7 +617,8 @@
     var items = state.site.booking.services;
     var id = slug(name), base = id, n = 2;
     while (items.some(function (s) { return s.id === id; })) id = base + '-' + n++;
-    items.push({ id: id, name: name, kind: $('#svc-kind').value });
+    if (kindOf(name) === 'seminar') { toast('Seminar already exists', true); return; }
+    items.push({ id: id, name: name, kind: kindOf(name) });
     inp.value = '';
     setDirty(true); renderServices();
   });
