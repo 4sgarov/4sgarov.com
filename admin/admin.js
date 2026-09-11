@@ -327,7 +327,8 @@
     files.reduce(function (p, file) {
       return p.then(function () {
         return uploadMedia(file, 'work', CFG.imageMax.work).then(function (path) {
-          works.push({ id: uid(), image: path, title: file.name.replace(/\.[^.]+$/, ''), category: defaultCat, link: '' });
+          // newest first — reorder later with ↑ ↓ if needed
+          works.unshift({ id: uid(), image: path, title: file.name.replace(/\.[^.]+$/, ''), category: defaultCat, link: '' });
           setDirty(true); renderWorks();
         });
       });
