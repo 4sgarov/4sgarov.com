@@ -15,17 +15,24 @@
 
 <div class="lang-modal">
   <div class="lang-box">
+    <button type="button" class="lang-close" aria-label="Close">×</button>
     <h2 class="lang-title" data-i18n="lang.title">Choose your language</h2>
-    <div class="lang-opts">
-      <button class="lang-opt" data-lang="en">English</button>
-      <button class="lang-opt" data-lang="ru">Русский</button>
-      <button class="lang-opt" data-lang="az">Azərbaycan</button>
+    <div class="lang-select">
+      <button type="button" class="lang-current" aria-haspopup="listbox" aria-expanded="false">
+        <span class="lang-current-label">English</span>
+        <span class="lang-chevron"></span>
+      </button>
+      <div class="lang-opts" role="listbox">
+        <button type="button" class="lang-opt" data-lang="en" role="option">English</button>
+        <button type="button" class="lang-opt" data-lang="ru" role="option">Русский</button>
+        <button type="button" class="lang-opt" data-lang="az" role="option">Azərbaycan</button>
+      </div>
     </div>
     <label class="lang-remember">
       <input type="checkbox" id="lang-remember">
       <span data-i18n="lang.remember">Remember my choice</span>
     </label>
-    <button class="lang-confirm" data-i18n="lang.confirm">Continue</button>
+    <button type="button" class="lang-confirm" data-i18n="lang.confirm">Continue</button>
   </div>
 </div>
 
@@ -40,11 +47,6 @@
       <a href="#" class="nav-link" data-i18n="nav.news">News</a>
       <a href="#" class="nav-link" data-i18n="nav.contact">Contact</a>
     </nav>
-    <div class="lang-switch">
-      <a href="#" data-lang="en">EN</a>
-      <a href="#" data-lang="ru">RU</a>
-      <a href="#" data-lang="az">AZ</a>
-    </div>
   </aside>
 
   <main class="blank-area"></main>

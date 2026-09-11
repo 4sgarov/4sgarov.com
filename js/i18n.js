@@ -35,17 +35,12 @@
     });
   }
 
-  function detect() {
-    var nav = (navigator.language || 'en').slice(0, 2).toLowerCase();
-    return T[nav] ? nav : 'en';
-  }
-
   var saved = read('lang');
   var remember = read('langRemember') === '1';
   var askedThisSession = false;
   try { askedThisSession = sessionStorage.getItem('langAsked') === '1'; } catch (e) {}
 
-  var current = saved || detect();
+  var current = saved || 'en';
   apply(current);
 
   // Language switcher links (in nav)
@@ -67,23 +62,53 @@
 
   var opts = modal.querySelectorAll('.lang-opt');
   var chk = modal.querySelector('#lang-remember');
+  var sel = modal.querySelector('.lang-select');
+  var cur = modal.querySelector('.lang-current');
+  var curLabel = modal.querySelector('.lang-current-label');
 
+  function setOpen(open) {
+    sel.classList.toggle('is-open', open);
+    cur.setAttribute('aria-expanded', open);
+  }
   function select(lang) {
     current = lang;
-    opts.forEach(function (b) { b.classList.toggle('is-selected', b.getAttribute('data-lang') === lang); });
+    opts.forEach(function (b) {
+      var on = b.getAttribute('data-lang') === lang;
+      b.classList.toggle('is-selected', on);
+      if (on) curLabel.textContent = b.textContent;
+    });
     apply(lang);
   }
+  cur.addEventListener('click', function () { setOpen(!sel.classList.contains('is-open')); });
   opts.forEach(function (b) {
-    b.addEventListener('click', function () { select(b.getAttribute('data-lang')); });
+    b.addEventListener('click', function () { select(b.getAttribute('data-lang')); setOpen(false); });
+  });
+  document.addEventListener('click', function (e) {
+    if (!sel.contains(e.target)) setOpen(false);
   });
   select(current);
+
+  function close() {
+    try { sessionStorage.setItem('langAsked', '1'); } catch (e) {}
+    document.body.classList.remove('lang-modal-open');
+    modal.classList.add('is-hidden');
+    setTimeout(function () { modal.remove(); }, 300);
+  }
 
   modal.querySelector('.lang-confirm').addEventListener('click', function () {
     store('lang', current);
     store('langRemember', chk.checked ? '1' : '0');
-    try { sessionStorage.setItem('langAsked', '1'); } catch (e) {}
-    modal.classList.add('is-hidden');
-    setTimeout(function () { modal.remove(); }, 300);
+    close();
+  });
+  // X / Esc: dismiss without choosing — revert to saved language or English
+  function dismiss() {
+    current = saved || 'en';
+    apply(current);
+    close();
+  }
+  modal.querySelector('.lang-close').addEventListener('click', dismiss);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && document.body.contains(modal)) dismiss();
   });
 
   document.body.classList.add('lang-modal-open');
