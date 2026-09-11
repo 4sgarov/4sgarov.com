@@ -364,20 +364,11 @@
         '<button class="btn btn-small btn-icon" data-act="up" title="Move up">↑</button>' +
         '<button class="btn btn-small btn-icon" data-act="down" title="Move down">↓</button>' +
         '<button class="btn btn-small btn-icon btn-danger" data-act="del" title="Delete">✕</button>' +
-        '<div class="loc-blocked"><span class="lb-label">Full dates:</span><span class="lb-chips"></span>' +
-          '<input type="date" class="lb-date"><button type="button" class="btn btn-small" data-act="block">Mark full</button></div>';
+        '<div class="loc-cal"><div class="loc-cal-head"><span class="lc-title"></span><span class="lc-hint">Tap a day to mark it full / free. Green = confirmed booking.</span></div><div class="lc-grid"></div></div>';
       $('.flag', row).textContent = flag(l.code);
       $('.loc-country', row).textContent = l.country;
       l.blocked = l.blocked || [];
-      var chips = $('.lb-chips', row);
-      l.blocked.slice().sort().forEach(function (d) {
-        var chip = document.createElement('span'); chip.className = 'chip';
-        chip.innerHTML = '<span></span><button type="button" title="Unblock">✕</button>';
-        chip.firstChild.textContent = fmtDate(d);
-        chip.lastChild.addEventListener('click', function () { l.blocked = l.blocked.filter(function (x) { return x !== d; }); setDirty(true); renderLocations(); });
-        chips.appendChild(chip);
-      });
-      if (!l.blocked.length) chips.innerHTML = '<span class="lb-none">none</span>';
+      renderLocCal(row, l);
       $$('[data-k]', row).forEach(function (inp) {
         inp.value = l[inp.dataset.k] || '';
         inp.addEventListener('input', function () { l[inp.dataset.k] = inp.value; setDirty(true); });
@@ -390,15 +381,51 @@
         if (act === 'up') items.splice(i - 1, 0, items.splice(i, 1)[0]);
         if (act === 'down') items.splice(i + 1, 0, items.splice(i, 1)[0]);
         if (act === 'del') { if (!confirm('Delete ' + l.city + '?')) return; items.splice(i, 1); }
-        if (act === 'block') {
-          var d = $('.lb-date', row).value;
-          if (!d) { toast('Pick a date first', true); return; }
-          if (l.blocked.indexOf(d) < 0) l.blocked.push(d);
-        }
         setDirty(true); renderLocations();
       });
       list.appendChild(row);
     });
+  }
+
+  /* Per-city calendar: shows the trip (or the next 3 months), blocked days and confirmed bookings. */
+  function isoDate(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  var locView = {}; // location id -> month offset
+  function renderLocCal(row, l) {
+    var grid = $('.lc-grid', row), title = $('.lc-title', row);
+    var todayS = isoDate(new Date());
+    var startS = l.from && l.from > todayS ? l.from : todayS;
+    var endS = l.to || isoDate(new Date(new Date().getFullYear(), new Date().getMonth() + 3, 0));
+    var sp = startS.split('-');
+    var base = new Date(+sp[0], sp[1] - 1, 1);
+    var off = locView[l.id] || 0;
+    var first = new Date(base.getFullYear(), base.getMonth() + off, 1);
+    var last = new Date(first.getFullYear(), first.getMonth() + 1, 0);
+    var confirmedDays = {};
+    requests.forEach(function (r) { if (r.status === 'confirmed' && r.location && r.location.id === l.id) confirmedDays[r.date] = r.firstName + ' ' + r.lastName; });
+    var canPrev = off > 0, canNext = isoDate(new Date(first.getFullYear(), first.getMonth() + 1, 1)) <= endS;
+    title.innerHTML = '<button type="button" class="btn btn-small btn-icon" data-lc="-1"' + (canPrev ? '' : ' disabled') + '>‹</button> <b>' +
+      first.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' }) + '</b> <button type="button" class="btn btn-small btn-icon" data-lc="1"' + (canNext ? '' : ' disabled') + '>›</button>';
+    var html = '';
+    ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'].forEach(function (d) { html += '<span class="lc-wd">' + d + '</span>'; });
+    for (var i = 0; i < (first.getDay() + 6) % 7; i++) html += '<span></span>';
+    for (var d = 1; d <= last.getDate(); d++) {
+      var ds = isoDate(new Date(first.getFullYear(), first.getMonth(), d));
+      var out = ds < startS || ds > endS;
+      var cls = 'lc-day' + (out ? ' is-out' : '') + (l.blocked.indexOf(ds) >= 0 ? ' is-full' : '') + (confirmedDays[ds] ? ' is-booked' : '');
+      html += '<button type="button" class="' + cls + '" data-d="' + ds + '"' + (out || confirmedDays[ds] ? ' disabled' : '') +
+        (confirmedDays[ds] ? ' title="' + confirmedDays[ds].replace(/"/g, '') + '"' : '') + '>' + d + '</button>';
+    }
+    grid.innerHTML = html;
+    title.onclick = function (e) {
+      var b = e.target.closest('[data-lc]'); if (!b || b.disabled) return;
+      locView[l.id] = off + (+b.dataset.lc); renderLocCal(row, l);
+    };
+    grid.onclick = function (e) {
+      var b = e.target.closest('.lc-day'); if (!b || b.disabled) return;
+      var ds = b.dataset.d, i = l.blocked.indexOf(ds);
+      if (i >= 0) l.blocked.splice(i, 1); else l.blocked.push(ds);
+      setDirty(true); renderLocCal(row, l);
+    };
   }
 
   var requests = [];
@@ -408,7 +435,7 @@
     return new Date(+p[0], p[1] - 1, +p[2]).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
   }
   function loadRequests() {
-    return api('bookings.php').then(function (r) { requests = r; renderRequests(); }).catch(function (e) { toast(e.message, true); });
+    return api('bookings.php').then(function (r) { requests = r; renderRequests(); renderLocations(); }).catch(function (e) { toast(e.message, true); });
   }
   function renderRequests() {
     var list = $('#req-list'); list.innerHTML = '';
