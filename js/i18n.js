@@ -30,9 +30,6 @@
       var key = el.getAttribute('data-i18n');
       if (d[key] !== undefined) el.textContent = d[key];
     });
-    document.querySelectorAll('.lang-switch a').forEach(function (a) {
-      a.classList.toggle('is-active', a.getAttribute('data-lang') === lang);
-    });
   }
 
   var saved = read('lang');
@@ -42,16 +39,6 @@
 
   var current = saved || 'en';
   apply(current);
-
-  // Language switcher links (in nav)
-  document.querySelectorAll('.lang-switch a').forEach(function (a) {
-    a.addEventListener('click', function (e) {
-      e.preventDefault();
-      current = a.getAttribute('data-lang');
-      store('lang', current);
-      apply(current);
-    });
-  });
 
   // Entry modal
   var modal = document.querySelector('.lang-modal');

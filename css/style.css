@@ -170,21 +170,6 @@ a { color: inherit; text-decoration: none; }
   .about-name { font-size: 2rem; }
 }
 
-/* ---------- Language switcher ---------- */
-.lang-switch {
-  display: flex;
-  gap: 16px;
-  margin-top: 32px;
-  font-size: 0.95rem;
-  letter-spacing: 0.08em;
-}
-.lang-switch a { color: var(--muted); transition: color 0.2s ease; }
-.lang-switch a:hover,
-.lang-switch a.is-active { color: var(--text); }
-.drawer .lang-switch a { color: #777; }
-.drawer .lang-switch a:hover,
-.drawer .lang-switch a.is-active { color: #fff; }
-
 /* ---------- Language modal ---------- */
 .lang-modal {
   position: fixed;
