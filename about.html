@@ -10,7 +10,19 @@
 </head>
 <body class="about-page">
 
-<a href="index.html" class="back-link">← Back</a>
+<button class="menu-btn" aria-label="Open menu" aria-expanded="false">
+  <span></span><span></span><span></span>
+</button>
+
+<div class="drawer-overlay"></div>
+<nav class="drawer">
+  <a href="about.html" class="nav-link">About me</a>
+  <a href="#" class="nav-link">Portfolio</a>
+  <a href="#" class="nav-link">Book now</a>
+  <a href="#" class="nav-link">Academy</a>
+  <a href="#" class="nav-link">News</a>
+  <a href="#" class="nav-link">Contact</a>
+</nav>
 
 <section class="hero">
   <!-- <img src="assets/img/about.jpg" alt="Rauf Asgarov" class="hero-img"> -->
@@ -23,5 +35,6 @@
   </p>
 </section>
 
+<script src="js/menu.js"></script>
 </body>
 </html>
