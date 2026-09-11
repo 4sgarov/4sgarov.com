@@ -269,8 +269,9 @@ a { color: inherit; text-decoration: none; }
   display: block;
   border-radius: 10px;
   overflow: hidden;
-  background: #1c1c1c;
-  color: #fff;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
   transition: transform 0.25s ease;
 }
 a.card:hover { transform: translateY(-4px); }
@@ -296,7 +297,7 @@ a.card:hover { transform: translateY(-4px); }
 .card-genre {
   font-size: 0.95rem;
   font-weight: 300;
-  color: #aaa;
+  color: var(--muted);
 }
 
 @media (max-width: 900px) {
