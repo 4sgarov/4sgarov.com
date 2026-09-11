@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Admin — Rauf Asgarov</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin">
+
+<!-- ===== Login ===== -->
+<section id="login" class="login" hidden>
+  <form class="login-box" id="login-form">
+    <h1 class="login-title">Admin</h1>
+    <p class="login-sub">Sign in with your GitHub token to edit the site.</p>
+    <label class="field">
+      <span>GitHub token</span>
+      <input type="password" id="token" autocomplete="current-password" placeholder="github_pat_…" required>
+    </label>
+    <label class="check">
+      <input type="checkbox" id="remember" checked>
+      <span>Stay signed in on this device</span>
+    </label>
+    <button type="submit" class="btn btn-primary" id="login-btn">Sign in</button>
+    <p class="login-error" id="login-error" hidden></p>
+    <details class="help">
+      <summary>How to create a token</summary>
+      <ol>
+        <li>Open <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com/settings/personal-access-tokens/new</a></li>
+        <li>Name: <b>site admin</b>, Expiration: 1 year (or no expiration)</li>
+        <li>Repository access → <b>Only select repositories</b> → <b>4sgarov.com</b></li>
+        <li>Permissions → Repository permissions → <b>Contents: Read and write</b></li>
+        <li>Generate, copy the token and paste it above</li>
+      </ol>
+    </details>
+  </form>
+</section>
+
+<!-- ===== App ===== -->
+<div id="app" class="app" hidden>
+  <header class="topbar">
+    <div class="brand">Admin <span class="brand-sub">4sgarov.com</span></div>
+    <div class="topbar-actions">
+      <span class="status" id="status"></span>
+      <button class="btn btn-primary" id="publish" disabled>Publish</button>
+      <button class="btn btn-ghost" id="logout" title="Sign out">Sign out</button>
+    </div>
+  </header>
+
+  <nav class="tabs" id="tabs">
+    <button class="tab is-active" data-tab="home">Home</button>
+    <button class="tab" data-tab="about">About me</button>
+    <button class="tab" data-tab="portfolio">Portfolio</button>
+  </nav>
+
+  <main class="content">
+
+    <!-- Home -->
+    <section class="panel is-active" data-panel="home">
+      <h2 class="panel-title">Home cover</h2>
+      <p class="hint">Full-screen background on the main page. Image, GIF or video (MP4). Video plays automatically, muted and looped.</p>
+      <div class="media-row">
+        <div class="media-slot" data-media="home.cover.desktop">
+          <div class="media-label">Desktop <small>16:9 · min 1920×1080</small></div>
+          <div class="media-preview"></div>
+          <div class="media-actions">
+            <label class="btn btn-small">Upload<input type="file" accept="image/*,video/mp4,video/webm,.gif" hidden></label>
+            <button class="btn btn-small btn-danger media-remove">Remove</button>
+          </div>
+        </div>
+        <div class="media-slot" data-media="home.cover.mobile">
+          <div class="media-label">Mobile <small>9:16 · min 1080×1920</small></div>
+          <div class="media-preview"></div>
+          <div class="media-actions">
+            <label class="btn btn-small">Upload<input type="file" accept="image/*,video/mp4,video/webm,.gif" hidden></label>
+            <button class="btn btn-small btn-danger media-remove">Remove</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section class="panel" data-panel="about">
+      <h2 class="panel-title">About me — hero</h2>
+      <p class="hint">Full-screen media at the top of the About page.</p>
+      <div class="media-row">
+        <div class="media-slot" data-media="about.hero.desktop">
+          <div class="media-label">Desktop <small>16:9</small></div>
+          <div class="media-preview"></div>
+          <div class="media-actions">
+            <label class="btn btn-small">Upload<input type="file" accept="image/*,video/mp4,video/webm,.gif" hidden></label>
+            <button class="btn btn-small btn-danger media-remove">Remove</button>
+          </div>
+        </div>
+        <div class="media-slot" data-media="about.hero.mobile">
+          <div class="media-label">Mobile <small>9:16</small></div>
+          <div class="media-preview"></div>
+          <div class="media-actions">
+            <label class="btn btn-small">Upload<input type="file" accept="image/*,video/mp4,video/webm,.gif" hidden></label>
+            <button class="btn btn-small btn-danger media-remove">Remove</button>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="panel-title">Text</h2>
+      <div class="form-grid">
+        <label class="field"><span>Name</span><input type="text" data-bind="about.name"></label>
+        <label class="field"><span>Role</span><input type="text" data-bind="about.role"></label>
+      </div>
+      <div class="form-grid">
+        <div class="field-group">
+          <label class="field"><span>Column 1 — heading</span><input type="text" data-bind="about.columns.0.heading"></label>
+          <label class="field"><span>Column 1 — text</span><textarea rows="8" data-bind="about.columns.0.text"></textarea></label>
+        </div>
+        <div class="field-group">
+          <label class="field"><span>Column 2 — heading</span><input type="text" data-bind="about.columns.1.heading"></label>
+          <label class="field"><span>Column 2 — text</span><textarea rows="8" data-bind="about.columns.1.text"></textarea></label>
+        </div>
+      </div>
+    </section>
+
+    <!-- Portfolio -->
+    <section class="panel" data-panel="portfolio">
+      <h2 class="panel-title">Categories</h2>
+      <p class="hint">Shown as filters above the works and under each work. Order here = order on the site.</p>
+      <div class="list" id="cat-list"></div>
+      <form class="add-row" id="cat-add">
+        <input type="text" placeholder="New category name" required>
+        <button type="submit" class="btn btn-small">Add</button>
+      </form>
+
+      <h2 class="panel-title">Works</h2>
+      <p class="hint">Upload a 3:4 image (portrait). Use ↑ ↓ to order — first is shown first. Link is optional; the card opens it when clicked.</p>
+      <div class="works-toolbar">
+        <label class="btn btn-primary">Upload images<input type="file" id="work-add" accept="image/*" multiple hidden></label>
+        <span class="hint" id="work-count"></span>
+      </div>
+      <div class="works" id="work-list"></div>
+    </section>
+
+  </main>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script src="admin.js"></script>
+</body>
+</html>
