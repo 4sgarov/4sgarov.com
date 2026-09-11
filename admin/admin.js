@@ -327,13 +327,16 @@
       row.innerHTML =
         '<span class="handle">' + (i + 1) + '</span>' +
         '<input type="text">' +
+        '<span class="kind-tag"></span>' +
         '<button class="btn btn-small btn-icon" data-act="up" title="Move up">↑</button>' +
         '<button class="btn btn-small btn-icon" data-act="down" title="Move down">↓</button>' +
         '<button class="btn btn-small btn-icon btn-danger" data-act="del" title="Delete">✕</button>';
-      var input = $('input', row);
+      var input = $('input', row), tag = $('.kind-tag', row);
       s.kind = kindOf(s.name);
       input.value = s.name;
-      input.addEventListener('input', function () { s.name = input.value; s.kind = kindOf(s.name); setDirty(true); });
+      function showKind() { tag.textContent = s.kind === 'coverup' ? '2 images' : '1 image'; tag.classList.toggle('is-two', s.kind === 'coverup'); }
+      showKind();
+      input.addEventListener('input', function () { s.name = input.value; s.kind = kindOf(s.name); showKind(); setDirty(true); });
       $('[data-act=up]', row).disabled = i === 0;
       $('[data-act=down]', row).disabled = i === items.length - 1;
       row.addEventListener('click', function (e) {

@@ -276,6 +276,8 @@
 .add-row select, .loc-add select, .loc-add input { padding: 10px 12px; border: 1px solid #ddd; border-radius: 8px; background: #fff; font: inherit; font-size: 0.95rem; color: var(--text); }
 .list-row select { padding: 8px 10px; border: 1px solid transparent; border-radius: 8px; background: transparent; font: inherit; font-size: 0.9rem; color: var(--muted); }
 .list-row select:hover { border-color: #ddd; background: #fff; }
+.kind-tag { font-size: 0.75rem; color: var(--muted); background: #f0f0f0; padding: 3px 8px; border-radius: 6px; white-space: nowrap; }
+.kind-tag.is-two { background: #111; color: #fff; }
 .list-row .flag { font-size: 1.3rem; width: 28px; text-align: center; }
 .list-row .loc-fields { flex: 1; display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 8px; }
 .list-row .loc-fields input { border-color: transparent; background: transparent; padding: 8px 6px; }
