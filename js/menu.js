@@ -1,6 +1,5 @@
 (function () {
   var btn = document.querySelector('.menu-btn');
-  var overlay = document.querySelector('.drawer-overlay');
   if (!btn) return;
 
   function toggle(open) {
@@ -11,7 +10,6 @@
   }
 
   btn.addEventListener('click', function () { toggle(); });
-  overlay.addEventListener('click', function () { toggle(false); });
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') toggle(false);
   });
