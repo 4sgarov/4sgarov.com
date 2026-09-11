@@ -44,6 +44,14 @@
       {
         "id": "lettering",
         "name": "Lettering"
+      },
+      {
+        "id": "poprealism",
+        "name": "Poprealism"
+      },
+      {
+        "id": "b-g-realism",
+        "name": "B&G Realism"
       }
     ],
     "works": [
