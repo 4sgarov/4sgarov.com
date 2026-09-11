@@ -120,7 +120,7 @@
         });
       }
       if (S.academy) {
-        bindMedia(document.querySelector('.academy-page .hero'), S.academy.hero);
+        bindMedia(document.querySelector('.academy-hero .hero'), S.academy.hero);
         text('.academy-headline', S.academy.headline);
         text('.academy-text', S.academy.text);
       }
