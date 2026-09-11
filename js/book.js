@@ -22,9 +22,18 @@
 
   /* ---- calendar ---- */
   var view = null; // first day of the month being shown
+  var collapsed = false;
   function renderCal() {
     var l = locations[locSel.value];
+    var legend = document.querySelector('.cal-legend');
+    legend.hidden = !l || (collapsed && !!dateInp.value);
     if (!l) { cal.innerHTML = '<div class="cal-empty">Choose a city first</div>'; return; }
+    if (collapsed && dateInp.value) {
+      var p0 = dateInp.value.split('-');
+      cal.innerHTML = '<div class="cal-picked"><span>' + new Date(+p0[0], p0[1] - 1, +p0[2]).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' }) + '</span>' +
+        '<button type="button" class="cal-change">Change</button></div>';
+      return;
+    }
     var min = today(); if (l.from && l.from > min) min = l.from;
     var max = l.to || '';
     var full = taken[l.id] || [];
@@ -55,7 +64,8 @@
     var nav = e.target.closest('.cal-nav');
     if (nav) { view = new Date(view.getFullYear(), view.getMonth() + (+nav.dataset.nav), 1); renderCal(); return; }
     var day = e.target.closest('.cal-day');
-    if (day && !day.disabled) { dateInp.value = day.dataset.d; renderCal(); }
+    if (day && !day.disabled) { dateInp.value = day.dataset.d; collapsed = true; renderCal(); }
+    if (e.target.closest('.cal-change')) { collapsed = false; renderCal(); }
   });
 
   fetch('api/availability.php', { cache: 'no-store' }).then(function (r) { return r.json(); })
@@ -83,7 +93,7 @@
   locSel.addEventListener('change', function () {
     var l = locations[locSel.value];
     dateInp.value = '';
-    view = null;
+    view = null; collapsed = false;
     renderCal();
     document.getElementById('loc-note').textContent = l && l.from
       ? 'In ' + l.city + ': ' + fmt(l.from) + (l.to ? ' – ' + fmt(l.to) : '') : '';
@@ -93,9 +103,8 @@
     var s = services[svcSel.value];
     var kind = s ? s.kind : '';
     images.hidden = !s || kind === 'seminar';
-    up2.querySelector('.bf-upload-label').innerHTML = kind === 'coverup'
-      ? 'Photo of the tattoo to cover <em>required</em>'
-      : 'Second image <em>optional</em>';
+    up2.hidden = kind !== 'coverup';
+    images.classList.toggle('single', kind !== 'coverup');
     form.elements.image2.required = kind === 'coverup';
     form.elements.image1.required = !!s && kind !== 'seminar';
     var idea = form.elements.idea;

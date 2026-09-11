@@ -162,6 +162,7 @@
     s.booking = s.booking || {};
     s.booking.intro = s.booking.intro || '';
     s.booking.services = s.booking.services || [];
+    if (!s.booking.services.some(function (x) { return /seminar/i.test(x.name); })) s.booking.services.push({ id: 'seminar', name: 'Seminar', kind: 'seminar' });
     s.booking.locations = s.booking.locations || [];
     s.booking.notifyEmail = s.booking.notifyEmail || '';
   }

@@ -409,6 +409,9 @@ a.card:hover { transform: translateY(-4px); }
   color: #b0b0b0; text-decoration: line-through; cursor: not-allowed;
 }
 .cal-day.is-sel { background: #111; color: #fff; }
+.cal-picked { display: flex; align-items: center; justify-content: space-between; font-size: 1rem; padding: 2px 4px; }
+.cal-change { background: none; border: 0; font: inherit; font-size: 0.9rem; color: var(--muted); text-decoration: underline; cursor: pointer; }
+.cal-change:hover { color: var(--text); }
 .cal-legend { display: flex; gap: 18px; font-size: 0.8rem; color: var(--muted); }
 .cal-legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -2px; margin-right: 5px; }
 .lg-free { background: var(--surface-2); }
@@ -419,6 +422,8 @@ a.card:hover { transform: translateY(-4px); }
 .bf-note:empty { display: none; }
 
 .bf-images { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.bf-images.single { grid-template-columns: 1fr; max-width: 340px; }
+.bf-upload[hidden] { display: none; }
 .bf-upload { display: flex; flex-direction: column; gap: 8px; }
 .bf-upload-label { font-size: 0.9rem; color: var(--muted); }
 .bf-upload-label em { font-style: normal; color: var(--red); }

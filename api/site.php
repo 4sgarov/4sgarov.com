@@ -4,7 +4,10 @@ require __DIR__ . '/config.php';
 ensure_dirs();
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-  json_out(read_json(SITE_FILE, read_json(SITE_DEFAULT, new stdClass())));
+  /* Fill in sections added after the site was first installed. */
+  $site = read_json(SITE_FILE, []);
+  foreach (read_json(SITE_DEFAULT, []) as $k => $v) if (!isset($site[$k])) $site[$k] = $v;
+  json_out($site ?: new stdClass());
 }
 
 require_same_origin();

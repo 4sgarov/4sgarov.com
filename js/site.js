@@ -100,6 +100,13 @@
     })
     .then(function (r) { return r.json(); })
     .then(function (S) {
+      // Sections added after the site was first installed come from the defaults.
+      return fetch('data/site.default.json?v=' + Date.now(), { cache: 'no-store' })
+        .then(function (r) { return r.json(); })
+        .then(function (D) { Object.keys(D).forEach(function (k) { if (S[k] === undefined) S[k] = D[k]; }); return S; })
+        .catch(function () { return S; });
+    })
+    .then(function (S) {
       bindMedia(document.querySelector('.cover'), S.home && S.home.cover);
       if (S.about) {
         bindMedia(document.querySelector('.hero'), S.about.hero);
