@@ -35,6 +35,24 @@
     window.matchMedia(MOBILE).addEventListener('change', update);
   }
 
+  // Plain text → paragraphs; lines starting with "•" or "-" become a bulleted list.
+  function richText(el, value) {
+    el.innerHTML = '';
+    var list = null;
+    String(value).split('\n').forEach(function (line) {
+      var t = line.trim();
+      if (!t) { list = null; return; }
+      var m = /^[•\-–*]\s*(.+)$/.exec(t);
+      if (m) {
+        if (!list) { list = document.createElement('ul'); el.appendChild(list); }
+        var li = document.createElement('li'); li.textContent = m[1]; list.appendChild(li);
+      } else {
+        list = null;
+        var pEl = document.createElement('p'); pEl.textContent = t; el.appendChild(pEl);
+      }
+    });
+  }
+
   function text(sel, value) {
     var el = document.querySelector(sel);
     if (el && value !== undefined) el.textContent = value;
@@ -127,7 +145,7 @@
         (S.academy.programs || []).forEach(function (p, i) {
           if (!progs[i]) return;
           progs[i].querySelector('.program-title').textContent = p.title || '';
-          progs[i].querySelector('.program-text').textContent = p.text || '';
+          richText(progs[i].querySelector('.program-text'), p.text || '');
           progs[i].querySelector('.program-btn').href = p.link || 'book.html';
         });
       }
