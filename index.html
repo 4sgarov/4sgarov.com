@@ -13,20 +13,43 @@
 </head>
 <body class="home">
 
+<div class="lang-modal">
+  <div class="lang-box">
+    <h2 class="lang-title" data-i18n="lang.title">Choose your language</h2>
+    <div class="lang-opts">
+      <button class="lang-opt" data-lang="en">English</button>
+      <button class="lang-opt" data-lang="ru">Русский</button>
+      <button class="lang-opt" data-lang="az">Azərbaycan</button>
+    </div>
+    <label class="lang-remember">
+      <input type="checkbox" id="lang-remember">
+      <span data-i18n="lang.remember">Remember my choice</span>
+    </label>
+    <button class="lang-confirm" data-i18n="lang.confirm">Continue</button>
+  </div>
+</div>
+
+
 <div class="page">
   <aside class="sidebar">
     <nav class="sidebar-nav">
-      <a href="about.html" class="nav-link">About me</a>
-      <a href="#" class="nav-link">Portfolio</a>
-      <a href="#" class="nav-link">Book now</a>
-      <a href="#" class="nav-link">Academy</a>
-      <a href="#" class="nav-link">News</a>
-      <a href="#" class="nav-link">Contact</a>
+      <a href="about.html" class="nav-link" data-i18n="nav.about">About me</a>
+      <a href="#" class="nav-link" data-i18n="nav.portfolio">Portfolio</a>
+      <a href="#" class="nav-link" data-i18n="nav.book">Book now</a>
+      <a href="#" class="nav-link" data-i18n="nav.academy">Academy</a>
+      <a href="#" class="nav-link" data-i18n="nav.news">News</a>
+      <a href="#" class="nav-link" data-i18n="nav.contact">Contact</a>
     </nav>
+    <div class="lang-switch">
+      <a href="#" data-lang="en">EN</a>
+      <a href="#" data-lang="ru">RU</a>
+      <a href="#" data-lang="az">AZ</a>
+    </div>
   </aside>
 
   <main class="blank-area"></main>
 </div>
 
+<script src="js/i18n.js"></script>
 </body>
 </html>
