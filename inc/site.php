@@ -56,6 +56,36 @@ function seo_head(string $page, array $o = []): void {
     'contact'   => ['Contact — Rauf Asgarov, Tattoo Artist in Baku', 'Contact Rauf Asgarov — guest spots, Instagram, WhatsApp and studio location in Baku.', 'contact.html'],
   ][$page];
   [$title, $desc, $path] = $meta;
+
+  /* Build descriptions from the real site content so they follow what's on the pages */
+  $cats = array_values(array_filter(array_map(fn($c) => (string)($c['name'] ?? ''), (array)($S['portfolio']['categories'] ?? []))));
+  $catList = $cats ? implode(', ', array_slice($cats, 0, 6)) : 'realism, black & grey, fine line, cover up';
+  $clip = fn(string $t, int $n) => mb_strlen($t) > $n ? rtrim(mb_substr($t, 0, $n - 1)) . '…' : $t;
+  switch ($page) {
+    case 'index':
+      $desc = 'Rauf Asgarov — professional tattoo artist in Baku, Azerbaijan. ' . ucfirst($catList) . '. Portfolio, booking, guest spots and tattoo academy.';
+      break;
+    case 'about':
+      $t = trim((string)(($S['about']['columns'][0]['text'] ?? '')));
+      if ($t) $desc = 'Rauf Asgarov, tattoo artist in Baku. ' . $clip(preg_replace('/\s+/', ' ', $t), 130);
+      break;
+    case 'portfolio':
+      $desc = 'Tattoo portfolio of Rauf Asgarov — ' . $catList . '. Tattoo artist in Baku, Azerbaijan, with guest spots abroad.';
+      break;
+    case 'academy':
+      $progs = array_values(array_filter(array_map(fn($p) => (string)($p['title'] ?? ''), (array)($S['academy']['programs'] ?? []))));
+      $hl = preg_replace('/\s+/', ' ', trim((string)($S['academy']['headline'] ?? '')));
+      $desc = 'Tattoo academy by Rauf Asgarov' . ($progs ? ': ' . implode(', ', $progs) : '') . '. ' . $clip($hl ?: (string)($S['academy']['text'] ?? ''), 90);
+      break;
+    case 'news':
+      $titles = array_values(array_filter(array_map(fn($p) => (string)($p['title'] ?? ''), array_slice((array)($S['news']['posts'] ?? []), 0, 3))));
+      if ($titles) $desc = 'News and articles from tattoo artist Rauf Asgarov: ' . implode(' · ', $titles) . '.';
+      break;
+    case 'contact':
+      $cities = array_values(array_filter(array_map(fn($l) => !empty($l['from']) ? (string)$l['city'] : '', (array)($S['booking']['locations'] ?? []))));
+      $desc = 'Contact tattoo artist Rauf Asgarov in Baku' . ($cities ? ' — upcoming guest spots: ' . implode(', ', $cities) : '') . '. Instagram, WhatsApp, studio location.';
+      break;
+  }
   $ov = (array)($S['seo']['pages'][$page] ?? []);
   if (!empty($ov['title'])) $title = $ov['title'];
   if (!empty($ov['description'])) $desc = $ov['description'];
