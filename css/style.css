@@ -287,6 +287,7 @@ a { color: inherit; text-decoration: none; }
   flex: 1;
 }
 .program-text p + p, .program-text p + ul { margin-top: 14px; }
+.program-logo { display: block; max-width: 160px; max-height: 90px; margin: 22px 0 18px; object-fit: contain; }
 .program-text ul { list-style: none; padding: 0; }
 .program-text li { position: relative; padding-left: 20px; font-size: 1.25rem; font-weight: 400; line-height: 1.6; }
 .program-text li::before {

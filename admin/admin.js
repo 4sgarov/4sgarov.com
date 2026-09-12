@@ -163,6 +163,7 @@
     s.academy.headline = s.academy.headline || ''; s.academy.text = s.academy.text || '';
     s.academy.programs = s.academy.programs || [];
     while (s.academy.programs.length < 3) s.academy.programs.push({ title: '', text: '' });
+    s.academy.programs.forEach(function (p) { p.image = p.image || ''; p.price = p.price || ''; p.link = p.link || 'book.html'; });
     s.booking = s.booking || {};
     s.booking.intro = s.booking.intro || '';
     s.booking.services = s.booking.services || [];
@@ -551,6 +552,7 @@
     $$('.media-slot').forEach(function (slot) {
       var path = slot.dataset.media;
       var isCover = /cover|hero/.test(path);
+      if (/programs/.test(path)) isCover = false;
       $('input[type=file]', slot).addEventListener('change', function () {
         var file = this.files[0]; if (!file) return;
         this.value = '';

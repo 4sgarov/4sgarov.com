@@ -6,8 +6,8 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Admin — Rauf Asgarov</title>
 <link rel="icon" href="data:,">
-<link rel="stylesheet" href="../css/style.css?v=202609111719">
-<link rel="stylesheet" href="admin.css?v=202609111719">
+<link rel="stylesheet" href="../css/style.css?v=202609111725">
+<link rel="stylesheet" href="admin.css?v=202609111725">
 </head>
 <body class="admin">
 
@@ -204,18 +204,42 @@
         <div class="field-group">
           <label class="field"><span>1 — title</span><input type="text" data-bind="academy.programs.0.title"></label>
           <label class="field"><span>1 — text</span><textarea rows="6" data-bind="academy.programs.0.text"></textarea></label>
+          <div class="media-slot media-slot--small" data-media="academy.programs.0.image">
+            <div class="media-label">1 — logo <small>PNG, optional</small></div>
+            <div class="media-preview"></div>
+            <div class="media-actions">
+              <label class="btn btn-small">Upload<input type="file" accept="image/*" hidden></label>
+              <button class="btn btn-small btn-danger media-remove">Remove</button>
+            </div>
+          </div>
           <label class="field"><span>1 — price (e.g. $150 or Free; empty = hidden)</span><input type="text" data-bind="academy.programs.0.price" placeholder="$150"></label>
           <label class="field"><span>1 — "Choose" opens</span><input type="text" data-bind="academy.programs.0.link" placeholder="book.html"></label>
         </div>
         <div class="field-group">
           <label class="field"><span>2 — title</span><input type="text" data-bind="academy.programs.1.title"></label>
           <label class="field"><span>2 — text</span><textarea rows="6" data-bind="academy.programs.1.text"></textarea></label>
+          <div class="media-slot media-slot--small" data-media="academy.programs.1.image">
+            <div class="media-label">2 — logo <small>PNG, optional</small></div>
+            <div class="media-preview"></div>
+            <div class="media-actions">
+              <label class="btn btn-small">Upload<input type="file" accept="image/*" hidden></label>
+              <button class="btn btn-small btn-danger media-remove">Remove</button>
+            </div>
+          </div>
           <label class="field"><span>2 — price (e.g. $150 or Free; empty = hidden)</span><input type="text" data-bind="academy.programs.1.price" placeholder="$150"></label>
           <label class="field"><span>2 — "Choose" opens</span><input type="text" data-bind="academy.programs.1.link" placeholder="book.html"></label>
         </div>
         <div class="field-group">
           <label class="field"><span>3 — title</span><input type="text" data-bind="academy.programs.2.title"></label>
           <label class="field"><span>3 — text</span><textarea rows="6" data-bind="academy.programs.2.text"></textarea></label>
+          <div class="media-slot media-slot--small" data-media="academy.programs.2.image">
+            <div class="media-label">3 — logo <small>PNG, optional</small></div>
+            <div class="media-preview"></div>
+            <div class="media-actions">
+              <label class="btn btn-small">Upload<input type="file" accept="image/*" hidden></label>
+              <button class="btn btn-small btn-danger media-remove">Remove</button>
+            </div>
+          </div>
           <label class="field"><span>3 — price (e.g. $150 or Free; empty = hidden)</span><input type="text" data-bind="academy.programs.2.price" placeholder="$150"></label>
           <label class="field"><span>3 — "Choose" opens</span><input type="text" data-bind="academy.programs.2.link" placeholder="book.html"></label>
         </div>
@@ -255,6 +279,6 @@
 
 <div class="toast" id="toast" hidden></div>
 
-<script src="admin.js?v=202609111719"></script>
+<script src="admin.js?v=202609111725"></script>
 </body>
 </html>

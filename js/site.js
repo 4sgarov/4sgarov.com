@@ -145,7 +145,14 @@
         (S.academy.programs || []).forEach(function (p, i) {
           if (!progs[i]) return;
           progs[i].querySelector('.program-title').textContent = p.title || '';
-          richText(progs[i].querySelector('.program-text'), p.text || '');
+          var body = progs[i].querySelector('.program-text');
+          richText(body, p.text || '');
+          if (p.image) {
+            var logo = document.createElement('img');
+            logo.className = 'program-logo'; logo.src = p.image; logo.alt = '';
+            var firstList = body.querySelector('ul');
+            if (firstList) body.insertBefore(logo, firstList); else body.appendChild(logo);
+          }
           progs[i].querySelector('.program-btn').href = p.link || 'book.html';
           var price = progs[i].querySelector('.program-price');
           price.textContent = p.price || '';

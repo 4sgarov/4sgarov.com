@@ -111,19 +111,22 @@
         "title": "Social media",
         "text": "How to present your work, build an audience and turn followers into clients.\n• Portfolio\n• Photo & video\n• Lighting\n• Content & posting\n• Profile & branding",
         "link": "book.html",
-        "price": ""
+        "price": "",
+        "image": ""
       },
       {
         "title": "Online seminar",
         "text": "Technique, design, anatomy and workflow — all in one place.\n• Technique\n• Anatomy\n• Design\n• Cover up",
         "link": "book.html",
-        "price": ""
+        "price": "",
+        "image": ""
       },
       {
         "title": "Private mentorship",
-        "text": "One-on-one guidance for artists who want to reach the professional level.",
+        "text": "Three months, one-on-one. Everything — from your first line to a professional piece.\n• Maximum knowledge\n• Ongoing support",
         "link": "book.html",
-        "price": ""
+        "price": "",
+        "image": ""
       }
     ]
   }

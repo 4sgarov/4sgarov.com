@@ -176,6 +176,9 @@
 }
 .media-preview .progress > i { display: block; height: 100%; background: var(--red); width: 0; transition: width 0.2s; }
 .media-actions { display: flex; gap: 8px; }
+.media-slot--small { padding: 12px; gap: 8px; }
+.media-slot--small .media-preview { aspect-ratio: auto; height: 90px; background: #f0f0f0; color: #999; }
+.media-slot--small .media-preview img { object-fit: contain; padding: 8px; }
 .media-file { font-size: 0.8rem; color: var(--muted); word-break: break-all; }
 
 /* Category list */
