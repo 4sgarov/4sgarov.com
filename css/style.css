@@ -281,14 +281,14 @@ a { color: inherit; text-decoration: none; }
   margin-bottom: 14px;
 }
 .program-text {
-  font-size: 1.2rem;
+  font-size: 1.05rem;
   font-weight: 300;
-  line-height: 1.65;
+  line-height: 1.7;
   flex: 1;
 }
 .program-text p + p, .program-text p + ul { margin-top: 14px; }
 .program-text ul { list-style: none; padding: 0; }
-.program-text li { position: relative; padding-left: 20px; font-weight: 400; }
+.program-text li { position: relative; padding-left: 20px; font-size: 1.25rem; font-weight: 400; line-height: 1.6; }
 .program-text li::before {
   content: '';
   position: absolute; left: 0; top: 0.7em;
