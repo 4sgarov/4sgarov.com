@@ -318,6 +318,19 @@ a { color: inherit; text-decoration: none; }
   transition: opacity 0.2s ease;
 }
 .program-btn:hover { opacity: 0.85; }
+
+/* Card colours */
+.program--grey { background: var(--surface-2); border-color: var(--surface-2); }
+.program--red { background: var(--red); border-color: var(--red); color: #fff; }
+.program--black { background: #111; border-color: #111; color: #fff; }
+.program--red .program-text li::before,
+.program--black .program-text li::before { background: #fff; }
+.program--red .program-price,
+.program--black .program-price { border-color: #fff; }
+.program--red .program-price.is-free,
+.program--black .program-price.is-free { background: #fff; color: #111; }
+.program--red .program-btn,
+.program--black .program-btn { background: #fff; color: #111; }
 @media (max-width: 900px) {
   .programs { grid-template-columns: 1fr; gap: 24px; }
   .program { padding: 28px 24px; }
