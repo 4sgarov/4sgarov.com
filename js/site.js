@@ -88,6 +88,17 @@
     if (/tel:|phone/.test(k)) return ICONS.phone;
     return ICONS.link;
   }
+  // Handle shown under the name: taken from the admin field, otherwise derived from the link.
+  function handleOf(s) {
+    if (s.handle) return s.handle;
+    var u = String(s.url || '');
+    var m;
+    if ((m = /^mailto:([^?]+)/i.exec(u))) return m[1];
+    if ((m = /^tel:(.+)/i.exec(u))) return m[1];
+    if ((m = /wa\.me\/(\d+)/i.exec(u))) return '+' + m[1];
+    if ((m = /(?:instagram\.com|t\.me|tiktok\.com|facebook\.com|youtube\.com|x\.com|twitter\.com)\/@?([^\/?#]+)/i.exec(u))) return '@' + m[1];
+    return u.replace(/^https?:\/\/(www\.)?/i, '').replace(/\/$/, '');
+  }
   function renderContact(c, booking) {
     var guest = document.getElementById('guest');
     if (!guest) return;
@@ -111,9 +122,9 @@
       var li = document.createElement('li');
       var a = document.createElement('a');
       a.href = s.url; a.target = '_blank'; a.rel = 'noopener';
-      a.innerHTML = '<span class="s-icon">' + iconFor(s) + '</span><span class="s-label"></span><span class="s-handle"></span>';
+      a.innerHTML = '<span class="s-icon">' + iconFor(s) + '</span><span class="s-text"><span class="s-label"></span><span class="s-handle"></span></span>';
       a.querySelector('.s-label').textContent = s.label || s.url;
-      a.querySelector('.s-handle').textContent = s.handle || '';
+      a.querySelector('.s-handle').textContent = handleOf(s);
       li.appendChild(a); socials.appendChild(li);
     });
 
