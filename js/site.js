@@ -155,9 +155,12 @@
           }
           progs[i].querySelector('.program-btn').href = p.link || 'book.html';
           var price = progs[i].querySelector('.program-price');
-          price.textContent = p.price || '';
-          price.hidden = !p.price;
-          price.classList.toggle('is-free', /^free$/i.test(p.price || ''));
+          var pv = String(p.price || '').trim();
+          var isFree = /^free$/i.test(pv);
+          // a bare number gets a dollar sign; anything else is shown as typed
+          price.textContent = isFree ? 'Free' : (/^\d+([.,]\d+)?$/.test(pv) ? '$' + pv : pv);
+          price.hidden = !pv;
+          price.classList.toggle('is-free', isFree);
         });
       }
       if (S.portfolio) renderPortfolio(S.portfolio);
