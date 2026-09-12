@@ -7,7 +7,7 @@
 <?php $post = null; $pid = $_GET['id'] ?? ''; foreach ((array)($S['news']['posts'] ?? []) as $pp) if (($pp['id'] ?? '') === $pid) { $post = $pp; break; }
 $lang = (($_GET['lang'] ?? '') === 'az' && $post && !empty($post['text_az'])) ? 'az' : 'en';
 seo_head('news', $post ? ['post' => $post, 'lang' => $lang] : []); ?>
-<link rel="stylesheet" href="css/style.css?v=202609121648">
+<link rel="stylesheet" href="css/style.css?v=202609121654">
 </head>
 <body class="news-page">
 
@@ -53,8 +53,9 @@ seo_head('news', $post ? ['post' => $post, 'lang' => $lang] : []); ?>
 
 <div class="post-modal" id="post-modal" hidden>
   <div class="post-backdrop"></div>
+  <div class="post-wrap">
+  <button type="button" class="post-close" aria-label="Close">×</button>
   <article class="post" role="dialog" aria-modal="true">
-    <button type="button" class="post-close" aria-label="Close">×</button>
     <div class="post-meta"><span class="n-cat"></span><span class="n-date"></span><a class="n-link" target="_blank" rel="noopener" hidden></a>
       <span class="lang-toggle" hidden><button type="button" data-lang="en" class="is-on">EN</button><button type="button" data-lang="az">AZ</button></span>
     </div>
@@ -64,9 +65,10 @@ seo_head('news', $post ? ['post' => $post, 'lang' => $lang] : []); ?>
     <div class="post-gallery"></div>
     <div class="post-foot"><span class="views"></span></div>
   </article>
+  </div>
 </div>
 
-<script src="js/menu.js?v=202609121648"></script>
-<script src="js/site.js?v=202609121648"></script>
+<script src="js/menu.js?v=202609121654"></script>
+<script src="js/site.js?v=202609121654"></script>
 </body>
 </html>
