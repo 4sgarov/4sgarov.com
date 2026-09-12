@@ -147,6 +147,10 @@
           progs[i].querySelector('.program-title').textContent = p.title || '';
           richText(progs[i].querySelector('.program-text'), p.text || '');
           progs[i].querySelector('.program-btn').href = p.link || 'book.html';
+          var price = progs[i].querySelector('.program-price');
+          price.textContent = p.price || '';
+          price.hidden = !p.price;
+          price.classList.toggle('is-free', /^free$/i.test(p.price || ''));
         });
       }
       if (S.portfolio) renderPortfolio(S.portfolio);
