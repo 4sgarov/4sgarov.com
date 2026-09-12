@@ -254,9 +254,6 @@
       f.querySelector('.n-date').textContent = fmtLong(featured.date);
       f.querySelector('.n-cat').textContent = catName[featured.category] || '';
       f.querySelector('.featured-title').textContent = featured.title;
-      var plain = String(featured.text || '').replace(/\{image\d+\}/gi, '').replace(/\s+/g, ' ').trim();
-      var half = Math.max(120, Math.floor(plain.length / 2));
-      f.querySelector('.featured-excerpt').textContent = plain.length > half ? plain.slice(0, half).replace(/\s+\S*$/, '') + '…' : plain;
       var fv = f.querySelector('.views'); fv.dataset.views = featured.id; setViews(fv, featured.id);
     }
     posts.forEach(function (p) {
