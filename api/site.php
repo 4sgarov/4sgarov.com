@@ -18,6 +18,7 @@ if (!isset($site['home'], $site['about'], $site['portfolio'])) fail('Invalid con
 $site['booking'] = $site['booking'] ?? [];
 $site['academy'] = $site['academy'] ?? [];
 $site['contact'] = $site['contact'] ?? [];
+$site['news'] = $site['news'] ?? [];
 
 /* Keep only known keys / shapes so the file can't be polluted. */
 $str = fn($v) => is_string($v) ? trim($v) : '';
@@ -42,6 +43,7 @@ $clean = [
     'mapQuery' => $str($site['contact']['mapQuery'] ?? ''),
     'mapEmbed' => $str($site['contact']['mapEmbed'] ?? ''),
   ],
+  'news' => ['categories' => [], 'posts' => []],
   'portfolio' => ['categories' => [], 'works' => []],
   'booking' => [
     'intro' => $str($site['booking']['intro'] ?? ''),
@@ -65,6 +67,24 @@ foreach ((array)($site['contact']['socials'] ?? []) as $so) {
   $clean['contact']['socials'][] = ['label' => $str($so['label'] ?? ''), 'handle' => $str($so['handle'] ?? ''), 'url' => $url];
 }
 if ($clean['contact']['mapEmbed'] !== '' && !preg_match('#^https://(www\.)?google\.[a-z.]+/maps#i', $clean['contact']['mapEmbed'])) $clean['contact']['mapEmbed'] = '';
+foreach ((array)($site['news']['categories'] ?? []) as $c) {
+  $id = preg_replace('/[^a-z0-9-]/', '', strtolower($str($c['id'] ?? '')));
+  if ($id === '') continue;
+  $clean['news']['categories'][] = ['id' => $id, 'name' => $str($c['name'] ?? '')];
+}
+foreach ((array)($site['news']['posts'] ?? []) as $p) {
+  $clean['news']['posts'][] = [
+    'id' => preg_replace('/[^a-z0-9]/', '', strtolower($str($p['id'] ?? ''))) ?: bin2hex(random_bytes(4)),
+    'title' => $str($p['title'] ?? ''),
+    'text' => is_string($p['text'] ?? null) ? trim($p['text']) : '',
+    'images' => array_values(array_filter(array_map($str, (array)($p['images'] ?? [])))),
+    'link' => (function ($u) { $u = trim((string)$u); return $u !== '' && !preg_match('#^(https?://|mailto:|tel:)#i', $u) ? 'https://' . $u : $u; })($p['link'] ?? ''),
+    'linkLabel' => $str($p['linkLabel'] ?? ''),
+    'date' => preg_match('/^\d{4}-\d{2}-\d{2}$/', $str($p['date'] ?? '')) ? $str($p['date']) : '',
+    'category' => preg_replace('/[^a-z0-9-]/', '', strtolower($str($p['category'] ?? ''))),
+    'featured' => !empty($p['featured']),
+  ];
+}
 foreach ((array)($site['portfolio']['categories'] ?? []) as $c) {
   $id = preg_replace('/[^a-z0-9-]/', '', strtolower($str($c['id'] ?? '')));
   if ($id === '') continue;

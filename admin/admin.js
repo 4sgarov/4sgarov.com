@@ -164,6 +164,8 @@
     s.academy.programs = s.academy.programs || [];
     while (s.academy.programs.length < 3) s.academy.programs.push({ title: '', text: '' });
     s.academy.programs.forEach(function (p) { p.image = p.image || ''; p.price = p.price || ''; p.link = p.link || 'book.html'; });
+    s.news = s.news || {}; s.news.categories = s.news.categories || []; s.news.posts = s.news.posts || [];
+    s.news.posts.forEach(function (p) { if (!p.id) p.id = uid(); p.images = p.images || (p.image ? [p.image] : []); });
     s.contact = s.contact || {};
     if (s.contact.guestSpotEnabled === undefined) s.contact.guestSpotEnabled = true;
     s.contact.socials = s.contact.socials || [];
@@ -508,6 +510,108 @@
     });
   }
 
+  function renderNewsCats() {
+    var list = $('#ncat-list'); list.innerHTML = '';
+    var cats = state.site.news.categories;
+    if (!cats.length) list.innerHTML = '<div class="empty">No categories yet</div>';
+    cats.forEach(function (c, i) {
+      var row = document.createElement('div');
+      row.className = 'list-row';
+      row.innerHTML =
+        '<span class="handle">' + (i + 1) + '</span>' +
+        '<input type="text">' +
+        '<button class="btn btn-small btn-icon" data-act="up" title="Move up">↑</button>' +
+        '<button class="btn btn-small btn-icon" data-act="down" title="Move down">↓</button>' +
+        '<button class="btn btn-small btn-icon btn-danger" data-act="del" title="Delete">✕</button>';
+      var input = $('input', row); input.value = c.name;
+      input.addEventListener('input', function () { c.name = input.value; setDirty(true); });
+      $('[data-act=up]', row).disabled = i === 0;
+      $('[data-act=down]', row).disabled = i === cats.length - 1;
+      row.addEventListener('click', function (e) {
+        var act = e.target.dataset && e.target.dataset.act;
+        if (!act) return;
+        if (act === 'up') cats.splice(i - 1, 0, cats.splice(i, 1)[0]);
+        if (act === 'down') cats.splice(i + 1, 0, cats.splice(i, 1)[0]);
+        if (act === 'del') {
+          if (!confirm('Delete "' + c.name + '"?')) return;
+          cats.splice(i, 1);
+          state.site.news.posts.forEach(function (p) { if (p.category === c.id) p.category = ''; });
+        }
+        setDirty(true); renderNewsCats(); renderPosts();
+      });
+      list.appendChild(row);
+    });
+  }
+  function renderPosts() {
+    var list = $('#post-list'); list.innerHTML = '';
+    var posts = state.site.news.posts, cats = state.site.news.categories;
+    $('#post-count').textContent = posts.length ? posts.length + ' post' + (posts.length > 1 ? 's' : '') : '';
+    if (!posts.length) { list.innerHTML = '<div class="empty">No posts yet — press "New post"</div>'; return; }
+    posts.forEach(function (p, i) {
+      p.images = p.images || [];
+      var row = document.createElement('div');
+      row.className = 'post-card';
+      row.innerHTML =
+        '<div class="post-head">' +
+          '<span class="handle">' + (i + 1) + '</span>' +
+          '<input type="text" class="post-title-in" data-k="title" placeholder="Title">' +
+          '<label class="check"><input type="checkbox" data-k="featured"><span>Featured</span></label>' +
+          '<button class="btn btn-small btn-icon" data-act="up" title="Move up">↑</button>' +
+          '<button class="btn btn-small btn-icon" data-act="down" title="Move down">↓</button>' +
+          '<button class="btn btn-small btn-icon btn-danger" data-act="del" title="Delete">✕</button>' +
+        '</div>' +
+        '<div class="post-grid">' +
+          '<label>Date<input type="date" data-k="date"></label>' +
+          '<label>Category<select data-k="category"><option value="">— none —</option></select></label>' +
+          '<label>Link (optional)<input type="url" data-k="link" placeholder="https://…"></label>' +
+        '</div>' +
+        '<div class="post-images"><div class="pi-list"></div><label class="btn btn-small">Add images<input type="file" accept="image/*" multiple hidden></label></div>' +
+        '<textarea data-k="text" placeholder="Text… Put {image2} on its own line to show the 2nd image there. Lines starting with • become bullets."></textarea>';
+      var sel = $('select', row);
+      cats.forEach(function (c) { var o = document.createElement('option'); o.value = c.id; o.textContent = c.name; sel.appendChild(o); });
+      $$('[data-k]', row).forEach(function (inp) {
+        if (inp.type === 'checkbox') {
+          inp.checked = !!p.featured;
+          inp.addEventListener('change', function () {
+            if (inp.checked) posts.forEach(function (x) { x.featured = x === p; }); else p.featured = false;
+            setDirty(true); renderPosts();
+          });
+          return;
+        }
+        inp.value = p[inp.dataset.k] || '';
+        inp.addEventListener('input', function () { p[inp.dataset.k] = inp.value; setDirty(true); });
+      });
+      // images
+      var pil = $('.pi-list', row);
+      p.images.forEach(function (src, k) {
+        var t = document.createElement('div'); t.className = 'pi';
+        t.innerHTML = '<img src="../' + src + '" alt=""><span class="pi-n">{image' + (k + 1) + '}</span><button type="button" class="pi-x" title="Remove">✕</button>';
+        $('.pi-x', t).addEventListener('click', function () { queueDelete(src); p.images.splice(k, 1); setDirty(true); renderPosts(); });
+        pil.appendChild(t);
+      });
+      $('.post-images input[type=file]', row).addEventListener('change', function () {
+        var files = Array.prototype.slice.call(this.files); this.value = '';
+        if (!files.length) return;
+        busy(1); toast('Uploading…', false, 60000);
+        files.reduce(function (pr, f) {
+          return pr.then(function () { return uploadMedia(f, 'news', CFG.imageMax.cover).then(function (path) { p.images.push(path); setDirty(true); renderPosts(); }); });
+        }, Promise.resolve()).then(function () { toast('Uploaded'); }).catch(function (e) { toast('Upload failed: ' + e.message, true); })
+          .then(function () { busy(-1); });
+      });
+      $('[data-act=up]', row).disabled = i === 0;
+      $('[data-act=down]', row).disabled = i === posts.length - 1;
+      $('.post-head', row).addEventListener('click', function (e) {
+        var act = e.target.dataset && e.target.dataset.act;
+        if (!act) return;
+        if (act === 'up') posts.splice(i - 1, 0, posts.splice(i, 1)[0]);
+        if (act === 'down') posts.splice(i + 1, 0, posts.splice(i, 1)[0]);
+        if (act === 'del') { if (!confirm('Delete "' + (p.title || 'this post') + '"?')) return; p.images.forEach(queueDelete); posts.splice(i, 1); }
+        setDirty(true); renderPosts();
+      });
+      list.appendChild(row);
+    });
+  }
+
   function renderSocials() {
     var list = $('#social-list'); list.innerHTML = '';
     var items = state.site.contact.socials;
@@ -544,7 +648,7 @@
   }
 
   function renderAll() {
-    renderMediaSlots(); renderText(); renderCategories(); renderWorks(); renderServices(); renderLocations(); renderSocials();
+    renderMediaSlots(); renderText(); renderCategories(); renderWorks(); renderServices(); renderLocations(); renderSocials(); renderNewsCats(); renderPosts();
     loadRequests();
   }
 
@@ -709,6 +813,22 @@
     state.site.booking.locations.push({ id: uid(), code: code, country: countryName(code), city: city, from: from, to: to });
     this.reset();
     setDirty(true); renderLocations();
+  });
+  $('#ncat-add').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var inp = $('input', this); var name = inp.value.trim(); if (!name) return;
+    var cats = state.site.news.categories;
+    var id = slug(name), base = id, n = 2;
+    while (cats.some(function (c) { return c.id === id; })) id = base + '-' + n++;
+    cats.push({ id: id, name: name });
+    inp.value = '';
+    setDirty(true); renderNewsCats(); renderPosts();
+  });
+  $('#post-add').addEventListener('click', function () {
+    var cats = state.site.news.categories;
+    state.site.news.posts.unshift({ id: uid(), title: '', text: '', images: [], link: '', date: new Date().toISOString().slice(0, 10), category: cats[0] ? cats[0].id : '', featured: false });
+    setDirty(true); renderPosts();
+    var first = $('#post-list input[data-k=title]'); if (first) first.focus();
   });
   $('#social-add').addEventListener('submit', function (e) {
     e.preventDefault();

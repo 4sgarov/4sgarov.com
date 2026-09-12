@@ -152,5 +152,22 @@
     ],
     "mapQuery": "Baku, Azerbaijan",
     "mapEmbed": ""
+  },
+  "news": {
+    "categories": [
+      {
+        "id": "news",
+        "name": "News"
+      },
+      {
+        "id": "guest-spot",
+        "name": "Guest spot"
+      },
+      {
+        "id": "academy",
+        "name": "Academy"
+      }
+    ],
+    "posts": []
   }
 }

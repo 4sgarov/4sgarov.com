@@ -6,8 +6,8 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Admin — Rauf Asgarov</title>
 <link rel="icon" href="data:,">
-<link rel="stylesheet" href="../css/style.css?v=202609121320">
-<link rel="stylesheet" href="admin.css?v=202609121320">
+<link rel="stylesheet" href="../css/style.css?v=202609121359">
+<link rel="stylesheet" href="admin.css?v=202609121359">
 </head>
 <body class="admin">
 
@@ -50,6 +50,7 @@
     <button class="tab" data-tab="portfolio">Portfolio</button>
     <button class="tab" data-tab="book">Book now</button>
     <button class="tab" data-tab="academy">Academy</button>
+    <button class="tab" data-tab="news">News</button>
     <button class="tab" data-tab="contact">Contact</button>
     <button class="tab" data-tab="requests">Requests <span class="badge" id="req-badge" hidden></span></button>
     <button class="tab" data-tab="settings">Settings</button>
@@ -247,6 +248,24 @@
       </div>
     </section>
 
+    <!-- News -->
+    <section class="panel" data-panel="news">
+      <h2 class="panel-title">Categories</h2>
+      <div class="list" id="ncat-list"></div>
+      <form class="add-row" id="ncat-add">
+        <input type="text" placeholder="New category name" required>
+        <button type="submit" class="btn btn-small">Add</button>
+      </form>
+
+      <h2 class="panel-title">Posts</h2>
+      <p class="hint">Newest first. Tick <b>Featured</b> on the one shown big at the top (otherwise the first post is). The first image is the cover; extra images appear at the top of the post — or write <b>{image2}</b> on its own line to place the 2nd image inside the text. Lines starting with "•" become bullets.</p>
+      <div class="works-toolbar">
+        <button type="button" class="btn btn-primary" id="post-add">New post</button>
+        <span class="hint" id="post-count"></span>
+      </div>
+      <div class="works" id="post-list"></div>
+    </section>
+
     <!-- Contact -->
     <section class="panel" data-panel="contact">
       <h2 class="panel-title">Guest Spot</h2>
@@ -304,6 +323,6 @@
 
 <div class="toast" id="toast" hidden></div>
 
-<script src="admin.js?v=202609121320"></script>
+<script src="admin.js?v=202609121359"></script>
 </body>
 </html>
