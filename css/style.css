@@ -8,6 +8,11 @@
   font-style: normal;
   font-display: swap;
 }
+/* Author has no ə/Ə — those two letters fall through to this tiny Inter subset (Azerbaijani text) */
+@font-face { font-family: 'Author Schwa'; src: url('../assets/fonts/Author-Schwa-300.woff2') format('woff2'); font-weight: 200 300; unicode-range: U+0259, U+018F; font-display: swap; }
+@font-face { font-family: 'Author Schwa'; src: url('../assets/fonts/Author-Schwa-400.woff2') format('woff2'); font-weight: 400; unicode-range: U+0259, U+018F; font-display: swap; }
+@font-face { font-family: 'Author Schwa'; src: url('../assets/fonts/Author-Schwa-500.woff2') format('woff2'); font-weight: 500 600; unicode-range: U+0259, U+018F; font-display: swap; }
+@font-face { font-family: 'Author Schwa'; src: url('../assets/fonts/Author-Schwa-700.woff2') format('woff2'); font-weight: 700 900; unicode-range: U+0259, U+018F; font-display: swap; }
 
 :root {
   --bg: #ffffff;
@@ -17,7 +22,7 @@
   --muted: #888888;
   --red: #c8262f;
   --font-display: 'Anton', 'Inter', sans-serif;
-  --font-body: 'Author', 'Inter', sans-serif;
+  --font-body: 'Author', 'Author Schwa', 'Inter', sans-serif;
   --sidebar-w: 400px;
 }
 
@@ -506,7 +511,7 @@ a { color: inherit; text-decoration: none; }
   position: sticky;
   top: 0;
   float: right;
-  margin: -24px -24px 0 0;
+  margin: -34px -44px 0 0;
   width: 44px; height: 44px;
   border: 0; border-radius: 50%;
   background: var(--bg);
@@ -514,6 +519,7 @@ a { color: inherit; text-decoration: none; }
   color: var(--muted); cursor: pointer;
   z-index: 1;
 }
+.post-meta { padding-right: 52px; }
 .post-close:hover { color: var(--text); }
 .post-meta { margin-bottom: 18px; }
 .n-link { color: var(--text); text-decoration: underline; text-underline-offset: 3px; }
@@ -547,7 +553,7 @@ a { color: inherit; text-decoration: none; }
   .post { max-width: none; max-height: none; height: 100%; border-radius: 0; padding: 28px 24px 48px; }
   .post-gimg, .post-inline { max-height: none; }
   .post-inline.float-left, .post-inline.float-right { float: none; width: 100%; margin: 20px 0; }
-  .post-close { margin: -12px -8px 0 0; }
+  .post-close { margin: -18px -12px 0 0; }
   .featured { grid-template-columns: 1fr; }
   .featured-body { padding: 20px 22px 26px; }
   .featured-title { font-size: 1.4rem; }
