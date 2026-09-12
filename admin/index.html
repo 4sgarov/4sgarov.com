@@ -6,8 +6,8 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Admin — Rauf Asgarov</title>
 <link rel="icon" href="data:,">
-<link rel="stylesheet" href="../css/style.css?v=202609121526">
-<link rel="stylesheet" href="admin.css?v=202609121526">
+<link rel="stylesheet" href="../css/style.css?v=202609121531">
+<link rel="stylesheet" href="admin.css?v=202609121531">
 </head>
 <body class="admin">
 
@@ -305,6 +305,16 @@
       <p class="hint">Get an email whenever a booking request arrives. Press Publish after changing.</p>
       <label class="field form-narrow"><span>Email</span><input type="email" data-bind="booking.notifyEmail" placeholder="you@example.com"></label>
 
+      <h2 class="panel-title">Logo &amp; share image</h2>
+      <p class="hint">Upload your logo (PNG with transparent background works best). It becomes the browser icon and the picture shown when the site link is shared on Instagram, WhatsApp, Telegram, etc.</p>
+      <div class="brand-row">
+        <div class="brand-preview"><img id="og-preview" src="../assets/og.jpg" alt="" onerror="this.style.display='none'"></div>
+        <div class="brand-controls">
+          <label class="check" style="margin-bottom:10px"><input type="checkbox" id="brand-dark"><span>Dark background</span></label>
+          <label class="btn btn-primary">Upload logo<input type="file" id="brand-file" accept="image/*" hidden></label>
+        </div>
+      </div>
+
       <h2 class="panel-title">Backup</h2>
       <p class="hint">Downloads a zip with all content and uploaded media. Keep a copy now and then.</p>
       <a class="btn" href="../api/backup.php" download>Download backup</a>
@@ -323,6 +333,6 @@
 
 <div class="toast" id="toast" hidden></div>
 
-<script src="admin.js?v=202609121526"></script>
+<script src="admin.js?v=202609121531"></script>
 </body>
 </html>

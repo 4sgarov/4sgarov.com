@@ -840,6 +840,39 @@
     this.reset();
     setDirty(true); renderSocials();
   });
+  // Logo → 1200×630 share image (jpg) + 512 favicon (png)
+  $('#brand-file').addEventListener('change', function () {
+    var file = this.files[0]; this.value = '';
+    if (!file) return;
+    var dark = $('#brand-dark').checked;
+    var img = new Image(), url = URL.createObjectURL(file);
+    img.onload = function () {
+      URL.revokeObjectURL(url);
+      function draw(w, h, pad, bg) {
+        var c = document.createElement('canvas'); c.width = w; c.height = h;
+        var g = c.getContext('2d');
+        g.fillStyle = bg; g.fillRect(0, 0, w, h);
+        var s = Math.min((w - pad * 2) / img.naturalWidth, (h - pad * 2) / img.naturalHeight);
+        var dw = img.naturalWidth * s, dh = img.naturalHeight * s;
+        g.drawImage(img, (w - dw) / 2, (h - dh) / 2, dw, dh);
+        return c;
+      }
+      var bg = dark ? '#000' : '#fff';
+      var og = draw(1200, 630, 120, bg), icon = draw(512, 512, 48, bg);
+      og.toBlob(function (ob) {
+        icon.toBlob(function (ib) {
+          var fd = new FormData();
+          fd.append('og', ob, 'og.jpg'); fd.append('icon', ib, 'favicon.png');
+          busy(1);
+          api('brand.php', fd).then(function () {
+            var p = $('#og-preview'); p.style.display = ''; p.src = '../assets/og.jpg?v=' + Date.now();
+            toast('Logo saved — shared links will show it (social apps may cache the old preview for a while).', false, 6000);
+          }).catch(function (e) { toast(e.message, true); }).then(function () { busy(-1); });
+        }, 'image/png');
+      }, 'image/jpeg', 0.9);
+    };
+    img.src = url;
+  });
   $('#req-refresh').addEventListener('click', loadRequests);
   fillCountries();
   bindMediaSlots();
