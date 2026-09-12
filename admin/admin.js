@@ -585,14 +585,9 @@
       var pil = $('.pi-list', row);
       p.images.forEach(function (im, k) {
         if (typeof im === 'string') im = p.images[k] = { src: im, ratio: '5:4' };
-        var t = document.createElement('div'); t.className = 'pi ' + (im.ratio === '4:5' ? 'is-portrait' : '');
+        var t = document.createElement('div'); t.className = 'pi';
         t.innerHTML = '<img src="../' + im.src + '" alt=""><span class="pi-n">{image' + (k + 1) + '}</span>' +
-          '<button type="button" class="pi-x" title="Remove">✕</button>' +
-          '<div class="pi-ratio"><button type="button" data-r="5:4" title="Landscape 5:4">5:4</button><button type="button" data-r="4:5" title="Portrait 4:5">4:5</button></div>';
-        $$('.pi-ratio button', t).forEach(function (b) {
-          b.classList.toggle('is-on', b.dataset.r === im.ratio);
-          b.addEventListener('click', function () { im.ratio = b.dataset.r; setDirty(true); renderPosts(); });
-        });
+          '<button type="button" class="pi-x" title="Remove">✕</button>';
         $('.pi-x', t).addEventListener('click', function () { queueDelete(im.src); p.images.splice(k, 1); setDirty(true); renderPosts(); });
         pil.appendChild(t);
       });
