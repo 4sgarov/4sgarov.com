@@ -533,8 +533,13 @@ a { color: inherit; text-decoration: none; }
   .post { max-width: none; max-height: none; height: 100%; border-radius: 0; padding: 28px 24px 48px; }
   .post-gimg, .post-inline { max-height: none; }
   .post-close { margin: -12px -8px 0 0; }
-  .news-card { grid-template-columns: 1fr; }
-  .card-info { padding: 16px 20px 20px; }
+  .news-card { grid-template-columns: 128px 1fr; align-items: center; }
+  .card-thumb { align-self: stretch; }
+  .card-info { padding: 14px 44px 14px 14px; }
+  .card-head { font-size: 1rem; margin-bottom: 8px; }
+  .news-card .meta-row { gap: 8px; flex-wrap: wrap; font-size: 0.8rem; }
+  .news-card .n-cat { padding: 4px 8px; font-size: 0.68rem; }
+  .news-card > .views { right: 12px; bottom: 10px; font-size: 0.8rem; }
   .card-head { font-size: 1.1rem; }
   .card-meta { flex-wrap: wrap; gap: 6px 12px; font-size: 0.85rem; }
 }
