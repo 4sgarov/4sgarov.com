@@ -198,23 +198,45 @@
     var posts = (n.posts || []).slice();
     var modal = document.getElementById('post-modal');
 
+    var lang = 'en';
+    try { lang = localStorage.getItem('news_lang') || 'en'; } catch (e) {}
+    if (new URLSearchParams(location.search).get('lang') === 'az') lang = 'az';
+    var current = null;
+    function fillText(post) {
+      var az = lang === 'az' && post.text_az;
+      var art = modal.querySelector('.post');
+      art.querySelector('.post-title').textContent = az && post.title_az ? post.title_az : post.title;
+      var leftover = postBody(art.querySelector('.post-text'), az ? { text: post.text_az, images: post.images } : post);
+      var gal = art.querySelector('.post-gallery');
+      gal.innerHTML = '';
+      var first = (post.images || [])[0];
+      leftover.forEach(function (x, i) { if (i === 0 && x === first) return; gal.appendChild(imgEl(x, 'post-gimg')); });
+      gal.hidden = !gal.children.length;
+      var tg = art.querySelector('.lang-toggle');
+      tg.hidden = !post.text_az;
+      tg.querySelectorAll('button').forEach(function (b) { b.classList.toggle('is-on', b.dataset.lang === (az ? 'az' : 'en')); });
+    }
+    modal.querySelector('.lang-toggle').addEventListener('click', function (e) {
+      var b = e.target.closest('button'); if (!b || !current) return;
+      lang = b.dataset.lang;
+      try { localStorage.setItem('news_lang', lang); } catch (err) {}
+      fillText(current);
+      var u = 'news.html?id=' + encodeURIComponent(current.id) + (lang === 'az' ? '&lang=az' : '');
+      history.replaceState({ post: current.id }, '', u);
+    });
     function openPost(post, push) {
+      current = post;
       var art = modal.querySelector('.post');
       art.querySelector('.n-date').textContent = fmtLong(post.date);
       art.querySelector('.n-cat').textContent = catName[post.category] || '';
       var lk = art.querySelector('.n-link');
       if (post.link) { lk.href = post.link; lk.textContent = post.linkLabel || post.link.replace(/^https?:\/\/(www\.)?/, '').replace(/\/.*$/, ''); lk.hidden = false; } else lk.hidden = true;
-      art.querySelector('.post-title').textContent = post.title;
       var cover = art.querySelector('.post-cover');
       cover.innerHTML = '';
       var first = (post.images || [])[0];
       if (first) cover.appendChild(imgEl(first, 'post-cimg'));
       cover.hidden = !first;
-      var leftover = postBody(art.querySelector('.post-text'), post);
-      var gal = art.querySelector('.post-gallery');
-      gal.innerHTML = '';
-      leftover.forEach(function (x, i) { if (i === 0 && x === first) return; gal.appendChild(imgEl(x, 'post-gimg')); });
-      gal.hidden = !gal.children.length;
+      fillText(post);
       var pv = art.querySelector('.post-foot .views');
       setViews(pv, post.id);
       countView(post.id, pv);
@@ -222,7 +244,7 @@
       document.body.classList.add('post-open');
       art.scrollTop = 0;
       requestAnimationFrame(function () { art.scrollTop = 0; });
-      if (push) history.pushState({ post: post.id }, '', 'news.html?id=' + encodeURIComponent(post.id));
+      if (push) history.pushState({ post: post.id }, '', 'news.html?id=' + encodeURIComponent(post.id) + (lang === 'az' && post.text_az ? '&lang=az' : ''));
     }
     function closePost(pop) {
       modal.hidden = true;

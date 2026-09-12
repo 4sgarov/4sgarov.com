@@ -566,9 +566,31 @@
           '<label>Link (optional)<input type="url" data-k="link" placeholder="https://…"></label>' +
         '</div>' +
         '<div class="post-images"><div class="pi-list"></div><label class="btn btn-small">Add images<input type="file" accept="image/*" multiple hidden></label></div>' +
-        '<textarea data-k="text" placeholder="Text… {image2} on its own line shows the 2nd image there; {image2 left} or {image2 right} floats it beside the text. Lines starting with • become bullets."></textarea>';
+        '<textarea data-k="text" placeholder="Text… {image2} on its own line shows the 2nd image there; {image2 left} or {image2 right} floats it beside the text. Lines starting with • become bullets."></textarea>' +
+        '<details class="post-az"><summary>Azerbaijani version <span class="az-state"></span></summary>' +
+          '<div class="post-az-body">' +
+            '<button type="button" class="btn btn-small az-auto">Auto-translate from English (draft)</button>' +
+            '<input type="text" class="post-title-in" data-k="title_az" placeholder="Başlıq (AZ)">' +
+            '<textarea data-k="text_az" placeholder="Mətn (AZ) — same {image2} and • rules"></textarea>' +
+          '</div></details>';
       var sel = $('select', row);
       cats.forEach(function (c) { var o = document.createElement('option'); o.value = c.id; o.textContent = c.name; sel.appendChild(o); });
+      var azState = $('.az-state', row);
+      function showAz() { azState.textContent = p.text_az ? '✓' : ''; }
+      showAz();
+      $('.az-auto', row).addEventListener('click', function () {
+        var btn = this;
+        if (!p.text && !p.title) { toast('Write the English text first', true); return; }
+        if (p.text_az && !confirm('Replace the current Azerbaijani text with a new draft?')) return;
+        btn.disabled = true; btn.textContent = 'Translating…';
+        translateDraft(p.title || '').then(function (t) {
+          p.title_az = t;
+          return translateDraft(p.text || '');
+        }).then(function (t) {
+          p.text_az = t; setDirty(true); renderPosts();
+          toast('Draft translated — please read and correct it before publishing.', false, 6000);
+        }).catch(function (e) { toast('Translation failed: ' + e.message, true); btn.disabled = false; btn.textContent = 'Auto-translate from English (draft)'; });
+      });
       $$('[data-k]', row).forEach(function (inp) {
         if (inp.type === 'checkbox') {
           inp.checked = !!p.featured;
@@ -579,7 +601,7 @@
           return;
         }
         inp.value = p[inp.dataset.k] || '';
-        inp.addEventListener('input', function () { p[inp.dataset.k] = inp.value; setDirty(true); });
+        inp.addEventListener('input', function () { p[inp.dataset.k] = inp.value; setDirty(true); if (inp.dataset.k === 'text_az') showAz(); });
       });
       // images
       var pil = $('.pi-list', row);
@@ -612,6 +634,26 @@
       });
       list.appendChild(row);
     });
+  }
+
+  // Free machine translation for a first draft (MyMemory, ~5000 chars/day). Keeps {imageN} lines and bullets.
+  function translateDraft(text) {
+    var lines = String(text).split('\n');
+    return lines.reduce(function (pr, line) {
+      return pr.then(function (out) {
+        var t = line.trim();
+        if (!t || /^\{image\d+/i.test(t)) return out.concat([line]);
+        var bullet = /^[•\-–*]\s*/.test(t) ? '• ' : '';
+        var body = t.replace(/^[•\-–*]\s*/, '');
+        return fetch('https://api.mymemory.translated.net/get?q=' + encodeURIComponent(body.slice(0, 490)) + '&langpair=en|az')
+          .then(function (r) { return r.json(); })
+          .then(function (j) {
+            var tr = j && j.responseData && j.responseData.translatedText;
+            if (!tr || /QUERY LENGTH|INVALID|LIMIT/i.test(tr)) throw new Error(tr || 'no result');
+            return out.concat([bullet + tr]);
+          });
+      });
+    }, Promise.resolve([])).then(function (out) { return out.join('\n'); });
   }
 
   function renderSocials() {

@@ -83,6 +83,8 @@ foreach ((array)($site['news']['posts'] ?? []) as $p) {
     'id' => preg_replace('/[^a-z0-9]/', '', strtolower($str($p['id'] ?? ''))) ?: bin2hex(random_bytes(4)),
     'title' => $str($p['title'] ?? ''),
     'text' => is_string($p['text'] ?? null) ? trim($p['text']) : '',
+    'title_az' => $str($p['title_az'] ?? ''),
+    'text_az' => is_string($p['text_az'] ?? null) ? trim($p['text_az']) : '',
     'images' => array_values(array_filter(array_map(function ($im) use ($str) {
       $src = is_array($im) ? $str($im['src'] ?? '') : $str($im);
       $ratio = (is_array($im) && ($im['ratio'] ?? '') === '4:5') ? '4:5' : '5:4';

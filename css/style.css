@@ -516,7 +516,11 @@ a { color: inherit; text-decoration: none; }
 }
 .post-close:hover { color: var(--text); }
 .post-meta { margin-bottom: 18px; }
-.n-link { margin-left: auto; color: var(--text); text-decoration: underline; text-underline-offset: 3px; }
+.n-link { color: var(--text); text-decoration: underline; text-underline-offset: 3px; }
+.lang-toggle { margin-left: auto; display: inline-flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.lang-toggle button { border: 0; background: none; padding: 6px 12px; font: inherit; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.06em; color: var(--muted); cursor: pointer; }
+.lang-toggle button.is-on { background: #111; color: #fff; }
+.lang-toggle[hidden] { display: none; }
 .n-link:hover { color: var(--red); }
 .post-cover { margin-bottom: 28px; }
 .post-cimg { display: block; width: 100%; aspect-ratio: 1.91 / 1; object-fit: cover; border-radius: 16px; }

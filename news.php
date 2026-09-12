@@ -5,8 +5,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <?php $post = null; $pid = $_GET['id'] ?? ''; foreach ((array)($S['news']['posts'] ?? []) as $pp) if (($pp['id'] ?? '') === $pid) { $post = $pp; break; }
-seo_head('news', $post ? ['post' => $post] : []); ?>
-<link rel="stylesheet" href="css/style.css?v=202609121635">
+$lang = (($_GET['lang'] ?? '') === 'az' && $post && !empty($post['text_az'])) ? 'az' : 'en';
+seo_head('news', $post ? ['post' => $post, 'lang' => $lang] : []); ?>
+<link rel="stylesheet" href="css/style.css?v=202609121640">
 </head>
 <body class="news-page">
 
@@ -54,7 +55,9 @@ seo_head('news', $post ? ['post' => $post] : []); ?>
   <div class="post-backdrop"></div>
   <article class="post" role="dialog" aria-modal="true">
     <button type="button" class="post-close" aria-label="Close">×</button>
-    <div class="post-meta"><span class="n-cat"></span><span class="n-date"></span><a class="n-link" target="_blank" rel="noopener" hidden></a></div>
+    <div class="post-meta"><span class="n-cat"></span><span class="n-date"></span><a class="n-link" target="_blank" rel="noopener" hidden></a>
+      <span class="lang-toggle" hidden><button type="button" data-lang="en" class="is-on">EN</button><button type="button" data-lang="az">AZ</button></span>
+    </div>
     <div class="post-cover"></div>
     <h1 class="post-title"></h1>
     <div class="post-text"></div>
@@ -63,7 +66,7 @@ seo_head('news', $post ? ['post' => $post] : []); ?>
   </article>
 </div>
 
-<script src="js/menu.js?v=202609121635"></script>
-<script src="js/site.js?v=202609121635"></script>
+<script src="js/menu.js?v=202609121640"></script>
+<script src="js/site.js?v=202609121640"></script>
 </body>
 </html>

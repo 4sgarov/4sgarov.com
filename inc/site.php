@@ -92,19 +92,29 @@ function seo_head(string $page, array $o = []): void {
   $url = SITE_URL . '/' . $path;
   $image = SITE_URL . '/assets/og.jpg';
   $type = 'website';
+  $hreflang = '';
   if (!empty($o['post'])) {
     $p = $o['post'];
-    $title = $p['title'] . ' — Rauf Asgarov';
-    $plain = trim(preg_replace('/\s+/', ' ', preg_replace('/\{image\d+[^}]*\}/i', '', (string)$p['text'])));
+    $az = ($o['lang'] ?? 'en') === 'az';
+    $ptitle = $az && !empty($p['title_az']) ? $p['title_az'] : $p['title'];
+    $ptext = $az ? (string)$p['text_az'] : (string)$p['text'];
+    $title = $ptitle . ' — Rauf Asgarov';
+    $plain = trim(preg_replace('/\s+/', ' ', preg_replace('/\{image\d+[^}]*\}/i', '', $ptext)));
     $desc = mb_substr($plain, 0, 160);
-    $url = SITE_URL . '/news.html?id=' . rawurlencode($p['id']);
+    $base = SITE_URL . '/news.html?id=' . rawurlencode($p['id']);
+    $url = $az ? $base . '&lang=az' : $base;
+    if (!empty($p['text_az'])) {
+      $hreflang = '<link rel="alternate" hreflang="en" href="' . e($base) . "\">\n"
+                . '<link rel="alternate" hreflang="az" href="' . e($base . '&lang=az') . "\">\n"
+                . '<link rel="alternate" hreflang="x-default" href="' . e($base) . "\">\n";
+    }
     $cover = img_src(($p['images'] ?? [])[0] ?? '');
     if ($cover) $image = SITE_URL . '/' . ltrim($cover, '/');
     $type = 'article';
   }
   echo '<title>' . e($title) . "</title>\n";
   echo '<meta name="description" content="' . e($desc) . "\">\n";
-  echo '<link rel="canonical" href="' . e($url) . "\">\n";
+  echo '<link rel="canonical" href="' . e($url) . "\">\n" . $hreflang;
   echo '<link rel="icon" type="image/png" href="assets/favicon.png">' . "\n";
   echo '<link rel="apple-touch-icon" href="assets/favicon.png">' . "\n";
   echo '<meta property="og:type" content="' . $type . "\">\n";
@@ -137,7 +147,7 @@ function seo_head(string $page, array $o = []): void {
     $p = $o['post'];
     $ld = [
       '@context' => 'https://schema.org', '@type' => 'NewsArticle',
-      'headline' => $p['title'], 'datePublished' => $p['date'] ?: null, 'image' => [$image],
+      'headline' => $ptitle, 'inLanguage' => $az ? 'az' : 'en', 'datePublished' => $p['date'] ?: null, 'image' => [$image],
       'author' => ['@type' => 'Person', 'name' => 'Rauf Asgarov'], 'mainEntityOfPage' => $url,
     ];
     echo '<script type="application/ld+json">' . json_encode($ld, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "</script>\n";
