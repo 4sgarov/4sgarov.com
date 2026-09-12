@@ -583,10 +583,17 @@
       });
       // images
       var pil = $('.pi-list', row);
-      p.images.forEach(function (src, k) {
-        var t = document.createElement('div'); t.className = 'pi';
-        t.innerHTML = '<img src="../' + src + '" alt=""><span class="pi-n">{image' + (k + 1) + '}</span><button type="button" class="pi-x" title="Remove">✕</button>';
-        $('.pi-x', t).addEventListener('click', function () { queueDelete(src); p.images.splice(k, 1); setDirty(true); renderPosts(); });
+      p.images.forEach(function (im, k) {
+        if (typeof im === 'string') im = p.images[k] = { src: im, ratio: '5:4' };
+        var t = document.createElement('div'); t.className = 'pi ' + (im.ratio === '4:5' ? 'is-portrait' : '');
+        t.innerHTML = '<img src="../' + im.src + '" alt=""><span class="pi-n">{image' + (k + 1) + '}</span>' +
+          '<button type="button" class="pi-x" title="Remove">✕</button>' +
+          '<div class="pi-ratio"><button type="button" data-r="5:4" title="Landscape 5:4">5:4</button><button type="button" data-r="4:5" title="Portrait 4:5">4:5</button></div>';
+        $$('.pi-ratio button', t).forEach(function (b) {
+          b.classList.toggle('is-on', b.dataset.r === im.ratio);
+          b.addEventListener('click', function () { im.ratio = b.dataset.r; setDirty(true); renderPosts(); });
+        });
+        $('.pi-x', t).addEventListener('click', function () { queueDelete(im.src); p.images.splice(k, 1); setDirty(true); renderPosts(); });
         pil.appendChild(t);
       });
       $('.post-images input[type=file]', row).addEventListener('change', function () {
@@ -594,7 +601,7 @@
         if (!files.length) return;
         busy(1); toast('Uploading…', false, 60000);
         files.reduce(function (pr, f) {
-          return pr.then(function () { return uploadMedia(f, 'news', CFG.imageMax.cover).then(function (path) { p.images.push(path); setDirty(true); renderPosts(); }); });
+          return pr.then(function () { return uploadMedia(f, 'news', CFG.imageMax.cover).then(function (path) { p.images.push({ src: path, ratio: '5:4' }); setDirty(true); renderPosts(); }); });
         }, Promise.resolve()).then(function () { toast('Uploaded'); }).catch(function (e) { toast('Upload failed: ' + e.message, true); })
           .then(function () { busy(-1); });
       });
@@ -605,7 +612,7 @@
         if (!act) return;
         if (act === 'up') posts.splice(i - 1, 0, posts.splice(i, 1)[0]);
         if (act === 'down') posts.splice(i + 1, 0, posts.splice(i, 1)[0]);
-        if (act === 'del') { if (!confirm('Delete "' + (p.title || 'this post') + '"?')) return; p.images.forEach(queueDelete); posts.splice(i, 1); }
+        if (act === 'del') { if (!confirm('Delete "' + (p.title || 'this post') + '"?')) return; p.images.forEach(function (im) { queueDelete(typeof im === 'string' ? im : im.src); }); posts.splice(i, 1); }
         setDirty(true); renderPosts();
       });
       list.appendChild(row);

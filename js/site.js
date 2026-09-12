@@ -144,6 +144,15 @@
     var p = d.split('-');
     return new Date(+p[0], p[1] - 1, +p[2]).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
   }
+  // images are {src, ratio} (ratio '4:5' portrait or '5:4' landscape); old posts may have plain strings
+  function imgObj(x) { return typeof x === 'string' ? { src: x, ratio: '5:4' } : x; }
+  function imgEl(x, cls) {
+    var o = imgObj(x);
+    var im = document.createElement('img');
+    im.src = o.src; im.alt = ''; im.loading = 'lazy';
+    im.className = cls + ' ' + (o.ratio === '4:5' ? 'is-portrait' : 'is-landscape');
+    return im;
+  }
   // Post text with {image2}-style tokens → paragraphs / bullets / images
   function postBody(el, post) {
     el.innerHTML = '';
@@ -156,8 +165,7 @@
       if (m && imgs[m[1] - 1]) {
         flush();
         used[m[1] - 1] = true;
-        var im = document.createElement('img'); im.className = 'post-inline'; im.src = imgs[m[1] - 1]; im.alt = ''; im.loading = 'lazy';
-        el.appendChild(im);
+        el.appendChild(imgEl(imgs[m[1] - 1], 'post-inline'));
       } else chunk.push(line);
     });
     flush();
@@ -181,7 +189,7 @@
       var leftover = postBody(art.querySelector('.post-text'), post);
       var gal = art.querySelector('.post-gallery');
       gal.innerHTML = '';
-      leftover.forEach(function (src) { var im = document.createElement('img'); im.src = src; im.alt = ''; gal.appendChild(im); });
+      leftover.forEach(function (x) { gal.appendChild(imgEl(x, 'post-gimg')); });
       gal.hidden = !leftover.length;
       modal.hidden = false;
       document.body.classList.add('post-open');
@@ -216,7 +224,7 @@
       bindOpen(f, featured);
       var fi = f.querySelector('.featured-img');
       var cover = (featured.images || [])[0];
-      if (cover) { var img = document.createElement('img'); img.src = cover; img.alt = ''; fi.appendChild(img); }
+      if (cover) { var img = document.createElement('img'); img.src = imgObj(cover).src; img.alt = ''; fi.appendChild(img); }
       f.querySelector('.n-date').textContent = fmtLong(featured.date);
       f.querySelector('.n-cat').textContent = catName[featured.category] || '';
       f.querySelector('.featured-title').textContent = featured.title;
@@ -231,7 +239,7 @@
       bindOpen(a, p);
       a.innerHTML = '<div class="card-thumb"></div><div class="card-info"><h3 class="card-head"></h3><div class="card-meta"><span class="n-cat"></span><span class="n-date"></span></div></div>';
       var c0 = (p.images || [])[0];
-      if (c0) { var i2 = document.createElement('img'); i2.src = c0; i2.alt = ''; i2.loading = 'lazy'; a.querySelector('.card-thumb').appendChild(i2); }
+      if (c0) { var i2 = document.createElement('img'); i2.src = imgObj(c0).src; i2.alt = ''; i2.loading = 'lazy'; a.querySelector('.card-thumb').appendChild(i2); }
       a.querySelector('.card-head').textContent = p.title;
       a.querySelector('.n-date').textContent = fmtLong(p.date);
       a.querySelector('.n-cat').textContent = catName[p.category] || '';

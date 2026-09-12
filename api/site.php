@@ -77,7 +77,11 @@ foreach ((array)($site['news']['posts'] ?? []) as $p) {
     'id' => preg_replace('/[^a-z0-9]/', '', strtolower($str($p['id'] ?? ''))) ?: bin2hex(random_bytes(4)),
     'title' => $str($p['title'] ?? ''),
     'text' => is_string($p['text'] ?? null) ? trim($p['text']) : '',
-    'images' => array_values(array_filter(array_map($str, (array)($p['images'] ?? [])))),
+    'images' => array_values(array_filter(array_map(function ($im) use ($str) {
+      $src = is_array($im) ? $str($im['src'] ?? '') : $str($im);
+      $ratio = (is_array($im) && ($im['ratio'] ?? '') === '4:5') ? '4:5' : '5:4';
+      return $src === '' ? null : ['src' => $src, 'ratio' => $ratio];
+    }, (array)($p['images'] ?? [])))),
     'link' => (function ($u) { $u = trim((string)$u); return $u !== '' && !preg_match('#^(https?://|mailto:|tel:)#i', $u) ? 'https://' . $u : $u; })($p['link'] ?? ''),
     'linkLabel' => $str($p['linkLabel'] ?? ''),
     'date' => preg_match('/^\d{4}-\d{2}-\d{2}$/', $str($p['date'] ?? '')) ? $str($p['date']) : '',
