@@ -7,7 +7,7 @@
 <?php $post = null; $pid = $_GET['id'] ?? ''; foreach ((array)($S['news']['posts'] ?? []) as $pp) if (($pp['id'] ?? '') === $pid) { $post = $pp; break; }
 $lang = (($_GET['lang'] ?? '') === 'az' && $post && !empty($post['text_az'])) ? 'az' : 'en';
 seo_head('news', $post ? ['post' => $post, 'lang' => $lang] : []); ?>
-<link rel="stylesheet" href="css/style.css?v=202609121657">
+<link rel="stylesheet" href="css/style.css?v=202609121659">
 </head>
 <body class="news-page">
 
@@ -68,7 +68,7 @@ seo_head('news', $post ? ['post' => $post, 'lang' => $lang] : []); ?>
   </div>
 </div>
 
-<script src="js/menu.js?v=202609121657"></script>
-<script src="js/site.js?v=202609121657"></script>
+<script src="js/menu.js?v=202609121659"></script>
+<script src="js/site.js?v=202609121659"></script>
 </body>
 </html>
