@@ -56,6 +56,9 @@ function seo_head(string $page, array $o = []): void {
     'contact'   => ['Contact — Rauf Asgarov, Tattoo Artist in Baku', 'Contact Rauf Asgarov — guest spots, Instagram, WhatsApp and studio location in Baku.', 'contact.html'],
   ][$page];
   [$title, $desc, $path] = $meta;
+  $ov = (array)($S['seo']['pages'][$page] ?? []);
+  if (!empty($ov['title'])) $title = $ov['title'];
+  if (!empty($ov['description'])) $desc = $ov['description'];
   $url = SITE_URL . '/' . $path;
   $image = SITE_URL . '/assets/og.jpg';
   $type = 'website';

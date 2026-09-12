@@ -19,6 +19,7 @@ $site['booking'] = $site['booking'] ?? [];
 $site['academy'] = $site['academy'] ?? [];
 $site['contact'] = $site['contact'] ?? [];
 $site['news'] = $site['news'] ?? [];
+$site['seo'] = $site['seo'] ?? [];
 
 /* Keep only known keys / shapes so the file can't be polluted. */
 $str = fn($v) => is_string($v) ? trim($v) : '';
@@ -44,6 +45,7 @@ $clean = [
     'mapEmbed' => $str($site['contact']['mapEmbed'] ?? ''),
   ],
   'news' => ['categories' => [], 'posts' => []],
+  'seo' => ['pages' => []],
   'portfolio' => ['categories' => [], 'works' => []],
   'booking' => [
     'intro' => $str($site['booking']['intro'] ?? ''),
@@ -67,6 +69,10 @@ foreach ((array)($site['contact']['socials'] ?? []) as $so) {
   $clean['contact']['socials'][] = ['label' => $str($so['label'] ?? ''), 'handle' => $str($so['handle'] ?? ''), 'url' => $url];
 }
 if ($clean['contact']['mapEmbed'] !== '' && !preg_match('#^https://(www\.)?google\.[a-z.]+/maps#i', $clean['contact']['mapEmbed'])) $clean['contact']['mapEmbed'] = '';
+foreach (['index', 'about', 'portfolio', 'book', 'academy', 'news', 'contact'] as $pg) {
+  $sp = (array)($site['seo']['pages'][$pg] ?? []);
+  $clean['seo']['pages'][$pg] = ['title' => mb_substr($str($sp['title'] ?? ''), 0, 120), 'description' => mb_substr($str($sp['description'] ?? ''), 0, 300)];
+}
 foreach ((array)($site['news']['categories'] ?? []) as $c) {
   $id = preg_replace('/[^a-z0-9-]/', '', strtolower($str($c['id'] ?? '')));
   if ($id === '') continue;

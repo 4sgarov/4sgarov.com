@@ -6,8 +6,8 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Admin — Rauf Asgarov</title>
 <link rel="icon" href="data:,">
-<link rel="stylesheet" href="../css/style.css?v=202609121534">
-<link rel="stylesheet" href="admin.css?v=202609121534">
+<link rel="stylesheet" href="../css/style.css?v=202609121632">
+<link rel="stylesheet" href="admin.css?v=202609121632">
 </head>
 <body class="admin">
 
@@ -52,6 +52,7 @@
     <button class="tab" data-tab="academy">Academy</button>
     <button class="tab" data-tab="news">News</button>
     <button class="tab" data-tab="contact">Contact</button>
+    <button class="tab" data-tab="seo">SEO</button>
     <button class="tab" data-tab="requests">Requests <span class="badge" id="req-badge" hidden></span></button>
     <button class="tab" data-tab="settings">Settings</button>
   </nav>
@@ -290,6 +291,50 @@
       </div>
     </section>
 
+    <!-- SEO -->
+    <section class="panel" data-panel="seo">
+      <h2 class="panel-title">Google title &amp; description</h2>
+      <p class="hint">What Google shows for each page. Put the words people actually search for in the title (best under 60 characters) and description (under 160). Leave empty to use the built-in text.<br>
+      <b>What really moves you up:</b> real text on the site — write News posts about the topics you want to be found for (e.g. "Cover up tattoo in Baku", "Tattoo aftercare"), keep your Google Business Profile updated, and link the site from Instagram.</p>
+      <div class="seo-list">
+        <div class="seo-row">
+          <div class="seo-page">Home</div>
+          <label class="field"><span>Title <small class="seo-count" data-for="index-t"></small></span><input type="text" id="index-t" maxlength="120" data-bind="seo.pages.index.title" placeholder="e.g. Realism Tattoo Artist in Baku — Rauf Asgarov"></label>
+          <label class="field"><span>Description <small class="seo-count" data-for="index-d"></small></span><textarea id="index-d" rows="2" maxlength="300" data-bind="seo.pages.index.description" placeholder="1–2 sentences with the words people search for"></textarea></label>
+        </div>
+        <div class="seo-row">
+          <div class="seo-page">About me</div>
+          <label class="field"><span>Title <small class="seo-count" data-for="about-t"></small></span><input type="text" id="about-t" maxlength="120" data-bind="seo.pages.about.title" placeholder="e.g. Realism Tattoo Artist in Baku — Rauf Asgarov"></label>
+          <label class="field"><span>Description <small class="seo-count" data-for="about-d"></small></span><textarea id="about-d" rows="2" maxlength="300" data-bind="seo.pages.about.description" placeholder="1–2 sentences with the words people search for"></textarea></label>
+        </div>
+        <div class="seo-row">
+          <div class="seo-page">Portfolio</div>
+          <label class="field"><span>Title <small class="seo-count" data-for="portfolio-t"></small></span><input type="text" id="portfolio-t" maxlength="120" data-bind="seo.pages.portfolio.title" placeholder="e.g. Realism Tattoo Artist in Baku — Rauf Asgarov"></label>
+          <label class="field"><span>Description <small class="seo-count" data-for="portfolio-d"></small></span><textarea id="portfolio-d" rows="2" maxlength="300" data-bind="seo.pages.portfolio.description" placeholder="1–2 sentences with the words people search for"></textarea></label>
+        </div>
+        <div class="seo-row">
+          <div class="seo-page">Book now</div>
+          <label class="field"><span>Title <small class="seo-count" data-for="book-t"></small></span><input type="text" id="book-t" maxlength="120" data-bind="seo.pages.book.title" placeholder="e.g. Realism Tattoo Artist in Baku — Rauf Asgarov"></label>
+          <label class="field"><span>Description <small class="seo-count" data-for="book-d"></small></span><textarea id="book-d" rows="2" maxlength="300" data-bind="seo.pages.book.description" placeholder="1–2 sentences with the words people search for"></textarea></label>
+        </div>
+        <div class="seo-row">
+          <div class="seo-page">Academy</div>
+          <label class="field"><span>Title <small class="seo-count" data-for="academy-t"></small></span><input type="text" id="academy-t" maxlength="120" data-bind="seo.pages.academy.title" placeholder="e.g. Realism Tattoo Artist in Baku — Rauf Asgarov"></label>
+          <label class="field"><span>Description <small class="seo-count" data-for="academy-d"></small></span><textarea id="academy-d" rows="2" maxlength="300" data-bind="seo.pages.academy.description" placeholder="1–2 sentences with the words people search for"></textarea></label>
+        </div>
+        <div class="seo-row">
+          <div class="seo-page">News</div>
+          <label class="field"><span>Title <small class="seo-count" data-for="news-t"></small></span><input type="text" id="news-t" maxlength="120" data-bind="seo.pages.news.title" placeholder="e.g. Realism Tattoo Artist in Baku — Rauf Asgarov"></label>
+          <label class="field"><span>Description <small class="seo-count" data-for="news-d"></small></span><textarea id="news-d" rows="2" maxlength="300" data-bind="seo.pages.news.description" placeholder="1–2 sentences with the words people search for"></textarea></label>
+        </div>
+        <div class="seo-row">
+          <div class="seo-page">Contact</div>
+          <label class="field"><span>Title <small class="seo-count" data-for="contact-t"></small></span><input type="text" id="contact-t" maxlength="120" data-bind="seo.pages.contact.title" placeholder="e.g. Realism Tattoo Artist in Baku — Rauf Asgarov"></label>
+          <label class="field"><span>Description <small class="seo-count" data-for="contact-d"></small></span><textarea id="contact-d" rows="2" maxlength="300" data-bind="seo.pages.contact.description" placeholder="1–2 sentences with the words people search for"></textarea></label>
+        </div>
+      </div>
+    </section>
+
     <!-- Requests -->
     <section class="panel" data-panel="requests">
       <div class="req-head">
@@ -333,6 +378,6 @@
 
 <div class="toast" id="toast" hidden></div>
 
-<script src="admin.js?v=202609121534"></script>
+<script src="admin.js?v=202609121632"></script>
 </body>
 </html>

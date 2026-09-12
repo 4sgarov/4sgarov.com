@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <?php seo_head('about'); ?>
-<link rel="stylesheet" href="css/style.css?v=202609121534">
+<link rel="stylesheet" href="css/style.css?v=202609121632">
 </head>
 <body class="about-page">
 
@@ -39,7 +39,7 @@
   </div>
 </section>
 
-<script src="js/menu.js?v=202609121534"></script>
-<script src="js/site.js?v=202609121534"></script>
+<script src="js/menu.js?v=202609121632"></script>
+<script src="js/site.js?v=202609121632"></script>
 </body>
 </html>
