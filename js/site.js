@@ -244,12 +244,14 @@
 
     var featured = posts.filter(function (p) { return p.featured; })[0] || posts[0];
     var cards = document.getElementById('news-cards');
+    cards.innerHTML = '';
     document.getElementById('news-empty').hidden = posts.length > 0;
     if (featured) {
       var f = document.getElementById('featured');
       f.hidden = false;
       bindOpen(f, featured);
       var fi = f.querySelector('.featured-img');
+      fi.innerHTML = '';
       var cover = (featured.images || [])[0];
       if (cover) { var img = document.createElement('img'); img.src = imgObj(cover).src; img.alt = ''; fi.appendChild(img); }
       f.querySelector('.n-date').textContent = fmtLong(featured.date);

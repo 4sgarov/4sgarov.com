@@ -6,10 +6,10 @@ small PHP admin API — runs on any PHP hosting (built for Hostinger).
 ## Structure
 
 ```
-index.html            Home: left nav + optional full-screen cover
-about.html            About: full-screen hero, name, two text columns
-portfolio.html        Portfolio: title, category filters, works grid (slideshow on phones)
-book.html             Book now: request form (city + date, style, images, idea)
+*.php                 Pages (served at page.html URLs via .htaccess); content is
+                      rendered server-side from site.json for SEO, then js/site.js
+                      takes over for interactivity
+inc/site.php          Shared helpers: load content, escape, SEO <head>, schema
 admin/                Admin panel (password login, works on phone + desktop)
 api/                  PHP endpoints used by the admin
   auth.php            setup / login / logout / change password

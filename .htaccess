@@ -18,10 +18,14 @@ AddDefaultCharset UTF-8
   </FilesMatch>
 </IfModule>
 
-# Force HTTPS
+DirectoryIndex index.php index.html
+
+# Force HTTPS; serve page.html URLs from page.php (content is rendered server-side)
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteCond %{HTTPS} !=on
   RewriteCond %{HTTP:X-Forwarded-Proto} !https
   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+  RewriteRule ^(index|about|portfolio|book|academy|news|contact)\.html$ $1.php [L,QSA]
 </IfModule>
+

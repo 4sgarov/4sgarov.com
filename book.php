@@ -1,23 +1,11 @@
+<?php require __DIR__ . '/inc/site.php'; $S = site(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Book now — Rauf Asgarov</title>
-<meta name="description" content="Book a tattoo session or seminar with Rauf Asgarov.">
-<link rel="icon" type="image/png" href="assets/favicon.png">
-<link rel="apple-touch-icon" href="assets/favicon.png">
-<link rel="canonical" href="https://4sgarov.com/book.html">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Rauf Asgarov">
-<meta property="og:title" content="Book now — Rauf Asgarov">
-<meta property="og:description" content="Book a tattoo session or seminar with Rauf Asgarov.">
-<meta property="og:url" content="https://4sgarov.com/book.html">
-<meta property="og:image" content="https://4sgarov.com/assets/og.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="css/style.css?v=202609121531">
+<?php seo_head('book'); ?>
+<link rel="stylesheet" href="css/style.css?v=202609121534">
 </head>
 <body class="book-page">
 
@@ -39,7 +27,7 @@
     <span>BOOK</span>
     <span>NOW</span>
   </h1>
-  <p class="book-intro"></p>
+  <p class="book-intro"><?= e($S['booking']['intro'] ?? '') ?></p>
 </section>
 
 <section class="book">
@@ -117,8 +105,8 @@
   </div>
 </section>
 
-<script src="js/menu.js?v=202609121531"></script>
-<script src="js/site.js?v=202609121531"></script>
-<script src="js/book.js?v=202609121531"></script>
+<script src="js/menu.js?v=202609121534"></script>
+<script src="js/site.js?v=202609121534"></script>
+<script src="js/book.js?v=202609121534"></script>
 </body>
 </html>

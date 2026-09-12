@@ -1,0 +1,50 @@
+<?php require __DIR__ . '/inc/site.php'; $S = site(); ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<?php seo_head('academy'); ?>
+<link rel="stylesheet" href="css/style.css?v=202609121534">
+</head>
+<body class="academy-page">
+
+<button class="menu-btn" aria-label="Open menu" aria-expanded="false">
+  <span></span><span></span><span></span>
+</button>
+
+<nav class="drawer">
+  <a href="about.html" class="nav-link">About me</a>
+  <a href="portfolio.html" class="nav-link">Portfolio</a>
+  <a href="book.html" class="nav-link">Book now</a>
+  <a href="academy.html" class="nav-link">Academy</a>
+  <a href="news.html" class="nav-link">News</a>
+  <a href="contact.html" class="nav-link">Contact</a>
+</nav>
+
+<section class="academy-hero">
+  <div class="hero" aria-hidden="true"></div>
+  <div class="academy">
+    <h1 class="academy-headline"><?= e($S['academy']['headline'] ?? '') ?></h1>
+    <p class="academy-text"><?= e($S['academy']['text'] ?? '') ?></p>
+  </div>
+</section>
+
+<section class="programs">
+<?php $themes = ['program--grey', 'program--red', 'program--black'];
+foreach (array_slice((array)($S['academy']['programs'] ?? []), 0, 3) as $i => $p):
+  $price = trim((string)($p['price'] ?? '')); $free = preg_match('/^free$/i', $price);
+  $priceText = $free ? 'Free' : (preg_match('/^\d+([.,]\d+)?$/', $price) ? $price . ' $' : $price); ?>
+  <div class="program <?= $themes[$i] ?>">
+    <h2 class="program-title"><?= e($p['title'] ?? '') ?></h2>
+    <div class="program-text"><?= rich((string)($p['text'] ?? '')) ?></div>
+    <div class="program-foot"><span class="program-price<?= $free ? ' is-free' : '' ?>"<?= $price === '' ? ' hidden' : '' ?>><?= e($priceText) ?></span></div>
+    <a class="program-btn" href="<?= e($p['link'] ?? 'book.html') ?>">Choose</a>
+  </div>
+<?php endforeach; ?>
+</section>
+
+<script src="js/menu.js?v=202609121534"></script>
+<script src="js/site.js?v=202609121534"></script>
+</body>
+</html>
