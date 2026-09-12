@@ -566,7 +566,7 @@
           '<label>Link (optional)<input type="url" data-k="link" placeholder="https://…"></label>' +
         '</div>' +
         '<div class="post-images"><div class="pi-list"></div><label class="btn btn-small">Add images<input type="file" accept="image/*" multiple hidden></label></div>' +
-        '<textarea data-k="text" placeholder="Text… Put {image2} on its own line to show the 2nd image there. Lines starting with • become bullets."></textarea>';
+        '<textarea data-k="text" placeholder="Text… {image2} on its own line shows the 2nd image there; {image2 left} or {image2 right} floats it beside the text. Lines starting with • become bullets."></textarea>';
       var sel = $('select', row);
       cats.forEach(function (c) { var o = document.createElement('option'); o.value = c.id; o.textContent = c.name; sel.appendChild(o); });
       $$('[data-k]', row).forEach(function (inp) {

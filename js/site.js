@@ -161,11 +161,12 @@
     var chunk = [];
     function flush() { if (chunk.length) { var d = document.createElement('div'); richText(d, chunk.join('\n')); while (d.firstChild) el.appendChild(d.firstChild); chunk = []; } }
     String(post.text || '').split('\n').forEach(function (line) {
-      var m = /^\s*\{image(\d+)\}\s*$/i.exec(line);
+      var m = /^\s*\{image(\d+)(?:\s+(left|right))?\}\s*$/i.exec(line);
       if (m && imgs[m[1] - 1]) {
         flush();
         used[m[1] - 1] = true;
-        el.appendChild(imgEl(imgs[m[1] - 1], 'post-inline'));
+        var side = (m[2] || '').toLowerCase();
+        el.appendChild(imgEl(imgs[m[1] - 1], 'post-inline' + (side ? ' float-' + side : '')));
       } else chunk.push(line);
     });
     flush();

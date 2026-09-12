@@ -523,6 +523,10 @@ a { color: inherit; text-decoration: none; }
 .post-text ul { padding-left: 20px; }
 .post-text li + li { margin-top: 3px; }
 .post-inline { display: block; width: auto; height: auto; max-width: 100%; max-height: 640px; border-radius: 16px; margin: 28px 0; }
+.post-inline.float-left, .post-inline.float-right { width: 46%; max-height: none; margin: 6px 0 14px; }
+.post-inline.float-left { float: left; margin-right: 24px; }
+.post-inline.float-right { float: right; margin-left: 24px; }
+.post-text::after { content: ''; display: block; clear: both; }
 .post-gallery { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 30px; }
 .post-gimg { display: block; height: auto; width: auto; max-width: 100%; max-height: 560px; border-radius: 16px; }
 .news-page [hidden] { display: none !important; }
@@ -532,6 +536,7 @@ a { color: inherit; text-decoration: none; }
   .post-modal { padding: 0; align-items: stretch; }
   .post { max-width: none; max-height: none; height: 100%; border-radius: 0; padding: 28px 24px 48px; }
   .post-gimg, .post-inline { max-height: none; }
+  .post-inline.float-left, .post-inline.float-right { float: none; width: 100%; margin: 20px 0; }
   .post-close { margin: -12px -8px 0 0; }
   .news-card { grid-template-columns: 128px 1fr; align-items: center; }
   .card-thumb { align-self: stretch; }
