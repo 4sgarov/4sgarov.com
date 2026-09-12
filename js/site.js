@@ -158,7 +158,7 @@
           var pv = String(p.price || '').trim();
           var isFree = /^free$/i.test(pv);
           // a bare number gets a dollar sign; anything else is shown as typed
-          price.textContent = isFree ? 'Free' : (/^\d+([.,]\d+)?$/.test(pv) ? '$' + pv : pv);
+          price.textContent = isFree ? 'Free' : (/^\d+([.,]\d+)?$/.test(pv) ? pv + '$' : pv);
           price.hidden = !pv;
           price.classList.toggle('is-free', isFree);
         });
