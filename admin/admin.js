@@ -166,8 +166,6 @@
     s.academy.programs.forEach(function (p) { p.image = p.image || ''; p.price = p.price || ''; p.link = p.link || 'book.html'; });
     s.news = s.news || {}; s.news.categories = s.news.categories || []; s.news.posts = s.news.posts || [];
     s.news.posts.forEach(function (p) { if (!p.id) p.id = uid(); p.images = p.images || (p.image ? [p.image] : []); });
-    s.seo = s.seo || {}; s.seo.pages = s.seo.pages || {};
-    ['index', 'about', 'portfolio', 'book', 'academy', 'news', 'contact'].forEach(function (k) { s.seo.pages[k] = s.seo.pages[k] || { title: '', description: '' }; });
     s.contact = s.contact || {};
     if (s.contact.guestSpotEnabled === undefined) s.contact.guestSpotEnabled = true;
     s.contact.socials = s.contact.socials || [];
@@ -875,16 +873,6 @@
     };
     img.src = url;
   });
-  // character counters for SEO fields
-  function seoCount() {
-    $$('.seo-count').forEach(function (c) {
-      var inp = document.getElementById(c.dataset.for); if (!inp) return;
-      var max = inp.tagName === 'TEXTAREA' ? 160 : 60, n = inp.value.length;
-      c.textContent = n + '/' + max; c.classList.toggle('is-over', n > max);
-    });
-  }
-  $$('.seo-row input, .seo-row textarea').forEach(function (i) { i.addEventListener('input', seoCount); });
-  var _renderText = renderText; renderText = function () { _renderText(); seoCount(); };
   $('#req-refresh').addEventListener('click', loadRequests);
   fillCountries();
   bindMediaSlots();

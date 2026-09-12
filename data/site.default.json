@@ -169,37 +169,5 @@
       }
     ],
     "posts": []
-  },
-  "seo": {
-    "pages": {
-      "index": {
-        "title": "",
-        "description": ""
-      },
-      "about": {
-        "title": "",
-        "description": ""
-      },
-      "portfolio": {
-        "title": "",
-        "description": ""
-      },
-      "book": {
-        "title": "",
-        "description": ""
-      },
-      "academy": {
-        "title": "",
-        "description": ""
-      },
-      "news": {
-        "title": "",
-        "description": ""
-      },
-      "contact": {
-        "title": "",
-        "description": ""
-      }
-    }
   }
 }
