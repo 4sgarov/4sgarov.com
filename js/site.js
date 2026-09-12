@@ -186,11 +186,16 @@
       var lk = art.querySelector('.n-link');
       if (post.link) { lk.href = post.link; lk.textContent = post.linkLabel || post.link.replace(/^https?:\/\/(www\.)?/, '').replace(/\/.*$/, ''); lk.hidden = false; } else lk.hidden = true;
       art.querySelector('.post-title').textContent = post.title;
+      var cover = art.querySelector('.post-cover');
+      cover.innerHTML = '';
+      var first = (post.images || [])[0];
+      if (first) cover.appendChild(imgEl(first, 'post-cimg'));
+      cover.hidden = !first;
       var leftover = postBody(art.querySelector('.post-text'), post);
       var gal = art.querySelector('.post-gallery');
       gal.innerHTML = '';
-      leftover.forEach(function (x) { gal.appendChild(imgEl(x, 'post-gimg')); });
-      gal.hidden = !leftover.length;
+      leftover.forEach(function (x, i) { if (i === 0 && x === first) return; gal.appendChild(imgEl(x, 'post-gimg')); });
+      gal.hidden = !gal.children.length;
       modal.hidden = false;
       document.body.classList.add('post-open');
       art.scrollTop = 0;
@@ -237,7 +242,7 @@
       var a = document.createElement('a');
       a.className = 'news-card';
       bindOpen(a, p);
-      a.innerHTML = '<div class="card-thumb"></div><div class="card-info"><h3 class="card-head"></h3><div class="card-meta"><span class="n-cat"></span><span class="n-date"></span></div></div>';
+      a.innerHTML = '<div class="card-thumb"></div><div class="card-info"><h3 class="card-head"></h3><div class="meta-row"><span class="n-cat"></span><span class="n-date"></span></div></div>';
       var c0 = (p.images || [])[0];
       if (c0) { var i2 = document.createElement('img'); i2.src = imgObj(c0).src; i2.alt = ''; i2.loading = 'lazy'; a.querySelector('.card-thumb').appendChild(i2); }
       a.querySelector('.card-head').textContent = p.title;
