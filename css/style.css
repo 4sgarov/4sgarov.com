@@ -335,9 +335,7 @@ a { color: inherit; text-decoration: none; }
 .program--black .program-btn { background: #fff; color: #111; }
 @media (max-width: 900px) {
   .programs { grid-template-columns: 1fr; grid-auto-rows: 1fr; gap: 24px; }
-  .program { padding: 36px 28px; min-height: 0; }
-  .program-title { font-size: 1.7rem; }
-  .program-text li { font-size: 1.3rem; }
+  .program { padding: 44px 32px; }
 }
 @media (max-width: 640px) {
   .academy { padding: 0 28px; }
