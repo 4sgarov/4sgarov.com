@@ -58,6 +58,76 @@
     if (el && value !== undefined) el.textContent = value;
   }
 
+  function flag(code) {
+    return String.fromCodePoint.apply(null, String(code).toUpperCase().split('').map(function (c) { return 0x1F1E6 + c.charCodeAt(0) - 65; }));
+  }
+  function fmtDay(d) {
+    var p = d.split('-');
+    return new Date(+p[0], p[1] - 1, +p[2]).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+  }
+  var ICONS = {
+    instagram: '<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>',
+    whatsapp: '<svg viewBox="0 0 24 24"><path d="M4 20l1.3-3.8A8 8 0 1 1 8 19.2L4 20z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 .8a4 4 0 0 1-1.8-1.8l.8-1-1-2z" fill="currentColor" stroke="none"/></svg>',
+    telegram: '<svg viewBox="0 0 24 24"><path d="M21 4L3 11l6 2 2 6 3-4 5 3z"/><path d="M9 13l10-8"/></svg>',
+    tiktok: '<svg viewBox="0 0 24 24"><path d="M14 4v9.5a3.5 3.5 0 1 1-3.5-3.5"/><path d="M14 4c0 2.5 2 4.5 4.5 4.5"/></svg>',
+    facebook: '<svg viewBox="0 0 24 24"><path d="M14 8h3V4h-3a4 4 0 0 0-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8z"/></svg>',
+    youtube: '<svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="3"/><path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none"/></svg>',
+    email: '<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>',
+    phone: '<svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>',
+    link: '<svg viewBox="0 0 24 24"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>'
+  };
+  function iconFor(s) {
+    var k = (s.label + ' ' + s.url).toLowerCase();
+    if (/instagram/.test(k)) return ICONS.instagram;
+    if (/whatsapp|wa\.me/.test(k)) return ICONS.whatsapp;
+    if (/telegram|t\.me/.test(k)) return ICONS.telegram;
+    if (/tiktok/.test(k)) return ICONS.tiktok;
+    if (/facebook|fb\.com/.test(k)) return ICONS.facebook;
+    if (/youtube|youtu\.be/.test(k)) return ICONS.youtube;
+    if (/mailto:|e-?mail/.test(k)) return ICONS.email;
+    if (/tel:|phone/.test(k)) return ICONS.phone;
+    return ICONS.link;
+  }
+  function renderContact(c, booking) {
+    var guest = document.getElementById('guest');
+    if (!guest) return;
+    var list = guest.querySelector('.guest-list');
+    list.innerHTML = '';
+    var trips = ((booking && booking.locations) || []).filter(function (l) { return l.from; });
+    trips.forEach(function (l) {
+      var li = document.createElement('li');
+      li.innerHTML = '<span class="g-flag"></span><span class="g-place"></span><span class="g-dates"></span>';
+      li.querySelector('.g-flag').textContent = flag(l.code);
+      li.querySelector('.g-place').textContent = l.country + ' — ' + l.city;
+      li.querySelector('.g-dates').textContent = fmtDay(l.from) + (l.to ? ' – ' + fmtDay(l.to) : '');
+      list.appendChild(li);
+    });
+    guest.hidden = !c.guestSpotEnabled || !trips.length;
+
+    var socials = document.querySelector('.socials');
+    socials.innerHTML = '';
+    (c.socials || []).forEach(function (s) {
+      if (!s.url) return;
+      var li = document.createElement('li');
+      var a = document.createElement('a');
+      a.href = s.url; a.target = '_blank'; a.rel = 'noopener';
+      a.innerHTML = '<span class="s-icon">' + iconFor(s) + '</span><span class="s-label"></span><span class="s-handle"></span>';
+      a.querySelector('.s-label').textContent = s.label || s.url;
+      a.querySelector('.s-handle').textContent = s.handle || '';
+      li.appendChild(a); socials.appendChild(li);
+    });
+
+    var map = document.getElementById('map');
+    map.innerHTML = '';
+    var src = c.mapEmbed || (c.mapQuery ? 'https://www.google.com/maps?q=' + encodeURIComponent(c.mapQuery) + '&output=embed' : '');
+    if (src) {
+      var f = document.createElement('iframe');
+      f.src = src; f.loading = 'lazy'; f.referrerPolicy = 'no-referrer-when-downgrade'; f.allowFullscreen = true;
+      f.title = 'Map';
+      map.appendChild(f);
+    } else map.hidden = true;
+  }
+
   function renderPortfolio(p) {
     var filters = document.querySelector('.filters');
     var grid = document.querySelector('.grid');
@@ -163,6 +233,7 @@
           price.classList.toggle('is-free', isFree);
         });
       }
+      if (S.contact) renderContact(S.contact, S.booking);
       if (S.portfolio) renderPortfolio(S.portfolio);
       document.dispatchEvent(new CustomEvent('site:loaded', { detail: S }));
     })

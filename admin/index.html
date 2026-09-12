@@ -6,8 +6,8 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Admin — Rauf Asgarov</title>
 <link rel="icon" href="data:,">
-<link rel="stylesheet" href="../css/style.css?v=202609111739">
-<link rel="stylesheet" href="admin.css?v=202609111739">
+<link rel="stylesheet" href="../css/style.css?v=202609121304">
+<link rel="stylesheet" href="admin.css?v=202609121304">
 </head>
 <body class="admin">
 
@@ -50,6 +50,7 @@
     <button class="tab" data-tab="portfolio">Portfolio</button>
     <button class="tab" data-tab="book">Book now</button>
     <button class="tab" data-tab="academy">Academy</button>
+    <button class="tab" data-tab="contact">Contact</button>
     <button class="tab" data-tab="requests">Requests <span class="badge" id="req-badge" hidden></span></button>
     <button class="tab" data-tab="settings">Settings</button>
   </nav>
@@ -246,6 +247,30 @@
       </div>
     </section>
 
+    <!-- Contact -->
+    <section class="panel" data-panel="contact">
+      <h2 class="panel-title">Guest Spot</h2>
+      <p class="hint">Lists the cities from <b>Book now → Cities &amp; dates</b> that have dates. Switch it off when you're not travelling.</p>
+      <label class="check"><input type="checkbox" data-bind="contact.guestSpotEnabled"><span>Show Guest Spot on the Contact page</span></label>
+
+      <h2 class="panel-title">Social media</h2>
+      <p class="hint">Shown as outlined buttons, two per row. Name (e.g. Instagram), optional handle (e.g. @4sgarov) and the link.</p>
+      <div class="list" id="social-list"></div>
+      <form class="social-add" id="social-add">
+        <input type="text" id="social-label" placeholder="Name (Instagram)" required>
+        <input type="text" id="social-handle" placeholder="@handle (optional)">
+        <input type="text" id="social-url" placeholder="Link (https://…, mailto:, tel:)" required>
+        <button type="submit" class="btn btn-small">Add</button>
+      </form>
+
+      <h2 class="panel-title">Map</h2>
+      <p class="hint">Type the studio address — the map finds it. Or paste a Google Maps "Embed a map" link for an exact pin.</p>
+      <div class="form-narrow" style="max-width: 720px">
+        <label class="field"><span>Address</span><input type="text" data-bind="contact.mapQuery" placeholder="Baku, Azerbaijan"></label>
+        <label class="field"><span>Embed link (optional)</span><input type="text" data-bind="contact.mapEmbed" placeholder="https://www.google.com/maps/embed?pb=…"></label>
+      </div>
+    </section>
+
     <!-- Requests -->
     <section class="panel" data-panel="requests">
       <div class="req-head">
@@ -279,6 +304,6 @@
 
 <div class="toast" id="toast" hidden></div>
 
-<script src="admin.js?v=202609111739"></script>
+<script src="admin.js?v=202609121304"></script>
 </body>
 </html>

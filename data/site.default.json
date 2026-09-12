@@ -129,5 +129,28 @@
         "image": ""
       }
     ]
+  },
+  "contact": {
+    "guestSpotEnabled": true,
+    "socials": [
+      {
+        "label": "Instagram",
+        "url": "https://instagram.com/4sgarov"
+      },
+      {
+        "label": "WhatsApp",
+        "url": "https://wa.me/994000000000"
+      },
+      {
+        "label": "Telegram",
+        "url": "https://t.me/4sgarov"
+      },
+      {
+        "label": "Email",
+        "url": "mailto:info@4sgarov.com"
+      }
+    ],
+    "mapQuery": "Baku, Azerbaijan",
+    "mapEmbed": ""
   }
 }

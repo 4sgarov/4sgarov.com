@@ -332,3 +332,14 @@
   .req { grid-template-columns: 1fr; }
   .req-actions { flex-direction: row; }
 }
+
+/* Contact */
+.social-add { display: grid; grid-template-columns: 1fr 1fr 1.6fr auto; gap: 8px; max-width: 900px; }
+.social-add input { padding: 10px 12px; border: 1px solid #ddd; border-radius: 8px; font: inherit; font-size: 0.95rem; }
+.list-row .social-fields { flex: 1; display: grid; grid-template-columns: 1fr 1fr 1.6fr; gap: 8px; }
+.list-row .social-fields input { border-color: transparent; background: transparent; padding: 8px 6px; }
+.list-row .social-fields input:hover, .list-row .social-fields input:focus { border-color: #ddd; background: #fff; }
+@media (max-width: 760px) {
+  .social-add { grid-template-columns: 1fr; }
+  .list-row .social-fields { grid-template-columns: 1fr; flex-basis: 100%; }
+}

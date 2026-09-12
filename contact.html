@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portfolio — Rauf Asgarov</title>
-<meta name="description" content="Tattoo portfolio of Rauf Asgarov — tattoo artist based in Baku.">
+<title>Contact — Rauf Asgarov</title>
+<meta name="description" content="Contact Rauf Asgarov — guest spots, social media and studio location.">
 <link rel="icon" href="data:,">
-<link rel="stylesheet" href="css/style.css?v=202609121304">
+<link rel="stylesheet" href="css/style.css">
 </head>
-<body class="portfolio-page">
+<body class="contact-page">
 
 <button class="menu-btn" aria-label="Open menu" aria-expanded="false">
   <span></span><span></span><span></span>
@@ -23,19 +23,18 @@
   <a href="contact.html" class="nav-link">Contact</a>
 </nav>
 
-<section class="portfolio-hero">
-  <h1 class="portfolio-title">
-    <span>TATTOO</span>
-    <span>PORTFOLIO</span>
-  </h1>
+<section class="contact">
+  <div class="guest" id="guest" hidden>
+    <h1 class="guest-title">Guest Spot</h1>
+    <ul class="guest-list"></ul>
+  </div>
+
+  <ul class="socials"></ul>
+
+  <div class="map" id="map"></div>
 </section>
 
-<section class="works">
-  <div class="filters"></div>
-  <div class="grid"></div>
-</section>
-
-<script src="js/menu.js?v=202609121304"></script>
-<script src="js/site.js?v=202609121304"></script>
+<script src="js/menu.js"></script>
+<script src="js/site.js"></script>
 </body>
 </html>

@@ -17,6 +17,7 @@ $site = body_json();
 if (!isset($site['home'], $site['about'], $site['portfolio'])) fail('Invalid content');
 $site['booking'] = $site['booking'] ?? [];
 $site['academy'] = $site['academy'] ?? [];
+$site['contact'] = $site['contact'] ?? [];
 
 /* Keep only known keys / shapes so the file can't be polluted. */
 $str = fn($v) => is_string($v) ? trim($v) : '';
@@ -35,6 +36,12 @@ $clean = [
     'text' => $str($site['academy']['text'] ?? ''),
     'programs' => [],
   ],
+  'contact' => [
+    'guestSpotEnabled' => !empty($site['contact']['guestSpotEnabled']),
+    'socials' => [],
+    'mapQuery' => $str($site['contact']['mapQuery'] ?? ''),
+    'mapEmbed' => $str($site['contact']['mapEmbed'] ?? ''),
+  ],
   'portfolio' => ['categories' => [], 'works' => []],
   'booking' => [
     'intro' => $str($site['booking']['intro'] ?? ''),
@@ -52,6 +59,12 @@ foreach (array_slice((array)($site['academy']['programs'] ?? []), 0, 3) as $p) {
   if ($plink !== '' && !preg_match('#^(https?://|mailto:|tel:|/|[a-z0-9_-]+\.html)#i', $plink)) $plink = 'https://' . $plink;
   $clean['academy']['programs'][] = ['title' => $str($p['title'] ?? ''), 'text' => $str($p['text'] ?? ''), 'link' => $plink ?: 'book.html', 'price' => mb_substr($str($p['price'] ?? ''), 0, 40), 'image' => $str($p['image'] ?? '')];
 }
+foreach ((array)($site['contact']['socials'] ?? []) as $so) {
+  $url = $str($so['url'] ?? '');
+  if ($url !== '' && !preg_match('#^(https?://|mailto:|tel:)#i', $url)) $url = 'https://' . $url;
+  $clean['contact']['socials'][] = ['label' => $str($so['label'] ?? ''), 'handle' => $str($so['handle'] ?? ''), 'url' => $url];
+}
+if ($clean['contact']['mapEmbed'] !== '' && !preg_match('#^https://(www\.)?google\.[a-z.]+/maps#i', $clean['contact']['mapEmbed'])) $clean['contact']['mapEmbed'] = '';
 foreach ((array)($site['portfolio']['categories'] ?? []) as $c) {
   $id = preg_replace('/[^a-z0-9-]/', '', strtolower($str($c['id'] ?? '')));
   if ($id === '') continue;

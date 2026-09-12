@@ -164,6 +164,10 @@
     s.academy.programs = s.academy.programs || [];
     while (s.academy.programs.length < 3) s.academy.programs.push({ title: '', text: '' });
     s.academy.programs.forEach(function (p) { p.image = p.image || ''; p.price = p.price || ''; p.link = p.link || 'book.html'; });
+    s.contact = s.contact || {};
+    if (s.contact.guestSpotEnabled === undefined) s.contact.guestSpotEnabled = true;
+    s.contact.socials = s.contact.socials || [];
+    s.contact.mapQuery = s.contact.mapQuery || ''; s.contact.mapEmbed = s.contact.mapEmbed || '';
     s.booking = s.booking || {};
     s.booking.intro = s.booking.intro || '';
     s.booking.services = s.booking.services || [];
@@ -214,7 +218,9 @@
   }
   function renderText() {
     $$('[data-bind]').forEach(function (el) {
-      el.value = get(state.site, el.dataset.bind) || '';
+      var v = get(state.site, el.dataset.bind);
+      if (el.type === 'checkbox') el.checked = !!v;
+      else el.value = v || '';
     });
   }
   function renderCategories() {
@@ -502,8 +508,43 @@
     });
   }
 
+  function renderSocials() {
+    var list = $('#social-list'); list.innerHTML = '';
+    var items = state.site.contact.socials;
+    if (!items.length) list.innerHTML = '<div class="empty">No links yet</div>';
+    items.forEach(function (s, i) {
+      var row = document.createElement('div');
+      row.className = 'list-row';
+      row.innerHTML =
+        '<span class="handle">' + (i + 1) + '</span>' +
+        '<div class="social-fields">' +
+          '<input type="text" data-k="label" placeholder="Name">' +
+          '<input type="text" data-k="handle" placeholder="@handle">' +
+          '<input type="text" data-k="url" placeholder="Link">' +
+        '</div>' +
+        '<button class="btn btn-small btn-icon" data-act="up" title="Move up">↑</button>' +
+        '<button class="btn btn-small btn-icon" data-act="down" title="Move down">↓</button>' +
+        '<button class="btn btn-small btn-icon btn-danger" data-act="del" title="Delete">✕</button>';
+      $$('[data-k]', row).forEach(function (inp) {
+        inp.value = s[inp.dataset.k] || '';
+        inp.addEventListener('input', function () { s[inp.dataset.k] = inp.value; setDirty(true); });
+      });
+      $('[data-act=up]', row).disabled = i === 0;
+      $('[data-act=down]', row).disabled = i === items.length - 1;
+      row.addEventListener('click', function (e) {
+        var act = e.target.dataset && e.target.dataset.act;
+        if (!act) return;
+        if (act === 'up') items.splice(i - 1, 0, items.splice(i, 1)[0]);
+        if (act === 'down') items.splice(i + 1, 0, items.splice(i, 1)[0]);
+        if (act === 'del') { if (!confirm('Delete "' + s.label + '"?')) return; items.splice(i, 1); }
+        setDirty(true); renderSocials();
+      });
+      list.appendChild(row);
+    });
+  }
+
   function renderAll() {
-    renderMediaSlots(); renderText(); renderCategories(); renderWorks(); renderServices(); renderLocations();
+    renderMediaSlots(); renderText(); renderCategories(); renderWorks(); renderServices(); renderLocations(); renderSocials();
     loadRequests();
   }
 
@@ -629,7 +670,11 @@
     try { sessionStorage.setItem('admin_tab', t.dataset.tab); } catch (err) {}
   });
   $$('[data-bind]').forEach(function (el) {
-    el.addEventListener('input', function () { set(state.site, el.dataset.bind, el.value); setDirty(true); });
+    var ev = el.type === 'checkbox' ? 'change' : 'input';
+    el.addEventListener(ev, function () {
+      set(state.site, el.dataset.bind, el.type === 'checkbox' ? el.checked : el.value);
+      setDirty(true);
+    });
   });
   $('#cat-add').addEventListener('submit', function (e) {
     e.preventDefault();
@@ -664,6 +709,14 @@
     state.site.booking.locations.push({ id: uid(), code: code, country: countryName(code), city: city, from: from, to: to });
     this.reset();
     setDirty(true); renderLocations();
+  });
+  $('#social-add').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var label = $('#social-label').value.trim(), url = $('#social-url').value.trim(), handle = $('#social-handle').value.trim();
+    if (!label || !url) return;
+    state.site.contact.socials.push({ label: label, handle: handle, url: url });
+    this.reset();
+    setDirty(true); renderSocials();
   });
   $('#req-refresh').addEventListener('click', loadRequests);
   fillCountries();

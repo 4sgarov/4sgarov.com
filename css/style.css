@@ -343,6 +343,57 @@ a { color: inherit; text-decoration: none; }
   .programs { padding: 64px 28px 80px; }
 }
 
+/* ---------- Contact page ---------- */
+.contact {
+  max-width: 1200px;
+  padding: 120px 40px 120px 120px;
+}
+.guest { margin-bottom: 56px; }
+.guest-title {
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 22px;
+}
+.guest-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.guest-list li { display: flex; align-items: center; gap: 14px; font-size: 1.25rem; }
+.g-flag { font-size: 1.6rem; line-height: 1; }
+.g-place { font-weight: 500; }
+.g-dates { color: var(--muted); font-weight: 300; }
+
+.socials {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 300px));
+  gap: 16px;
+  margin-bottom: 64px;
+}
+.socials a {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 22px;
+  border: 1px solid var(--text);
+  border-radius: 20px;
+  font-size: 1.1rem;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.socials a:hover { background: var(--text); color: #fff; }
+.s-icon { display: inline-flex; width: 24px; height: 24px; flex-shrink: 0; }
+.s-icon svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.s-handle { margin-left: auto; color: var(--muted); font-weight: 300; font-size: 0.95rem; }
+.socials a:hover .s-handle { color: rgba(255,255,255,0.7); }
+
+.map { width: 100%; aspect-ratio: 16 / 7; border-radius: 20px; overflow: hidden; background: var(--surface-2); }
+.map iframe { width: 100%; height: 100%; border: 0; display: block; }
+.contact-page [hidden] { display: none !important; }
+
+@media (max-width: 640px) {
+  .contact { padding: 96px 28px 80px; }
+  .socials { grid-template-columns: 1fr; }
+  .map { aspect-ratio: 4 / 3; }
+}
+
 /* ---------- Portfolio page ---------- */
 .portfolio-hero {
   width: 100vw;
