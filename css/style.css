@@ -321,7 +321,7 @@ a { color: inherit; text-decoration: none; }
 
 /* Card colours */
 .program--grey { background: var(--surface-2); border-color: var(--surface-2); }
-.program--red { background: var(--red); border-color: var(--red); color: #fff; }
+.program--red { background: #1e293b; border-color: #1e293b; color: #fff; }
 .program--black { background: #111; border-color: #111; color: #fff; }
 .program--red .program-text li::before,
 .program--black .program-text li::before { background: #fff; }
