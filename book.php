@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <?php seo_head('book'); ?>
-<link rel="stylesheet" href="css/style.css?v=202609121654">
+<link rel="stylesheet" href="css/style.css?v=202609121657">
 </head>
 <body class="book-page">
 
@@ -105,8 +105,8 @@
   </div>
 </section>
 
-<script src="js/menu.js?v=202609121654"></script>
-<script src="js/site.js?v=202609121654"></script>
-<script src="js/book.js?v=202609121654"></script>
+<script src="js/menu.js?v=202609121657"></script>
+<script src="js/site.js?v=202609121657"></script>
+<script src="js/book.js?v=202609121657"></script>
 </body>
 </html>
