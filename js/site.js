@@ -171,6 +171,24 @@
     flush();
     return imgs.filter(function (_, i) { return !used[i]; });
   }
+  var EYE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>';
+  var views = {};
+  function setViews(el, id) {
+    if (!el) return;
+    el.innerHTML = EYE + '<span></span>';
+    el.lastChild.textContent = views[id] || 0;
+  }
+  function countView(id, el) {
+    var key = 'viewed_' + id, seen = null;
+    try { seen = localStorage.getItem(key); } catch (e) {}
+    if (seen && Date.now() - (+seen) < 86400000) return;
+    fetch('api/views.php', { method: 'POST', headers: { 'X-Requested-With': 'XMLHttpRequest', 'Content-Type': 'application/json' }, body: JSON.stringify({ id: id }) })
+      .then(function (r) { return r.json(); })
+      .then(function (r) {
+        try { localStorage.setItem(key, String(Date.now())); } catch (e) {}
+        if (r && r.views !== undefined) { views[id] = r.views; setViews(el, id); document.querySelectorAll('[data-views="' + id + '"]').forEach(function (x) { setViews(x, id); }); }
+      }).catch(function () {});
+  }
   function renderNews(n) {
     var list = document.getElementById('news-list');
     if (!list) return;
@@ -196,6 +214,9 @@
       gal.innerHTML = '';
       leftover.forEach(function (x, i) { if (i === 0 && x === first) return; gal.appendChild(imgEl(x, 'post-gimg')); });
       gal.hidden = !gal.children.length;
+      var pv = art.querySelector('.post-foot .views');
+      setViews(pv, post.id);
+      countView(post.id, pv);
       modal.hidden = false;
       document.body.classList.add('post-open');
       art.scrollTop = 0;
@@ -236,13 +257,15 @@
       var plain = String(featured.text || '').replace(/\{image\d+\}/gi, '').replace(/\s+/g, ' ').trim();
       var half = Math.max(120, Math.floor(plain.length / 2));
       f.querySelector('.featured-excerpt').textContent = plain.length > half ? plain.slice(0, half).replace(/\s+\S*$/, '') + '…' : plain;
+      var fv = f.querySelector('.views'); fv.dataset.views = featured.id; setViews(fv, featured.id);
     }
     posts.forEach(function (p) {
       if (p === featured) return;
       var a = document.createElement('a');
       a.className = 'news-card';
       bindOpen(a, p);
-      a.innerHTML = '<div class="card-thumb"></div><div class="card-info"><h3 class="card-head"></h3><div class="meta-row"><span class="n-cat"></span><span class="n-date"></span></div></div>';
+      a.innerHTML = '<div class="card-thumb"></div><div class="card-info"><h3 class="card-head"></h3><div class="meta-row"><span class="n-cat"></span><span class="n-date"></span></div></div><span class="views"></span>';
+      var cv = a.querySelector('.views'); cv.dataset.views = p.id; setViews(cv, p.id);
       var c0 = (p.images || [])[0];
       if (c0) { var i2 = document.createElement('img'); i2.src = imgObj(c0).src; i2.alt = ''; i2.loading = 'lazy'; a.querySelector('.card-thumb').appendChild(i2); }
       a.querySelector('.card-head').textContent = p.title;
@@ -250,6 +273,12 @@
       a.querySelector('.n-cat').textContent = catName[p.category] || '';
       cards.appendChild(a);
     });
+
+    fetch('api/views.php', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (v) {
+      views = v || {};
+      document.querySelectorAll('[data-views]').forEach(function (x) { setViews(x, x.dataset.views); });
+      var pv = modal.querySelector('.post-foot .views'); if (!modal.hidden && pv) setViews(pv, new URLSearchParams(location.search).get('id'));
+    }).catch(function () {});
 
     var id = new URLSearchParams(location.search).get('id');
     var initial = id && posts.filter(function (p) { return p.id === id; })[0];

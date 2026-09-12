@@ -12,3 +12,4 @@ assets/uploads/*
 !assets/uploads/.htaccess
 data/bookings.json
 data/bookings/
+data/views.json
