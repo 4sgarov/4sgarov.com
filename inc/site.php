@@ -15,7 +15,7 @@ function site(): array {
   foreach ($read(SITE_ROOT . '/data/site.default.json') as $k => $v) if (!isset($s[$k])) $s[$k] = $v;
   return $s;
 }
-function home_enabled(): bool { return !empty(site()['home']['enabled']); }
+function home_enabled(): bool { $h = site()['home'] ?? []; return !array_key_exists('enabled', $h) || !empty($h['enabled']); }
 function e($v): string { return htmlspecialchars((string)$v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); }
 function flag(string $code): string {
   $out = '';
