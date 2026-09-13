@@ -100,8 +100,7 @@ a { color: inherit; text-decoration: none; }
   display: block;
 }
 .home .page { position: relative; z-index: 1; }
-.home.has-cover .nav-link { color: rgba(255,255,255,0.7); }
-.home.has-cover .nav-link:hover { color: #fff; }
+
 
 /* ---------- Responsive ---------- */
 @media (max-width: 640px) {
