@@ -15,6 +15,7 @@ function site(): array {
   foreach ($read(SITE_ROOT . '/data/site.default.json') as $k => $v) if (!isset($s[$k])) $s[$k] = $v;
   return $s;
 }
+function home_enabled(): bool { return !empty(site()['home']['enabled']); }
 function e($v): string { return htmlspecialchars((string)$v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); }
 function flag(string $code): string {
   $out = '';
@@ -89,7 +90,7 @@ function seo_head(string $page, array $o = []): void {
   $ov = (array)($S['seo']['pages'][$page] ?? []);
   if (!empty($ov['title'])) $title = $ov['title'];
   if (!empty($ov['description'])) $desc = $ov['description'];
-  $url = SITE_URL . '/' . $path;
+  $url = SITE_URL . '/' . (array_key_exists('path', $o) ? $o['path'] : $path);
   $image = SITE_URL . '/assets/og.jpg';
   $type = 'website';
   $hreflang = '';

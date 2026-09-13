@@ -1,4 +1,5 @@
-<?php require __DIR__ . '/inc/site.php'; $S = site(); ?>
+<?php require __DIR__ . '/inc/site.php'; $S = site();
+if (!home_enabled()) { $AT_ROOT = true; require __DIR__ . '/about.php'; exit; } ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=202609121659">
+<link rel="stylesheet" href="css/style.css?v=202609130846">
 </head>
 <body class="home">
 
@@ -18,7 +19,7 @@
 <div class="page">
   <aside class="sidebar">
     <nav class="sidebar-nav">
-      <a href="about.html" class="nav-link">About me</a>
+      <a href="<?= home_enabled() ? 'about.html' : 'index.html' ?>" class="nav-link">About me</a>
       <a href="portfolio.html" class="nav-link">Portfolio</a>
       <a href="book.html" class="nav-link">Book now</a>
       <a href="academy.html" class="nav-link">Academy</a>
@@ -30,6 +31,6 @@
   <main class="blank-area"></main>
 </div>
 
-<script src="js/site.js?v=202609121659"></script>
+<script src="js/site.js?v=202609130846"></script>
 </body>
 </html>

@@ -3,7 +3,8 @@
     "cover": {
       "desktop": "",
       "mobile": ""
-    }
+    },
+    "enabled": false
   },
   "about": {
     "hero": {

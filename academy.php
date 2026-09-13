@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <?php seo_head('academy'); ?>
-<link rel="stylesheet" href="css/style.css?v=202609121659">
+<link rel="stylesheet" href="css/style.css?v=202609130846">
 </head>
 <body class="academy-page">
 
@@ -14,7 +14,7 @@
 </button>
 
 <nav class="drawer">
-  <a href="about.html" class="nav-link">About me</a>
+  <a href="<?= home_enabled() ? 'about.html' : 'index.html' ?>" class="nav-link">About me</a>
   <a href="portfolio.html" class="nav-link">Portfolio</a>
   <a href="book.html" class="nav-link">Book now</a>
   <a href="academy.html" class="nav-link">Academy</a>
@@ -44,7 +44,7 @@ foreach (array_slice((array)($S['academy']['programs'] ?? []), 0, 3) as $i => $p
 <?php endforeach; ?>
 </section>
 
-<script src="js/menu.js?v=202609121659"></script>
-<script src="js/site.js?v=202609121659"></script>
+<script src="js/menu.js?v=202609130846"></script>
+<script src="js/site.js?v=202609130846"></script>
 </body>
 </html>

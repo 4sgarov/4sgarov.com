@@ -154,6 +154,7 @@
   }
   function normalize(s) {
     s.home = s.home || {}; s.home.cover = s.home.cover || { desktop: '', mobile: '' };
+    s.home.enabled = !!s.home.enabled;
     s.about = s.about || {}; s.about.hero = s.about.hero || { desktop: '', mobile: '' };
     s.about.columns = s.about.columns || [];
     while (s.about.columns.length < 2) s.about.columns.push({ heading: '', text: '' });
