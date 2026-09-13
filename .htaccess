@@ -26,6 +26,9 @@ DirectoryIndex index.php index.html
   RewriteCond %{HTTPS} !=on
   RewriteCond %{HTTP:X-Forwarded-Proto} !https
   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+  # www → bare domain (one canonical address for Google)
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
   RewriteRule ^(index|about|portfolio|book|academy|news|contact)\.html$ $1.php [L,QSA]
 </IfModule>
 
