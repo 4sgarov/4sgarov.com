@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <?php seo_head('portfolio'); ?>
-<link rel="stylesheet" href="css/style.css?v=202609131029">
+<link rel="stylesheet" href="css/style.css?v=202609131030">
 </head>
 <body class="portfolio-page">
 
@@ -47,7 +47,7 @@
   </div>
 </section>
 
-<script src="js/menu.js?v=202609131029"></script>
-<script src="js/site.js?v=202609131029"></script>
+<script src="js/menu.js?v=202609131030"></script>
+<script src="js/site.js?v=202609131030"></script>
 </body>
 </html>
