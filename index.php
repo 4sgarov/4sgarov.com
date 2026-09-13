@@ -9,7 +9,7 @@ if (!home_enabled()) { $AT_ROOT = true; require __DIR__ . '/about.php'; exit; } 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=202609130850">
+<link rel="stylesheet" href="css/style.css?v=202609130851">
 </head>
 <body class="home">
 
@@ -31,6 +31,6 @@ if (!home_enabled()) { $AT_ROOT = true; require __DIR__ . '/about.php'; exit; } 
   <main class="blank-area"></main>
 </div>
 
-<script src="js/site.js?v=202609130850"></script>
+<script src="js/site.js?v=202609130851"></script>
 </body>
 </html>

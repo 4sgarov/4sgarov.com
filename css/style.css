@@ -68,14 +68,14 @@ a { color: inherit; text-decoration: none; }
 }
 .nav-link {
   font-size: 3.2rem;
-  font-weight: 500;
-  color: #555;
+  font-weight: 600;
+  color: var(--text);
   white-space: nowrap;
   padding: 6px 0;
   transition: color 0.2s ease;
 }
 .nav-link:hover {
-  color: var(--text);
+  color: var(--red);
 }
 
 /* ---------- Blank area ---------- */
