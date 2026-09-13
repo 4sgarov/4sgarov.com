@@ -110,7 +110,8 @@ a { color: inherit; text-decoration: none; }
   .sidebar {
     width: 100%;
     flex: 1;
-    padding: 36px 28px;
+    justify-content: flex-start;
+    padding: 96px 28px 36px;
   }
   .blank-area { display: none; }
 }
