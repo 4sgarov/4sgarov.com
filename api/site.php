@@ -25,7 +25,7 @@ $site['seo'] = $site['seo'] ?? [];
 $str = fn($v) => is_string($v) ? trim($v) : '';
 $media = fn($m) => ['desktop' => $str($m['desktop'] ?? ''), 'mobile' => $str($m['mobile'] ?? '')];
 $clean = [
-  'home' => ['cover' => $media($site['home']['cover'] ?? []), 'enabled' => !empty($site['home']['enabled'])],
+  'home' => ['cover' => $media($site['home']['cover'] ?? [])],
   'about' => [
     'hero' => $media($site['about']['hero'] ?? []),
     'name' => $str($site['about']['name'] ?? ''),

@@ -7,7 +7,7 @@
 <?php $post = null; $pid = $_GET['id'] ?? ''; foreach ((array)($S['news']['posts'] ?? []) as $pp) if (($pp['id'] ?? '') === $pid) { $post = $pp; break; }
 $lang = (($_GET['lang'] ?? '') === 'az' && $post && !empty($post['text_az'])) ? 'az' : 'en';
 seo_head('news', $post ? ['post' => $post, 'lang' => $lang] : []); ?>
-<link rel="stylesheet" href="css/style.css?v=202609130851">
+<link rel="stylesheet" href="css/style.css?v=202609130855">
 </head>
 <body class="news-page">
 
@@ -16,7 +16,7 @@ seo_head('news', $post ? ['post' => $post, 'lang' => $lang] : []); ?>
 </button>
 
 <nav class="drawer">
-  <a href="<?= home_enabled() ? 'about.html' : 'index.html' ?>" class="nav-link">About me</a>
+  <a href="about.html" class="nav-link">About me</a>
   <a href="portfolio.html" class="nav-link">Portfolio</a>
   <a href="book.html" class="nav-link">Book now</a>
   <a href="academy.html" class="nav-link">Academy</a>
@@ -68,7 +68,7 @@ seo_head('news', $post ? ['post' => $post, 'lang' => $lang] : []); ?>
   </div>
 </div>
 
-<script src="js/menu.js?v=202609130851"></script>
-<script src="js/site.js?v=202609130851"></script>
+<script src="js/menu.js?v=202609130855"></script>
+<script src="js/site.js?v=202609130855"></script>
 </body>
 </html>

@@ -1,12 +1,11 @@
-<?php require __DIR__ . '/inc/site.php'; $S = site();
-if (empty($AT_ROOT) && !home_enabled()) { header('Location: /', true, 302); exit; } ?>
+<?php require __DIR__ . '/inc/site.php'; $S = site(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<?php seo_head('about', !empty($AT_ROOT) ? ['path' => ''] : []); ?>
-<link rel="stylesheet" href="css/style.css?v=202609130851">
+<?php seo_head('about'); ?>
+<link rel="stylesheet" href="css/style.css?v=202609130855">
 </head>
 <body class="about-page">
 
@@ -15,7 +14,7 @@ if (empty($AT_ROOT) && !home_enabled()) { header('Location: /', true, 302); exit
 </button>
 
 <nav class="drawer">
-  <a href="<?= home_enabled() ? 'about.html' : 'index.html' ?>" class="nav-link">About me</a>
+  <a href="about.html" class="nav-link">About me</a>
   <a href="portfolio.html" class="nav-link">Portfolio</a>
   <a href="book.html" class="nav-link">Book now</a>
   <a href="academy.html" class="nav-link">Academy</a>
@@ -40,7 +39,7 @@ if (empty($AT_ROOT) && !home_enabled()) { header('Location: /', true, 302); exit
   </div>
 </section>
 
-<script src="js/menu.js?v=202609130851"></script>
-<script src="js/site.js?v=202609130851"></script>
+<script src="js/menu.js?v=202609130855"></script>
+<script src="js/site.js?v=202609130855"></script>
 </body>
 </html>
