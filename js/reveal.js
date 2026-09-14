@@ -30,6 +30,8 @@
           el.appendChild(s); i++;
         });
         el.classList.add('letters');
+        // the parent heading holds the reveal/in state (e.g. .portfolio-title > span)
+        if (el.parentElement && el.parentElement.classList.contains('portfolio-title')) el.parentElement.classList.add('letters');
       });
     });
   }
