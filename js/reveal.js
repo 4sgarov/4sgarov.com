@@ -44,7 +44,7 @@
       document.querySelectorAll(sel).forEach(function (el) {
         if (el.classList.contains('reveal')) return;
         el.classList.add('reveal');
-        el.style.transitionDelay = Math.min(i * 110, 880) + 'ms';
+        el.style.transitionDelay = Math.min(i * 80, 640) + 'ms';
         i++; n++;
       });
     });
