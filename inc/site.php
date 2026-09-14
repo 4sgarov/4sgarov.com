@@ -118,8 +118,10 @@ function seo_head(string $page, array $o = []): void {
   echo '<title>' . e($title) . "</title>\n";
   echo '<meta name="description" content="' . e($desc) . "\">\n";
   echo '<link rel="canonical" href="' . e($url) . "\">\n" . $hreflang;
-  echo '<link rel="icon" type="image/png" href="' . $icoFile . '">' . "\n";
-  echo '<link rel="apple-touch-icon" href="' . $icoFile . '">' . "\n";
+  $iv = '?v=' . @filemtime(SITE_ROOT . '/' . $icoFile);
+  echo '<link rel="icon" href="/favicon.ico' . $iv . '" sizes="16x16 32x32 48x48">' . "\n";
+  echo '<link rel="icon" type="image/png" sizes="512x512" href="' . $icoFile . $iv . '">' . "\n";
+  echo '<link rel="apple-touch-icon" sizes="180x180" href="' . $icoFile . $iv . '">' . "\n";
   echo '<meta property="og:type" content="' . $type . "\">\n";
   echo '<meta property="og:site_name" content="Rauf Asgarov | Tattoo Artist">' . "\n";
   echo '<meta property="og:title" content="' . e($title) . "\">\n";
