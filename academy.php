@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <?php seo_head('academy'); ?>
-<link rel="stylesheet" href="css/style.css?v=202609141156">
+<link rel="stylesheet" href="css/style.css?v=202609141240">
 </head>
 <body class="academy-page">
 
@@ -44,8 +44,8 @@ foreach (array_slice((array)($S['academy']['programs'] ?? []), 0, 3) as $i => $p
 <?php endforeach; ?>
 </section>
 
-<script src="js/menu.js?v=202609141156"></script>
-<script src="js/reveal.js?v=202609141156"></script>
-<script src="js/site.js?v=202609141156"></script>
+<script src="js/menu.js?v=202609141240"></script>
+<script src="js/reveal.js?v=202609141240"></script>
+<script src="js/site.js?v=202609141240"></script>
 </body>
 </html>
