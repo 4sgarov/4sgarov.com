@@ -1,6 +1,6 @@
 /* Entrance animations: elements fade and rise as they come into view. */
 (function () {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
 
   var SELECTORS = [
     '.sidebar-nav .nav-link',
@@ -60,6 +60,17 @@
   function observe() {
     document.querySelectorAll('.reveal:not(.in)').forEach(function (el) { io.observe(el); });
   }
+
+  // Safety net: whatever is inside the viewport gets shown, even if the observer is late
+  function showVisible() {
+    var vh = window.innerHeight;
+    document.querySelectorAll('.reveal:not(.in)').forEach(function (el) {
+      var r = el.getBoundingClientRect();
+      if (r.bottom > 0 && r.top < vh * 0.95) el.classList.add('in');
+    });
+  }
+  window.addEventListener('scroll', showVisible, { passive: true });
+  window.addEventListener('load', function () { setTimeout(showVisible, 300); });
 
   mark(); observe();
   // content rendered later by site.js (portfolio cards, news, contact)
