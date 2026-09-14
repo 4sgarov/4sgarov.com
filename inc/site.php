@@ -47,7 +47,7 @@ function rich(string $text): string {
 function seo_head(string $page, array $o = []): void {
   $S = site();
   $meta = [
-    'index'     => ['Rauf Asgarov — Tattoo Artist in Baku', 'Rauf Asgarov — professional tattoo artist based in Baku, Azerbaijan. Realism, black & grey, fine line and cover up. Portfolio, booking, academy.', ''],
+    'index'     => ['Rauf Asgarov | Tattoo Artist', 'Rauf Asgarov — professional tattoo artist based in Baku, Azerbaijan. Realism, black & grey, fine line and cover up. Portfolio, booking, academy.', ''],
     'about'     => ['About Rauf Asgarov — Tattoo Artist, Baku', 'About Rauf Asgarov — tattoo artist based in Baku, Azerbaijan: signature style, recognition and mentorship.', 'about.html'],
     'portfolio' => ['Tattoo Portfolio — Rauf Asgarov, Baku', 'Tattoo portfolio of Rauf Asgarov — realism, black & grey, fine line, cover up, lettering. Baku, Azerbaijan.', 'portfolio.html'],
     'book'      => ['Book a Tattoo — Rauf Asgarov', 'Book a tattoo session or seminar with Rauf Asgarov: choose a city and date, describe your idea.', 'book.html'],
