@@ -26,7 +26,7 @@
           var s = document.createElement('span');
           s.className = 'ltr';
           s.textContent = ch === ' ' ? '\u00a0' : ch;
-          s.style.transitionDelay = (i * 45) + 'ms';
+          s.style.transitionDelay = (i * 60) + 'ms';
           el.appendChild(s); i++;
         });
         el.classList.add('letters');
