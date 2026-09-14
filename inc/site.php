@@ -118,7 +118,7 @@ function seo_head(string $page, array $o = []): void {
   echo '<link rel="icon" type="image/png" href="assets/favicon.png">' . "\n";
   echo '<link rel="apple-touch-icon" href="assets/favicon.png">' . "\n";
   echo '<meta property="og:type" content="' . $type . "\">\n";
-  echo '<meta property="og:site_name" content="Rauf Asgarov">' . "\n";
+  echo '<meta property="og:site_name" content="Rauf Asgarov | Tattoo Artist">' . "\n";
   echo '<meta property="og:title" content="' . e($title) . "\">\n";
   echo '<meta property="og:description" content="' . e($desc) . "\">\n";
   echo '<meta property="og:url" content="' . e($url) . "\">\n";
@@ -128,6 +128,10 @@ function seo_head(string $page, array $o = []): void {
   echo '<meta name="twitter:description" content="' . e($desc) . "\">\n";
   echo '<meta name="twitter:image" content="' . e($image) . "\">\n";
 
+  if ($page === 'index') {
+    $ws = ['@context' => 'https://schema.org', '@type' => 'WebSite', 'name' => 'Rauf Asgarov | Tattoo Artist', 'alternateName' => ['Rauf Asgarov', '4sgarov'], 'url' => SITE_URL . '/'];
+    echo '<script type="application/ld+json">' . json_encode($ws, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "</script>\n";
+  }
   if ($page === 'index' || $page === 'contact') {
     $same = [];
     foreach ((array)($S['contact']['socials'] ?? []) as $so) if (!empty($so['url']) && preg_match('#^https?://#', $so['url'])) $same[] = $so['url'];
