@@ -55,7 +55,10 @@
 
   function text(sel, value) {
     var el = document.querySelector(sel);
-    if (el && value !== undefined) el.textContent = value;
+    if (!el || value === undefined) return;
+    if (el.textContent.replace(/\u00a0/g, ' ') === String(value)) return; // already server-rendered (maybe split into letters)
+    el.textContent = value;
+    delete el.dataset.split; el.classList.remove('letters');
   }
 
   function flag(code) {

@@ -12,7 +12,30 @@
     '.contact-title', '.guest', '.socials li', '.map'
   ];
 
+  /* Big headings: letters rise in one after another */
+  var HEADINGS = ['.portfolio-title span', '.news-title', '.contact-title', '.about-name', '.academy-headline', '.guest-title'];
+  function splitLetters() {
+    HEADINGS.forEach(function (sel) {
+      document.querySelectorAll(sel).forEach(function (el) {
+        if (el.dataset.split || !el.textContent.trim()) return;
+        el.dataset.split = '1';
+        var text = el.textContent; el.textContent = '';
+        var i = 0;
+        text.split('').forEach(function (ch) {
+          if (ch === '\n') { el.appendChild(document.createElement('br')); return; }
+          var s = document.createElement('span');
+          s.className = 'ltr';
+          s.textContent = ch === ' ' ? '\u00a0' : ch;
+          s.style.transitionDelay = (i * 45) + 'ms';
+          el.appendChild(s); i++;
+        });
+        el.classList.add('letters');
+      });
+    });
+  }
+
   function mark() {
+    splitLetters();
     var n = 0;
     SELECTORS.forEach(function (sel) {
       var i = 0;
