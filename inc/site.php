@@ -48,12 +48,12 @@ function seo_head(string $page, array $o = []): void {
   $S = site();
   $meta = [
     'index'     => ['Rauf Asgarov | Tattoo Artist', 'Rauf Asgarov — professional tattoo artist based in Baku, Azerbaijan. Realism, black & grey, fine line and cover up. Portfolio, booking, academy.', ''],
-    'about'     => ['About Rauf Asgarov — Tattoo Artist, Baku', 'About Rauf Asgarov — tattoo artist based in Baku, Azerbaijan: signature style, recognition and mentorship.', 'about.html'],
-    'portfolio' => ['Tattoo Portfolio — Rauf Asgarov, Baku', 'Tattoo portfolio of Rauf Asgarov — realism, black & grey, fine line, cover up, lettering. Baku, Azerbaijan.', 'portfolio.html'],
-    'book'      => ['Book a Tattoo — Rauf Asgarov', 'Book a tattoo session or seminar with Rauf Asgarov: choose a city and date, describe your idea.', 'book.html'],
-    'academy'   => ['Tattoo Academy — Rauf Asgarov', 'Tattoo academy by Rauf Asgarov: social media for artists, online seminars, private mentorship.', 'academy.html'],
-    'news'      => ['News — Rauf Asgarov', 'News from Rauf Asgarov — guest spots, academy, new work and tattoo tips.', 'news.html'],
-    'contact'   => ['Contact — Rauf Asgarov, Tattoo Artist in Baku', 'Contact Rauf Asgarov — guest spots, Instagram, WhatsApp and studio location in Baku.', 'contact.html'],
+    'about'     => ['About Me', 'About Rauf Asgarov — tattoo artist based in Baku, Azerbaijan: signature style, recognition and mentorship.', 'about.html'],
+    'portfolio' => ['Portfolio', 'Tattoo portfolio of Rauf Asgarov — realism, black & grey, fine line, cover up, lettering. Baku, Azerbaijan.', 'portfolio.html'],
+    'book'      => ['Book Now', 'Book a tattoo session or seminar with Rauf Asgarov: choose a city and date, describe your idea.', 'book.html'],
+    'academy'   => ['Academy', 'Tattoo academy by Rauf Asgarov: social media for artists, online seminars, private mentorship.', 'academy.html'],
+    'news'      => ['News', 'News from Rauf Asgarov — guest spots, academy, new work and tattoo tips.', 'news.html'],
+    'contact'   => ['Contact', 'Contact Rauf Asgarov — guest spots, Instagram, WhatsApp and studio location in Baku.', 'contact.html'],
   ][$page];
   [$title, $desc, $path] = $meta;
 
@@ -101,7 +101,7 @@ function seo_head(string $page, array $o = []): void {
     $az = ($o['lang'] ?? 'en') === 'az';
     $ptitle = $az && !empty($p['title_az']) ? $p['title_az'] : $p['title'];
     $ptext = $az ? (string)$p['text_az'] : (string)$p['text'];
-    $title = $ptitle . ' — Rauf Asgarov';
+    $title = $ptitle;
     $plain = trim(preg_replace('/\s+/', ' ', preg_replace('/\{image\d+[^}]*\}/i', '', $ptext)));
     $desc = mb_substr($plain, 0, 160);
     $base = SITE_URL . '/news.html?id=' . rawurlencode($p['id']);
