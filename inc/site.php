@@ -90,7 +90,10 @@ function seo_head(string $page, array $o = []): void {
   if (!empty($ov['title'])) $title = $ov['title'];
   if (!empty($ov['description'])) $desc = $ov['description'];
   $url = SITE_URL . '/' . (array_key_exists('path', $o) ? $o['path'] : $path);
-  $image = SITE_URL . '/assets/og.jpg';
+  /* Logo files: the ones uploaded from the admin win; otherwise the built-in brand files */
+  $ogFile = is_file(SITE_ROOT . '/assets/og.jpg') ? 'assets/og.jpg' : 'assets/brand/og.jpg';
+  $icoFile = is_file(SITE_ROOT . '/assets/favicon.png') ? 'assets/favicon.png' : 'assets/brand/favicon.png';
+  $image = SITE_URL . '/' . $ogFile . '?v=' . @filemtime(SITE_ROOT . '/' . $ogFile);
   $type = 'website';
   $hreflang = '';
   if (!empty($o['post'])) {
@@ -115,8 +118,8 @@ function seo_head(string $page, array $o = []): void {
   echo '<title>' . e($title) . "</title>\n";
   echo '<meta name="description" content="' . e($desc) . "\">\n";
   echo '<link rel="canonical" href="' . e($url) . "\">\n" . $hreflang;
-  echo '<link rel="icon" type="image/png" href="assets/favicon.png">' . "\n";
-  echo '<link rel="apple-touch-icon" href="assets/favicon.png">' . "\n";
+  echo '<link rel="icon" type="image/png" href="' . $icoFile . '">' . "\n";
+  echo '<link rel="apple-touch-icon" href="' . $icoFile . '">' . "\n";
   echo '<meta property="og:type" content="' . $type . "\">\n";
   echo '<meta property="og:site_name" content="Rauf Asgarov | Tattoo Artist">' . "\n";
   echo '<meta property="og:title" content="' . e($title) . "\">\n";
